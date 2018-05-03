@@ -1,0 +1,192 @@
+/**
+ * 
+ */
+package ec.com.erp.usuarios.dao;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+
+import ec.com.erp.cliente.common.constantes.ERPConstantes;
+import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.mdl.dto.UsuariosDTO;
+import ec.com.erp.cliente.mdl.dto.id.UsuariosID;
+import ec.com.erp.secuencia.dao.ISecuenciaDAO;
+import ec.com.erp.utilitario.dao.commons.hibernate.transformers.MultiLevelResultTransformer;
+
+/**
+ * @author Esteban Gudino
+ * 2017-06-27
+ */
+public class UsuariosDAO implements IUsuariosDAO {
+
+	/**
+	 * SessionFactory sessionFactory.
+	 */
+	private SessionFactory sessionFactory;
+
+	/**
+	 * Dao para obtnener la secuencia
+	 */
+	private ISecuenciaDAO secuenciaDAO;
+
+	/**
+	 *  M\u00E9todo que asigna el valor de sessionFactory del objeto.
+	 * @param sessionFactory
+	 */
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}	
+
+	/**
+	 * @return the secuenciaDAO
+	 */
+	public ISecuenciaDAO getSecuenciaDAO() {
+		return secuenciaDAO;
+	}
+
+	/**
+	 * @param secuenciaDAO the secuenciaDAO to set
+	 */
+	public void setSecuenciaDAO(ISecuenciaDAO secuenciaDAO) {
+		this.secuenciaDAO = secuenciaDAO;
+	}
+
+	/**
+	 * M\u00e9todo para obtener lista de articulos
+	 * @return 
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<UsuariosDTO> obtenerListaUsuarios() throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(UsuariosDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.estado", "1"));
+			
+
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.userId"), "id_userId");
+			projectionList.add(Projections.property("root.codigoPerfil"), "codigoPerfil");
+			projectionList.add(Projections.property("root.nombreUsuario"), "nombreUsuario");
+			projectionList.add(Projections.property("root.passwordUsuario"), "passwordUsuario");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(UsuariosDTO.class));
+			Collection<UsuariosDTO> conveniosDiseniadoresCols = new  ArrayList<UsuariosDTO>();
+			conveniosDiseniadoresCols =  criteria.list();
+
+			return conveniosDiseniadoresCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para logearse 
+	 * @param nombreUsuario
+	 * @param password
+	 * @return
+	 * @throws ERPException
+	 */
+	public UsuariosDTO loginUser(String nombreUsuario, String password) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(UsuariosDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.estado", "1"));
+			criteria.add(Restrictions.eq("root.nombreUsuario", nombreUsuario));
+			criteria.add(Restrictions.eq("root.passwordUsuario", password));
+
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.userId"), "id_userId");
+			projectionList.add(Projections.property("root.codigoPerfil"), "codigoPerfil");
+			projectionList.add(Projections.property("root.nombreUsuario"), "nombreUsuario");
+			projectionList.add(Projections.property("root.passwordUsuario"), "passwordUsuario");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(UsuariosDTO.class));
+			UsuariosDTO usuariosDTO = new UsuariosDTO();
+			usuariosDTO = (UsuariosDTO)criteria.uniqueResult();
+			
+			if(usuariosDTO == null){
+				usuariosDTO = new UsuariosDTO();
+				usuariosDTO.setLogeado(Boolean.FALSE);
+			}
+			else
+			{
+				usuariosDTO.setLogeado(Boolean.TRUE);
+			}
+
+			return usuariosDTO;
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para crear nuevos usuarios
+	 * @param usuarioDTO
+	 * @throws ERPException
+	 */
+	public void crearUsuario(UsuariosDTO usuarioDTO) throws ERPException{
+		try{
+			if (usuarioDTO.getNombreUsuario() == null || usuarioDTO.getPasswordUsuario() == null) {
+				throw new ERPException("Existen campos que no deben ser nulos para crear el usuario");
+			}	
+			sessionFactory.getCurrentSession().clear();
+			Integer secuencialArticulo  = this.secuenciaDAO.obtenerSecuencialTabla(UsuariosID.NOMBRE_SECUENCIA);
+			usuarioDTO.getId().setUserId(ERPConstantes.PREFIJO_SECUENCIAL_USUARIO.concat(""+secuencialArticulo));
+			sessionFactory.getCurrentSession().save(usuarioDTO);
+			sessionFactory.getCurrentSession().flush();
+		} catch (ERPException e) {
+			throw new ERPException("Ocurrio un error al crear el usuario."+e.getMessage());
+		} catch (Exception e) {
+			throw new ERPException("Ocurrio un error al crear el usuario."+e.getMessage());
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para crear actualizar usuarios
+	 * @param usuarioDTO
+	 * @throws ERPException
+	 */
+	public void actualizarUsuario(UsuariosDTO usuarioDTO) throws ERPException{
+		try{
+			if (usuarioDTO.getId().getUserId() == null || usuarioDTO.getNombreUsuario() == null || usuarioDTO.getPasswordUsuario() == null) {
+				throw new ERPException("Existen campos que no deben ser nulos para actualizar el usuario");
+			}	
+			sessionFactory.getCurrentSession().clear();
+			sessionFactory.getCurrentSession().update(usuarioDTO);
+			sessionFactory.getCurrentSession().flush();
+		} catch (ERPException e) {
+			throw new ERPException("Ocurrio un error al actualizar el usuario."+e.getMessage());
+		} catch (Exception e) {
+			throw new ERPException("Ocurrio un error al actualizar el usuario."+e.getMessage());
+		} 
+	}
+}

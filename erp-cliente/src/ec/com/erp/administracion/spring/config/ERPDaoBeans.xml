@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd" default-lazy-init="true">
+    
+    <!-- IMPLEMENTACION DE DAOS -->
+    
+    <!-- Inyeccion bean  UsuariosDAO -->
+    <bean id="erpUsuariosDAO" class="ec.com.erp.usuarios.dao.UsuariosDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  ArticuloDAO -->
+    <bean id="erpArticuloDAO" class="ec.com.erp.articulo.dao.ArticuloDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+     <!-- Inyeccion bean  CatalogoDAO -->
+    <bean id="erpCatalogoDAO" class="ec.com.erp.catalogo.dao.CatalogoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+     <!-- Inyeccion bean  ClienteDAO -->
+    <bean id="erpClientesDAO" class="ec.com.erp.clientes.dao.ClientesDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  TransportistasDAO -->
+    <bean id="erpTransportistasDAO" class="ec.com.erp.transportistas.dao.TransportistasDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  ChoferDAO -->
+    <bean id="erpChoferDAO" class="ec.com.erp.chofer.dao.ChoferDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  VehiculoDAO -->
+    <bean id="erpVehiculoDAO" class="ec.com.erp.vehiculo.dao.VehiculoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  VehiculoChoferDAO -->
+    <bean id="erpVehiculoChoferDAO" class="ec.com.erp.vehiculo.chofer.dao.VehiculoChoferDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  CompaniaDAO -->
+    <bean id="erpCompaniaDAO" class="ec.com.erp.compania.dao.CompaniaDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- Inyeccion bean  ContactoDAO -->
+    <bean id="erpContactoDAO" class="ec.com.erp.contacto.dao.ContactoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  EmpresaDAO -->
+    <bean id="erpEmpresaDAO" class="ec.com.erp.empresa.dao.EmpresaDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  DetallePedidoDAO -->
+    <bean id="erpDetallePedidoDAO" class="ec.com.erp.pedidos.dao.DetallePedidoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  EstadoPedidoDAO -->
+    <bean id="erpEstadoPedidoDAO" class="ec.com.erp.pedidos.dao.EstadoPedidoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  PedidoDAO -->
+    <bean id="erpPedidoDAO" class="ec.com.erp.pedidos.dao.PedidoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  perfilesDAO -->
+    <bean id="erpPerfilesDAO" class="ec.com.erp.perfiles.dao.PerfilesDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- Inyeccion bean  PersonaDAO -->
+    <bean id="erpPersonaDAO" class="ec.com.erp.persona.dao.PersonaDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  SecuenciaDAO -->
+    <bean id="erpSecuenciaDAO" class="ec.com.erp.secuencia.dao.SecuenciaDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+</beans>	

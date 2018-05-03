@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:batch="http://www.springframework.org/schema/batch"
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd" default-lazy-init="true">
+
+	<!-- Servicios -->
+	
+	<!-- Servicio usuario -->
+	<bean id="erpUsuariosServicio" class="ec.com.erp.usuarios.servicios.UsuariosServicio">
+		<property name="usuariosGestor"><ref bean="erpUsuariosGestor"/></property>
+	</bean>
+	
+	<!-- Servicio articulos -->
+	<bean id="erpArticuloServicio" class="ec.com.erp.articulo.servicios.ArticuloServicio">
+		<property name="articuloGestor"><ref bean="erpArticuloGestor"/></property>
+	</bean>
+	
+	<!-- Servicio catalogos -->
+	<bean id="erpCatalogoServicio" class="ec.com.erp.catalogo.servicios.CatalogoServicio">
+		<property name="catalogoGestor"><ref bean="erpCatalogoGestor"/></property>
+	</bean>
+	
+	<!-- Servicio clientes -->
+	<bean id="erpClientesServicio" class="ec.com.erp.clientes.servicios.ClientesServicio">
+		<property name="clientesGestor"><ref bean="erpClientesGestor"/></property>
+	</bean>
+	
+	<!-- Servicio transportista -->
+	<bean id="erpTransportistaServicio" class="ec.com.erp.transportistas.servicios.TransportistasServicio">
+		<property name="transportistasGestor"><ref bean="erpTransportistasGestor"/></property>
+	</bean>
+	
+	<!-- Servicio chofer -->
+	<bean id="erpChoferServicio" class="ec.com.erp.chofer.servicios.ChoferServicio">
+		<property name="choferGestor"><ref bean="erpChoferGestor"/></property>
+	</bean>
+	
+	<!-- Servicio vehiculo -->
+	<bean id="erpVehiculoServicio" class="ec.com.erp.vehiculo.servicios.VehiculoServicio">
+		<property name="vehiculoGestor"><ref bean="erpVehiculoGestor"/></property>
+	</bean>
+	
+	<!-- Servicio compania -->
+    <bean id="erpCompaniaServicio" class="ec.com.erp.compania.servicios.CompaniaServicio">
+       <property name="companiaGestor"><ref bean="erpCompaniaGestor"/></property>
+    </bean>
+    
+    <!-- Servicio Contacto -->
+    <bean id="erpContactoServicio" class="ec.com.erp.contacto.servicios.ContactoServicio">
+        <property name="contactoGestor"><ref bean="erpContactoGestor"/></property>
+    </bean>
+    
+    <!-- Servicio Empresa -->
+    <bean id="erpEmpresaServicio" class="ec.com.erp.empresa.servicios.EmpresaServicio">
+        <property name="empresaGestor"><ref bean="erpEmpresaGestor"/></property>
+    </bean>
+    
+    <!-- Servicio detalle pedido -->
+    <bean id="erpDetallePedidoServicio" class="ec.com.erp.pedidos.servicios.DetallePedidoServicio">
+       <property name="detallePedidoGestor"><ref bean="erpDetallePedidoGestor"/></property>
+    </bean>
+    
+    <!-- Servicio estado pedido -->
+    <bean id="erpEstadoPedidoServicio" class="ec.com.erp.pedidos.servicios.EstadoPedidoServicio">
+        <property name="estadoPedidoGestor"><ref bean="erpEstadoPedidoGestor"/></property>
+    </bean>
+    
+    <!-- Servicio pedidos -->
+    <bean id="erpPedidoServicio" class="ec.com.erp.pedidos.servicios.PedidoServicio">
+        <property name="pedidoGestor"><ref bean="erpPedidoGestor"/></property>
+    </bean>
+    
+    <!-- Servicio perfiles -->
+    <bean id="erpPerfilesServicio" class="ec.com.erp.perfiles.servicios.PerfilesServicio">
+        <property name="perfilesGestor"><ref bean="erpPerfilesGestor"/></property>
+    </bean>
+    
+    <!-- Servicio persona -->
+    <bean id="erpPersonaServicio" class="ec.com.erp.persona.servicios.PersonaServicio">
+        <property name="personaGestor"><ref bean="erpPersonaGestor"/></property>
+    </bean>
+    
+    <!-- Servicio secuencia -->
+    <bean id="erpSecuenciaServicio" class="ec.com.erp.secuencia.servicios.SecuenciaServicio">
+        <property name="secuenciaGestor"><ref bean="erpSecuenciaGestor"/></property>
+    </bean>
+</beans>

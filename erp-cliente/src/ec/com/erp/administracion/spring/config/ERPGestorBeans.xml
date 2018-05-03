@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd" default-lazy-init="true">
+
+	<!-- Gestores -->
+	
+	<!-- Gestor usuarios -->
+	<bean id="erpUsuariosGestor" class="ec.com.erp.usuarios.gestor.UsuariosGestor">
+		<property name="usuariosDAO"><ref bean="erpUsuariosDAO"/></property>
+	</bean>
+	
+	<!-- Gestor articulos -->
+	<bean id="erpArticuloGestor" class="ec.com.erp.articulo.gestor.ArticuloGestor">
+		<property name="articuloDAO"><ref bean="erpArticuloDAO"/></property>
+	</bean>
+	
+	<!-- Gestor catalogos -->
+	<bean id="erpCatalogoGestor" class="ec.com.erp.catalogo.gestor.CatalogoGestor">
+		<property name="catalogoDAO"><ref bean="erpCatalogoDAO"/></property>
+	</bean>
+	
+	<!-- Gestor clientes -->
+	<bean id="erpClientesGestor" class="ec.com.erp.clientes.gestor.ClientesGestor">
+		<property name="clientesDAO"><ref bean="erpClientesDAO"/></property>
+		<property name="personaGestor"><ref bean="erpPersonaGestor"/></property>
+		<property name="empresaGestor"><ref bean="erpEmpresaGestor"/></property>
+		<property name="contactoGestor"><ref bean="erpContactoGestor"/></property>
+		<property name="usuariosGestor"><ref bean="erpUsuariosGestor"/></property>
+	</bean>
+	
+	<!-- Gestor transportistas -->
+	<bean id="erpTransportistasGestor" class="ec.com.erp.transportistas.gestor.TransportistasGestor">
+		<property name="transportistasDAO"><ref bean="erpTransportistasDAO"/></property>
+		<property name="personaGestor"><ref bean="erpPersonaGestor"/></property>
+		<property name="empresaGestor"><ref bean="erpEmpresaGestor"/></property>
+		<property name="contactoGestor"><ref bean="erpContactoGestor"/></property>
+	</bean>
+	
+	<!-- Gestor chofer -->
+	<bean id="erpChoferGestor" class="ec.com.erp.chofer.gestor.ChoferGestor">
+		<property name="choferDAO"><ref bean="erpChoferDAO"/></property>
+		<property name="personaGestor"><ref bean="erpPersonaGestor"/></property>
+		<property name="contactoGestor"><ref bean="erpContactoGestor"/></property>
+	</bean>
+	
+	<!-- Gestor vehiculo -->
+	<bean id="erpVehiculoGestor" class="ec.com.erp.vehiculo.gestor.VehiculoGestor">
+		<property name="vehiculoDAO"><ref bean="erpVehiculoDAO"/></property>
+		<property name="vehiculoChoferGestor"><ref bean="erpVehiculoChoferGestor"/></property>
+	</bean>
+	
+	<!-- Gestor vehiculoChofer -->
+	<bean id="erpVehiculoChoferGestor" class="ec.com.erp.vehiculo.chofer.gestor.VehiculoChoferGestor">
+		<property name="vehiculoChoferDAO"><ref bean="erpVehiculoChoferDAO"/></property>
+	</bean>
+	
+	<!-- Inyeccion bean  CompaniaGestor -->
+    <bean id="erpCompaniaGestor" class="ec.com.erp.compania.gestor.CompaniaGestor">
+       <property name="companiaDAO"><ref bean="erpCompaniaDao"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  ContactoGestor -->
+    <bean id="erpContactoGestor" class="ec.com.erp.contacto.gestor.ContactoGestor">
+        <property name="contactoDAO"><ref bean="erpContactoDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  EmpresaGestor -->
+    <bean id="erpEmpresaGestor" class="ec.com.erp.empresa.gestor.EmpresaGestor">
+        <property name="empresaDAO"><ref bean="erpEmpresaDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  DetallePedidoGestor -->
+    <bean id="erpDetallePedidoGestor" class="ec.com.erp.pedidos.gestor.DetallePedidoGestor">
+        <property name="detallePedidoDAO"><ref bean="erpDetallePedidoDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  EstadoPedidoGestor -->
+    <bean id="erpEstadoPedidoGestor" class="ec.com.erp.pedidos.gestor.EstadoPedidoGestor">
+        <property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  PedidoGestor -->
+    <bean id="erpPedidoGestor" class="ec.com.erp.pedidos.gestor.PedidoGestor">
+        <property name="pedidoDAO"><ref bean="erpPedidoDAO"/></property>
+        <property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>
+        <property name="detallePedidoDAO"><ref bean="erpDetallePedidoDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  perfilesGestor -->
+    <bean id="erpPerfilesGestor" class="ec.com.erp.perfiles.gestor.PerfilesGestor">
+        <property name="perfilesDAO"><ref bean="erpPerfilesDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  PersonaGestor -->
+    <bean id="erpPersonaGestor" class="ec.com.erp.persona.gestor.PersonaGestor">
+        <property name="personaDAO"><ref bean="erpPersonaDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  SecuenciaGestor -->
+    <bean id="erpSecuenciaGestor" class="ec.com.erp.secuencia.gestor.SecuenciaGestor">
+        <property name="secuenciaDAO"><ref bean="erpSecuenciaDAO"/></property>
+    </bean>
+</beans>

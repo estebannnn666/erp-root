@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd">
+
+	<!-- Entidades-->
+	<entity class="ec.com.erp.cliente.mdl.dto.UsuariosDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ArticuloDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.SecuenciaDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.CatalogoValorDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.CompaniaDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.PerfilDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.PersonaDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.EmpresaDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ContactoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ClienteDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.PedidoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.EstadoPedidoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.DetallePedidoDTO"></entity>	
+	<entity class="ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.TransportistaDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.VehiculoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ChoferDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.VehiculoChoferDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO"></entity>
+	
+</entity-mappings>

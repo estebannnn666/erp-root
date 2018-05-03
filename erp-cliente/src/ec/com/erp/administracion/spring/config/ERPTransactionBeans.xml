@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	<!-- Procedimiento para el tratamiento de transacciones del proyecto -->
+	<tx:advice id="txAdvice" transaction-manager="erpTransactionManager">
+		<tx:attributes>
+			<!-- Las busquedas hacen acceso a la base con transacciones en modo lectura -->
+			<tx:method name="obtener*" read-only="true" rollback-for="Throwable"/>
+			<tx:method name="find*" read-only="true" rollback-for="Throwable"/>
+			<tx:method name="buscar*" read-only="true" rollback-for="Throwable"/>
+			<tx:method name="consultar*" read-only="true" rollback-for="Throwable"/>
+			<tx:method name="proces*" read-only="true" rollback-for="Throwable"/>
+			<tx:method name="elastic*" propagation="NOT_SUPPORTED" />
+			<!-- Todos los demas metodos son transaccionales en modo lectura/escritura -->
+			<tx:method name="trans*" rollback-for="Throwable"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<!-- Se intercepta todos los metodos de la capa de servicio del corporativo excepto los métodos de los servicios que tengan la anotación NoTransaction -->
+		<aop:pointcut  id="pointcutUsuariosServiceMethods" expression="within(ec.com.erp.usuarios.servicios..*)"/>
+		<aop:pointcut  id="pointcutArticuloServiceMethods" expression="within(ec.com.erp.articulo.servicios..*)"/>
+		<aop:pointcut  id="pointcutCatalogoServiceMethods" expression="within(ec.com.erp.catalogo.servicios..*)"/>
+		<aop:pointcut  id="pointcutClientesServiceMethods" expression="within(ec.com.erp.clientes.servicios..*)"/>
+		<aop:pointcut  id="pointcutPedidosServiceMethods" expression="within(ec.com.erp.pedidos.servicios..*)"/>		
+		<aop:pointcut  id="pointcutTransportistaServiceMethods" expression="within(ec.com.erp.transportistas.servicios..*)"/>
+		<aop:pointcut  id="pointcutChoferesServiceMethods" expression="within(ec.com.erp.chofer.servicios..*)"/>
+		<aop:pointcut  id="pointcutVehiculosServiceMethods" expression="within(ec.com.erp.vehiculo.servicios..*)"/>
+		
+		<!-- negocios vinculantes -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutUsuariosServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutArticuloServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutCatalogoServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutClientesServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutPedidosServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutTransportistaServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutChoferesServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutVehiculosServiceMethods"/>
+	</aop:config>
+</beans>
