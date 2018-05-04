@@ -17,6 +17,7 @@ public class ERPFactoryConstantes {
 	public final static String TRANSPORTISTA_SERVICE = "erpTransportistaServicio";
 	public final static String CHOFER_SERVICE = "erpChoferServicio";
 	public final static String VEHICULO_SERVICE = "erpVehiculoServicio";
+	public final static String DESPACHO_SERVICE = "erpGuiaDespachoServicio";
 	public final static String COMPANIA_SERVICE = "erpCompaniaServicio";
 	public final static String CONTACTO_SERVICE = "erpContactoServicio";
 	public final static String EMPRESA_SERVICE = "erpEmpresaServicio";

@@ -42,6 +42,11 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
 		<property name="vehiculoGestor"><ref bean="erpVehiculoGestor"/></property>
 	</bean>
 	
+	<!-- Servicio despachos -->
+	<bean id="erpGuiaDespachoServicio" class="ec.com.erp.guiadespacho.servicios.GuiaDespachoServicio">
+		<property name="guiaDespachoGestor"><ref bean="erpGuiaDespachoGestor"/></property>
+	</bean>
+	
 	<!-- Servicio compania -->
     <bean id="erpCompaniaServicio" class="ec.com.erp.compania.servicios.CompaniaServicio">
        <property name="companiaGestor"><ref bean="erpCompaniaGestor"/></property>

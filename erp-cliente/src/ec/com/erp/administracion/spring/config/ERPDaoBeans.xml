@@ -56,6 +56,24 @@
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
+    <!-- Inyeccion bean  GuiaDespachoDAO -->
+    <bean id="erpGuiaDespachoDAO" class="ec.com.erp.guiadespacho.dao.GuiaDespachoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  GuiaDespachoPedidoDAO -->
+    <bean id="erpGuiaDespachoPedidoDAO" class="ec.com.erp.guiadespacho.dao.GuiaDespachoPedidoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  GuiaDespachoExtrasDAO -->
+    <bean id="erpGuiaDespachoExtrasDAO" class="ec.com.erp.guiadespacho.dao.GuiaDespachoExtrasDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
     <!-- Inyeccion bean  CompaniaDAO -->
     <bean id="erpCompaniaDAO" class="ec.com.erp.compania.dao.CompaniaDAO">
         <property name="sessionFactory" ref="sessionFactory"/>

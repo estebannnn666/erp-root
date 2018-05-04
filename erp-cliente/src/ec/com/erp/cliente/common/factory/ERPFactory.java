@@ -27,6 +27,7 @@ public class ERPFactory {
 	public static final TransportistaFactory transportista = new TransportistaFactory(APP_CTX);
 	public static final ChoferFactory chofer = new ChoferFactory(APP_CTX);
 	public static final VehiculoFactory vehiculo = new VehiculoFactory(APP_CTX);
+	public static final DespachoFactory despacho = new DespachoFactory(APP_CTX);
 	
 	private static ApplicationContext activateFactory(){
 		try{
