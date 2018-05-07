@@ -31,6 +31,8 @@
 		<aop:pointcut  id="pointcutTransportistaServiceMethods" expression="within(ec.com.erp.transportistas.servicios..*)"/>
 		<aop:pointcut  id="pointcutChoferesServiceMethods" expression="within(ec.com.erp.chofer.servicios..*)"/>
 		<aop:pointcut  id="pointcutVehiculosServiceMethods" expression="within(ec.com.erp.vehiculo.servicios..*)"/>
+		<aop:pointcut  id="pointcutGuiasServiceMethods" expression="within(ec.com.erp.guiadespacho.servicios..*)"/>
+		<aop:pointcut  id="pointcutFacturasServiceMethods" expression="within(ec.com.erp.factura.servicios..*)"/>
 		
 		<!-- negocios vinculantes -->
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutUsuariosServiceMethods"/>
@@ -41,5 +43,7 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutTransportistaServiceMethods"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutChoferesServiceMethods"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutVehiculosServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutGuiasServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutFacturasServiceMethods"/>
 	</aop:config>
 </beans>

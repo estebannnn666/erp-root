@@ -1,6 +1,7 @@
 package ec.com.erp.cliente.mdl.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 
@@ -8,6 +9,9 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -78,6 +82,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	private Boolean pagado ;
 	
 	/**
+	 * Especifica el total de la compra
+	 */
+	@Column(name = "TOTALCUENTA")
+	private BigDecimal totalCuenta ;
+	
+	/**
 	 * Especifica el tipo de documento venta y compra
 	 */
 	@Column(name = "CODIGOTIPODOCUMENTO")
@@ -112,8 +122,17 @@ public class FacturaCabeceraDTO implements Serializable{
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "facturaCabeceraDTO")
 	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
-	private Collection<FacturaDetalleDTO> dacturaDetalleDTOCols;
+	private Collection<FacturaDetalleDTO> facturaDetalleDTOCols;
 	
+	/**
+	 * Referencia CatalogoValorDTO tipo de documento
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOVALORTIPODOCUMENTO", referencedColumnName = "CODIGOCATALOGOVALOR", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOTIPODOCUMENTO", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
+	})
+	private CatalogoValorDTO tipoDocumentoCatalogoValorDTO;
 	
 	public FacturaCabeceraID getId() {
 		return id;
@@ -243,11 +262,27 @@ public class FacturaCabeceraDTO implements Serializable{
 		this.fechaModificacion = fechaModificacion;
 	}
 
-	public Collection<FacturaDetalleDTO> getDacturaDetalleDTOCols() {
-		return dacturaDetalleDTOCols;
+	public Collection<FacturaDetalleDTO> getFacturaDetalleDTOCols() {
+		return facturaDetalleDTOCols;
 	}
 
-	public void setDacturaDetalleDTOCols(Collection<FacturaDetalleDTO> dacturaDetalleDTOCols) {
-		this.dacturaDetalleDTOCols = dacturaDetalleDTOCols;
+	public void setFacturaDetalleDTOCols(Collection<FacturaDetalleDTO> facturaDetalleDTOCols) {
+		this.facturaDetalleDTOCols = facturaDetalleDTOCols;
+	}
+
+	public CatalogoValorDTO getTipoDocumentoCatalogoValorDTO() {
+		return tipoDocumentoCatalogoValorDTO;
+	}
+
+	public void setTipoDocumentoCatalogoValorDTO(CatalogoValorDTO tipoDocumentoCatalogoValorDTO) {
+		this.tipoDocumentoCatalogoValorDTO = tipoDocumentoCatalogoValorDTO;
+	}
+
+	public BigDecimal getTotalCuenta() {
+		return totalCuenta;
+	}
+
+	public void setTotalCuenta(BigDecimal totalCuenta) {
+		this.totalCuenta = totalCuenta;
 	}
 }

@@ -122,4 +122,15 @@
     <bean id="erpSecuenciaGestor" class="ec.com.erp.secuencia.gestor.SecuenciaGestor">
         <property name="secuenciaDAO"><ref bean="erpSecuenciaDAO"/></property>
     </bean>
+    
+    <!-- Gestor facturaCabecera -->
+	<bean id="erpFacturaCabeceraGestor" class="ec.com.erp.factura.gestor.FacturaCabeceraGestor">
+		<property name="facturaCabeceraDAO"><ref bean="erpFacturaCabeceraDAO"/></property>
+		<property name="facturaDetalleGestor"><ref bean="erpFacturaDetalleGestor"/></property>
+	</bean>
+	
+	<!-- Gestor facturaDetalle -->
+	<bean id="erpFacturaDetalleGestor" class="ec.com.erp.factura.gestor.FacturaDetalleGestor">
+		<property name="facturaDetalleDAO"><ref bean="erpFacturaDetalleDAO"/></property>
+	</bean>
 </beans>

@@ -27,4 +27,5 @@ public class ERPFactoryConstantes {
 	public final static String PERFILES_SERVICE = "erpPerfilesServicio";
 	public final static String PERSONAS_SERVICE = "erpPersonaServicio";
 	public final static String SECUENCIAS_SERVICE = "erpSecuenciaServicio";
+	public final static String FACTURAS_SERVICE = "erpFacturaCabeceraServicio";
 }

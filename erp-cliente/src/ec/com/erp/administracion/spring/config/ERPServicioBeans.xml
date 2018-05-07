@@ -91,4 +91,9 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
     <bean id="erpSecuenciaServicio" class="ec.com.erp.secuencia.servicios.SecuenciaServicio">
         <property name="secuenciaGestor"><ref bean="erpSecuenciaGestor"/></property>
     </bean>
+    
+    <!-- Servicio facturas -->
+	<bean id="erpFacturaCabeceraServicio" class="ec.com.erp.factura.servicios.FacturaCabeceraServicio">
+		<property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
+	</bean>
 </beans>
