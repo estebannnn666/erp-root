@@ -117,7 +117,15 @@ public class ChoferDAO implements IChoferDAO {
 			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "personaDTO_id_codigoCompania");
 			projectionList.add(Projections.property("personaDTO.id.codigoPersona"), "personaDTO_id_codigoPersona");
 			projectionList.add(Projections.property("personaDTO.numeroDocumento"), "personaDTO_numeroDocumento");
+			projectionList.add(Projections.property("personaDTO.primerApellido"), "personaDTO_primerApellido");
+			projectionList.add(Projections.property("personaDTO.segundoApellido"), "personaDTO_segundoApellido");
+			projectionList.add(Projections.property("personaDTO.primerNombre"), "personaDTO_primerNombre");
+			projectionList.add(Projections.property("personaDTO.segundoNombre"), "personaDTO_segundoNombre");
 			projectionList.add(Projections.property("personaDTO.nombreCompleto"), "personaDTO_nombreCompleto");
+			projectionList.add(Projections.property("personaDTO.fechaNacimiento"), "personaDTO_fechaNacimiento");
+			projectionList.add(Projections.property("personaDTO.estado"), "personaDTO_estado");
+			projectionList.add(Projections.property("personaDTO.usuarioRegistro"), "personaDTO_usuarioRegistro");
+			projectionList.add(Projections.property("personaDTO.fechaRegistro"), "personaDTO_fechaRegistro");
 			
 			// Proyecciones entidad contacto persona del chofer
 			projectionList.add(Projections.property("contactoPersonaDTO.direccionPrincipal"), "personaDTO_contactoPersonaDTO_direccionPrincipal");
@@ -126,7 +134,7 @@ public class ChoferDAO implements IChoferDAO {
 			
 			// Proyecciones entidad transportista
 			projectionList.add(Projections.property("transportistaDTO.id.codigoCompania"), "transportistaDTO_id_codigoCompania");
-			projectionList.add(Projections.property("transportistaDTO.id.codigoCliente"), "transportistaDTO_id_codigoCliente");
+			projectionList.add(Projections.property("transportistaDTO.id.codigoTransportista"), "transportistaDTO_id_codigoTransportista");
 			projectionList.add(Projections.property("transportistaDTO.codigoPersona"), "transportistaDTO_codigoPersona");
 			projectionList.add(Projections.property("transportistaDTO.codigoEmpresa"), "transportistaDTO_codigoEmpresa");
 			projectionList.add(Projections.property("transportistaDTO.codigoValorTipoTransportista"), "transportistaDTO_codigoValorTipoTransportista");
@@ -155,7 +163,7 @@ public class ChoferDAO implements IChoferDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de transportistas.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de choferes.").initCause(e);
 		} 
 	}
 	

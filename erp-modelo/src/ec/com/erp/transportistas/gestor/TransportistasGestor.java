@@ -2,6 +2,8 @@ package ec.com.erp.transportistas.gestor;
 
 import java.util.Collection;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ContactoDTO;
@@ -52,6 +54,43 @@ public class TransportistasGestor implements ITransportistasGestor{
 		this.contactoGestor = contactoGestor;
 	}
 
+	/**
+	 * Obtener transportista por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param codigoValorTipoTransportista
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public TransportistaDTO obtenerTransportista(Integer codigoCompania, String numeroDocumento, String codigoValorTipoTransportista) throws ERPException{
+		Collection<TransportistaDTO> transportistaDTOCols =  this.transportistasDAO.obtenerListaTransportistas(codigoCompania, numeroDocumento, null);
+		TransportistaDTO transportistaDTO = new TransportistaDTO();
+		transportistaDTO.setCodigoValorTipoTransportista(codigoValorTipoTransportista);
+		if(CollectionUtils.isEmpty(transportistaDTOCols)) {
+			if(codigoValorTipoTransportista.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_PERSONA)) {
+				Collection<PersonaDTO> personaDTOCols = this.personaGestor.obtenerListaPersona(codigoCompania, numeroDocumento);
+				if(CollectionUtils.isNotEmpty(personaDTOCols)) {
+					transportistaDTO.setPersonaDTO(personaDTOCols.iterator().next());
+				}
+			}else if(codigoValorTipoTransportista.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_EMPRESA)) {
+				EmpresaDTO empresaDTO = this.empresaGestor.obtenerEmpresaByCodigo(codigoCompania, numeroDocumento);
+				if(empresaDTO != null) {
+					transportistaDTO.setEmpresaDTO(empresaDTO);
+				}
+			}
+			// Validar que exista empresa o persona para controlar el mensaje a mostrar
+			if(transportistaDTO.getPersonaDTO() == null && transportistaDTO.getEmpresaDTO() == null) {
+				transportistaDTO = null;
+			}
+		}
+		else
+		{
+			transportistaDTO = transportistaDTOCols.iterator().next();
+		}
+		return transportistaDTO;
+	}
+	
 	/**
 	 * M\u00e9todo para obtener lista de transportista
 	 * @param codigoCompania
@@ -133,6 +172,7 @@ public class TransportistasGestor implements ITransportistasGestor{
 			
 			//Creamos o actualizamos el cliente
 			transportistaDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			transportistaDTO.setCodigoTipoTransportista(ERPConstantes.CODIGO_CATALOGO_TIPOS_CLIENTES);
 			transportistaDTO.setEmpresaDTO(null);
 			transportistaDTO.setPersonaDTO(null);
 			this.transportistasDAO.guardarActualizarTransportista(transportistaDTO);

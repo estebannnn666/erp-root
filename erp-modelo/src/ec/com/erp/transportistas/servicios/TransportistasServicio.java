@@ -20,6 +20,19 @@ public class TransportistasServicio implements ITransportistasServicio{
 	}
 
 	/**
+	 * Obtener transportista por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param codigoValorTipoTransportista
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public TransportistaDTO findObtenerTransportista(Integer codigoCompania, String numeroDocumento, String codigoValorTipoTransportista) throws ERPException{
+		return this.transportistasGestor.obtenerTransportista(codigoCompania, numeroDocumento, codigoValorTipoTransportista);
+	}
+	
+	/**
 	 * M\u00e9todo para obtener lista de transportista
 	 * @param codigoCompania
 	 * @return Collection<TransportistaDTO>

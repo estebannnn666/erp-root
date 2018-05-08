@@ -19,13 +19,13 @@ public class EmpresaGestor implements IEmpresaGestor{
 	/**
 	 * M\u00E9todo para obtener la empresa por codigo
 	 * @param codigoCompania
-	 * @param codigoEmpresa
+	 * @param numeroRuc
 	 * @return
 	 * @throws ERPException
 	 */
 	@Override
-	public EmpresaDTO obtenerEmpresaByCodigo(Integer codigoCompania, Long codigoEmpresa) throws ERPException{
-		return this.empresaDAO.obtenerEmpresaByCodigo(codigoCompania, codigoEmpresa);
+	public EmpresaDTO obtenerEmpresaByCodigo(Integer codigoCompania, String numeroRuc) throws ERPException{
+		return this.empresaDAO.obtenerEmpresaByCodigo(codigoCompania, numeroRuc);
 	}
 	
 	/**

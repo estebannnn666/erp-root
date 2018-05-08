@@ -16,10 +16,11 @@ public interface IPersonaDAO {
 	/**
 	 * M\u00e9todo para obtener lista de personas
 	 * @param codigoCompania
+	 * @param numeroDocumento
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<PersonaDTO> obtenerListaPersona(Integer codigoCompania) throws ERPException;
+	Collection<PersonaDTO> obtenerListaPersona(Integer codigoCompania, String numeroDocumento) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para crear o actualizar personas

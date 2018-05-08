@@ -10,6 +10,7 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -62,22 +63,26 @@ public class PersonaDAO implements IPersonaDAO {
 	/**
 	 * M\u00e9todo para obtener lista de personas
 	 * @param codigoCompania
+	 * @param numeroDocumento
 	 * @return
 	 * @throws ERPException
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<PersonaDTO> obtenerListaPersona(Integer codigoCompania) throws ERPException{
+	public Collection<PersonaDTO> obtenerListaPersona(Integer codigoCompania, String numeroDocumento) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
 
 			//joins
 			Criteria criteria  = session.createCriteria(PersonaDTO.class, "root");
-
+			criteria.createAlias("root.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("root.numeroDocumento", numeroDocumento));
+			criteria.add(Restrictions.eq("contactoPersonaDTO.codigoValarTipoContacto", ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CONTACTO_PRINCIPAL));
+			criteria.add(Restrictions.eq("contactoPersonaDTO.codigoTipoContacto", ERPConstantes.CODIGO_CATALOGO_TIPOS_CONTACTOS));
 
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();
@@ -94,6 +99,25 @@ public class PersonaDAO implements IPersonaDAO {
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
+			// Proyecciones entidad contacto persona 
+			projectionList.add(Projections.property("contactoPersonaDTO.id.codigoCompania"), "contactoPersonaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("contactoPersonaDTO.id.codigoContacto"), "contactoPersonaDTO_id_codigoContacto");			
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoPersona"), "contactoPersonaDTO_codigoPersona");
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoEmpresa"), "contactoPersonaDTO_codigoEmpresa");
+			projectionList.add(Projections.property("contactoPersonaDTO.direccionPrincipal"), "contactoPersonaDTO_direccionPrincipal");			
+			projectionList.add(Projections.property("contactoPersonaDTO.callePrincipal"), "contactoPersonaDTO_callePrincipal");			
+			projectionList.add(Projections.property("contactoPersonaDTO.calleSecundaria"), "contactoPersonaDTO_calleSecundaria");			
+			projectionList.add(Projections.property("contactoPersonaDTO.numeroCasa"), "contactoPersonaDTO_numeroCasa");
+			projectionList.add(Projections.property("contactoPersonaDTO.referencia"), "contactoPersonaDTO_referencia");
+			projectionList.add(Projections.property("contactoPersonaDTO.ciudad"), "contactoPersonaDTO_ciudad");			
+			projectionList.add(Projections.property("contactoPersonaDTO.telefonoPrincipal"), "contactoPersonaDTO_telefonoPrincipal");
+			projectionList.add(Projections.property("contactoPersonaDTO.telefonoCelular"), "contactoPersonaDTO_telefonoCelular");			
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoValarTipoContacto"), "contactoPersonaDTO_codigoValarTipoContacto");
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoContacto"), "contactoPersonaDTO_codigoTipoContacto");			
+			projectionList.add(Projections.property("contactoPersonaDTO.estado"), "contactoPersonaDTO_estado");
+			projectionList.add(Projections.property("contactoPersonaDTO.usuarioRegistro"), "contactoPersonaDTO_usuarioRegistro");
+			projectionList.add(Projections.property("contactoPersonaDTO.fechaRegistro"), "contactoPersonaDTO_fechaRegistro");
+						
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(PersonaDTO.class));
 			Collection<PersonaDTO> personaDTOCols = new  ArrayList<PersonaDTO>();

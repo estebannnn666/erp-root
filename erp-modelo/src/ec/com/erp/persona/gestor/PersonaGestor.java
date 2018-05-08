@@ -21,12 +21,13 @@ public class PersonaGestor implements IPersonaGestor{
 	/**
 	 * M\u00e9todo para obtener lista de personas
 	 * @param codigoCompania
+	 * @param numeroDocumento
 	 * @return
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<PersonaDTO> obtenerListaPersona(Integer codigoCompania) throws ERPException{
-		return this.personaDAO.obtenerListaPersona(codigoCompania);
+	public Collection<PersonaDTO> obtenerListaPersona(Integer codigoCompania, String numeroDocumento) throws ERPException{
+		return this.personaDAO.obtenerListaPersona(codigoCompania, numeroDocumento);
 	}
 	
 	/**

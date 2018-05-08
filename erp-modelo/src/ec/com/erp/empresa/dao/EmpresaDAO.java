@@ -8,6 +8,7 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -61,25 +62,26 @@ public class EmpresaDAO implements IEmpresaDAO {
 	/**
 	 * M\u00E9todo para obtener la empresa por codigo
 	 * @param codigoCompania
-	 * @param codigoEmpresa
+	 * @param numeroRuc
 	 * @return
 	 * @throws ERPException
 	 */
 	@Override
-	public EmpresaDTO obtenerEmpresaByCodigo(Integer codigoCompania, Long codigoEmpresa) throws ERPException{
+	public EmpresaDTO obtenerEmpresaByCodigo(Integer codigoCompania, String numeroRuc) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
 
 			//joins
 			Criteria criteria  = session.createCriteria(EmpresaDTO.class, "root");
- 
+			criteria.createAlias("root.contactoDTOCols", "contactoEmpresaDTO", CriteriaSpecification.LEFT_JOIN);
+			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
-			criteria.add(Restrictions.eq("root.id.codigoEmpresa", codigoEmpresa));
+			criteria.add(Restrictions.eq("root.numeroRuc", numeroRuc));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 
-			//proyecciones entidad negociacion proveedor
+			//proyecciones entidad empresa
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoEmpresa"), "id_codigoEmpresa");
@@ -90,6 +92,25 @@ public class EmpresaDAO implements IEmpresaDAO {
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
+			// Proyecciones entidad contacto empresa 
+			projectionList.add(Projections.property("contactoEmpresaDTO.id.codigoCompania"), "contactoEmpresaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("contactoEmpresaDTO.id.codigoContacto"), "contactoEmpresaDTO_id_codigoContacto");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoPersona"), "contactoEmpresaDTO_codigoPersona");
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoEmpresa"), "contactoEmpresaDTO_codigoEmpresa");
+			projectionList.add(Projections.property("contactoEmpresaDTO.direccionPrincipal"), "contactoEmpresaDTO_direccionPrincipal");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.callePrincipal"), "contactoEmpresaDTO_callePrincipal");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.calleSecundaria"), "contactoEmpresaDTO_calleSecundaria");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.numeroCasa"), "contactoEmpresaDTO_numeroCasa");
+			projectionList.add(Projections.property("contactoEmpresaDTO.referencia"), "contactoEmpresaDTO_referencia");
+			projectionList.add(Projections.property("contactoEmpresaDTO.ciudad"), "contactoEmpresaDTO_ciudad");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.telefonoPrincipal"), "contactoEmpresaDTO_telefonoPrincipal");
+			projectionList.add(Projections.property("contactoEmpresaDTO.telefonoCelular"), "contactoEmpresaDTO_telefonoCelular");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoValarTipoContacto"), "contactoEmpresaDTO_codigoValarTipoContacto");
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoTipoContacto"), "contactoEmpresaDTO_codigoTipoContacto");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.estado"), "contactoEmpresaDTO_estado");
+			projectionList.add(Projections.property("contactoEmpresaDTO.usuarioRegistro"), "contactoEmpresaDTO_usuarioRegistro");
+			projectionList.add(Projections.property("contactoEmpresaDTO.fechaRegistro"), "contactoEmpresaDTO_fechaRegistro");
+						
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(EmpresaDTO.class));
 			EmpresaDTO empresaDTO = (EmpresaDTO)criteria.uniqueResult();
@@ -99,7 +120,7 @@ public class EmpresaDAO implements IEmpresaDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de empresas por numero de ruc.").initCause(e);
 		} 
 	}
 

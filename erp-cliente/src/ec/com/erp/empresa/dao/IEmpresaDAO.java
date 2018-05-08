@@ -14,11 +14,11 @@ public interface IEmpresaDAO {
 	/**
 	 * M\u00E9todo para obtener la empresa por codigo
 	 * @param codigoCompania
-	 * @param codigoEmpresa
+	 * @param numeroRuc
 	 * @return
 	 * @throws ERPException
 	 */
-	EmpresaDTO obtenerEmpresaByCodigo(Integer codigoCompania, Long codigoEmpresa) throws ERPException;
+	EmpresaDTO obtenerEmpresaByCodigo(Integer codigoCompania, String numeroRuc) throws ERPException;
 	
 	/**
 	 * M\u00E9todo para crear o actualizar empresas

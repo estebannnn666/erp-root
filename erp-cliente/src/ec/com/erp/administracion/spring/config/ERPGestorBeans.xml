@@ -63,7 +63,7 @@
 	<bean id="erpGuiaDespachoGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoGestor">
 		<property name="guiaDespachoDAO"><ref bean="erpGuiaDespachoDAO"/></property>
 		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoPedidoGestor"/></property>
-		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
+		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
 	</bean>
 	
 	<!-- Gestor guiaDespachoPedido -->

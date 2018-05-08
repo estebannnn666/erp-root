@@ -14,10 +14,10 @@ public interface IEmpresaServicio {
 	/**
 	 * M\u00E9todo para obtener la empresa por codigo
 	 * @param codigoCompania
-	 * @param codigoEmpresa
+	 * @param numeroRuc
 	 * @return
 	 * @throws ERPException
 	 */
-	EmpresaDTO findObtenerEmpresaByCodigo(Integer codigoCompania, Long codigoEmpresa) throws ERPException;
+	EmpresaDTO findObtenerEmpresaByCodigo(Integer codigoCompania, String numeroRuc) throws ERPException;
 	
 }

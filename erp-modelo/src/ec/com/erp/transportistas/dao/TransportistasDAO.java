@@ -76,7 +76,7 @@ public class TransportistasDAO implements ITransportistasDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(TransportistaDTO.class, "root");
-			criteria.createAlias("root.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.tipoTransportistaCatalogoValorDTO", "tipoTransportistaCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.empresaDTO", "empresaDTO", CriteriaSpecification.LEFT_JOIN);
@@ -85,18 +85,20 @@ public class TransportistasDAO implements ITransportistasDAO {
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 
-			if(numeroDocumento != null) {
+			if(numeroDocumento != null && numeroDocumento.trim() != "") {
+				numeroDocumento = numeroDocumento.toUpperCase();
 				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", numeroDocumento), Restrictions.eq("empresaDTO.numeroRuc", numeroDocumento)));
 			}
 			
-			if(razonSocial != null) {
+			if(razonSocial != null && razonSocial.trim() != "") {
+				razonSocial = razonSocial.toUpperCase();
 				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.nombreCompleto", razonSocial), Restrictions.eq("empresaDTO.razonSocial", razonSocial)));
 			}
 			
 			// Proyecciones entidad clientes 
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
-			projectionList.add(Projections.property("root.id.codigoCliente"), "id_codigoCliente");
+			projectionList.add(Projections.property("root.id.codigoTransportista"), "id_codigoTransportista");
 			projectionList.add(Projections.property("root.codigoPersona"), "codigoPersona");
 			projectionList.add(Projections.property("root.codigoEmpresa"), "codigoEmpresa");
 			projectionList.add(Projections.property("root.codigoValorTipoTransportista"), "codigoValorTipoTransportista");
@@ -112,23 +114,63 @@ public class TransportistasDAO implements ITransportistasDAO {
 			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "personaDTO_id_codigoCompania");
 			projectionList.add(Projections.property("personaDTO.id.codigoPersona"), "personaDTO_id_codigoPersona");
 			projectionList.add(Projections.property("personaDTO.numeroDocumento"), "personaDTO_numeroDocumento");
+			projectionList.add(Projections.property("personaDTO.primerApellido"), "personaDTO_primerApellido");
+			projectionList.add(Projections.property("personaDTO.segundoApellido"), "personaDTO_segundoApellido");
+			projectionList.add(Projections.property("personaDTO.primerNombre"), "personaDTO_primerNombre");
+			projectionList.add(Projections.property("personaDTO.segundoNombre"), "personaDTO_segundoNombre");
 			projectionList.add(Projections.property("personaDTO.nombreCompleto"), "personaDTO_nombreCompleto");
+			projectionList.add(Projections.property("personaDTO.fechaNacimiento"), "personaDTO_fechaNacimiento");
+			projectionList.add(Projections.property("personaDTO.estado"), "personaDTO_estado");
+			projectionList.add(Projections.property("personaDTO.usuarioRegistro"), "personaDTO_usuarioRegistro");
+			projectionList.add(Projections.property("personaDTO.fechaRegistro"), "personaDTO_fechaRegistro");
 			
 			// Proyecciones entidad contacto persona 
-			projectionList.add(Projections.property("contactoPersonaDTO.direccionPrincipal"), "personaDTO_contactoPersonaDTO_direccionPrincipal");
-			projectionList.add(Projections.property("contactoPersonaDTO.ciudad"), "personaDTO_contactoPersonaDTO_ciudad");
+			projectionList.add(Projections.property("contactoPersonaDTO.id.codigoCompania"), "personaDTO_contactoPersonaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("contactoPersonaDTO.id.codigoContacto"), "personaDTO_contactoPersonaDTO_id_codigoContacto");			
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoPersona"), "personaDTO_contactoPersonaDTO_codigoPersona");
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoEmpresa"), "personaDTO_contactoPersonaDTO_codigoEmpresa");
+			projectionList.add(Projections.property("contactoPersonaDTO.direccionPrincipal"), "personaDTO_contactoPersonaDTO_direccionPrincipal");			
+			projectionList.add(Projections.property("contactoPersonaDTO.callePrincipal"), "personaDTO_contactoPersonaDTO_callePrincipal");			
+			projectionList.add(Projections.property("contactoPersonaDTO.calleSecundaria"), "personaDTO_contactoPersonaDTO_calleSecundaria");			
+			projectionList.add(Projections.property("contactoPersonaDTO.numeroCasa"), "personaDTO_contactoPersonaDTO_numeroCasa");
+			projectionList.add(Projections.property("contactoPersonaDTO.referencia"), "personaDTO_contactoPersonaDTO_referencia");
+			projectionList.add(Projections.property("contactoPersonaDTO.ciudad"), "personaDTO_contactoPersonaDTO_ciudad");			
 			projectionList.add(Projections.property("contactoPersonaDTO.telefonoPrincipal"), "personaDTO_contactoPersonaDTO_telefonoPrincipal");
+			projectionList.add(Projections.property("contactoPersonaDTO.telefonoCelular"), "personaDTO_contactoPersonaDTO_telefonoCelular");			
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoValarTipoContacto"), "personaDTO_contactoPersonaDTO_codigoValarTipoContacto");
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoContacto"), "personaDTO_contactoPersonaDTO_codigoTipoContacto");			
+			projectionList.add(Projections.property("contactoPersonaDTO.estado"), "personaDTO_contactoPersonaDTO_estado");
+			projectionList.add(Projections.property("contactoPersonaDTO.usuarioRegistro"), "personaDTO_contactoPersonaDTO_usuarioRegistro");
+			projectionList.add(Projections.property("contactoPersonaDTO.fechaRegistro"), "personaDTO_contactoPersonaDTO_fechaRegistro");
 			
-			// Proyecciones entidad empresa   
+			//Proyecciones entidad empresa
 			projectionList.add(Projections.property("empresaDTO.id.codigoCompania"), "empresaDTO_id_codigoCompania");
 			projectionList.add(Projections.property("empresaDTO.id.codigoEmpresa"), "empresaDTO_id_codigoEmpresa");
 			projectionList.add(Projections.property("empresaDTO.numeroRuc"), "empresaDTO_numeroRuc");
 			projectionList.add(Projections.property("empresaDTO.razonSocial"), "empresaDTO_razonSocial");
+			projectionList.add(Projections.property("empresaDTO.descripcionEmpresa"), "empresaDTO_descripcionEmpresa");
+			projectionList.add(Projections.property("empresaDTO.estado"), "empresaDTO_estado");
+			projectionList.add(Projections.property("empresaDTO.usuarioRegistro"), "empresaDTO_usuarioRegistro");
+			projectionList.add(Projections.property("empresaDTO.fechaRegistro"), "empresaDTO_fechaRegistro");
 			
-			// Proyecciones entidad contacto empresa
-			projectionList.add(Projections.property("contactoEmpresaDTO.direccionPrincipal"), "empresaDTO_contactoEmpresaDTO_direccionPrincipal");
-			projectionList.add(Projections.property("contactoEmpresaDTO.ciudad"), "empresaDTO_contactoEmpresaDTO_ciudad");
+			// Proyecciones entidad contacto empresa 
+			projectionList.add(Projections.property("contactoEmpresaDTO.id.codigoCompania"), "empresaDTO_contactoEmpresaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("contactoEmpresaDTO.id.codigoContacto"), "empresaDTO_contactoEmpresaDTO_id_codigoContacto");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoPersona"), "empresaDTO_contactoEmpresaDTO_codigoPersona");
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoEmpresa"), "empresaDTO_contactoEmpresaDTO_codigoEmpresa");
+			projectionList.add(Projections.property("contactoEmpresaDTO.direccionPrincipal"), "empresaDTO_contactoEmpresaDTO_direccionPrincipal");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.callePrincipal"), "empresaDTO_contactoEmpresaDTO_callePrincipal");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.calleSecundaria"), "empresaDTO_contactoEmpresaDTO_calleSecundaria");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.numeroCasa"), "empresaDTO_contactoEmpresaDTO_numeroCasa");
+			projectionList.add(Projections.property("contactoEmpresaDTO.referencia"), "empresaDTO_contactoEmpresaDTO_referencia");
+			projectionList.add(Projections.property("contactoEmpresaDTO.ciudad"), "empresaDTO_contactoEmpresaDTO_ciudad");			
 			projectionList.add(Projections.property("contactoEmpresaDTO.telefonoPrincipal"), "empresaDTO_contactoEmpresaDTO_telefonoPrincipal");
+			projectionList.add(Projections.property("contactoEmpresaDTO.telefonoCelular"), "empresaDTO_contactoEmpresaDTO_telefonoCelular");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoValarTipoContacto"), "empresaDTO_contactoEmpresaDTO_codigoValarTipoContacto");
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoTipoContacto"), "empresaDTO_contactoEmpresaDTO_codigoTipoContacto");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.estado"), "empresaDTO_contactoEmpresaDTO_estado");
+			projectionList.add(Projections.property("contactoEmpresaDTO.usuarioRegistro"), "empresaDTO_contactoEmpresaDTO_usuarioRegistro");
+			projectionList.add(Projections.property("contactoEmpresaDTO.fechaRegistro"), "empresaDTO_contactoEmpresaDTO_fechaRegistro");
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(TransportistaDTO.class));
