@@ -105,10 +105,10 @@ public class ClientesGestor implements IClientesGestor{
 				}
 				nombreCompleto += " "+personaDTO.getPrimerNombre();
 				if(personaDTO.getSegundoNombre() != null){
-					personaDTO.setSegundoNombre(personaDTO.getSegundoNombre());
+					personaDTO.setSegundoNombre(personaDTO.getSegundoNombre().toUpperCase());
 					nombreCompleto += " "+personaDTO.getSegundoNombre();
 				}
-				personaDTO.setNombreCompleto(nombreCompleto);
+				personaDTO.setNombreCompleto(nombreCompleto.toUpperCase());
 				personaDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 				personaDTO.setUsuarioRegistro(usuarioDTO.getId().getUserId());
 				this.personaGestor.crearActualizarPersona(personaDTO);

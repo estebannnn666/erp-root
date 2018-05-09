@@ -124,10 +124,10 @@ public class TransportistasGestor implements ITransportistasGestor{
 				}
 				nombreCompleto += " "+personaDTO.getPrimerNombre();
 				if(personaDTO.getSegundoNombre() != null){
-					personaDTO.setSegundoNombre(personaDTO.getSegundoNombre());
+					personaDTO.setSegundoNombre(personaDTO.getSegundoNombre().toUpperCase());
 					nombreCompleto += " "+personaDTO.getSegundoNombre();
 				}
-				personaDTO.setNombreCompleto(nombreCompleto);
+				personaDTO.setNombreCompleto(nombreCompleto.toUpperCase());
 				personaDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 				personaDTO.setUsuarioRegistro(transportistaDTO.getUsuarioRegistro());
 				this.personaGestor.crearActualizarPersona(personaDTO);

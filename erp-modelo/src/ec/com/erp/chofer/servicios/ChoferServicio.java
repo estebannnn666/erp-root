@@ -20,6 +20,18 @@ public class ChoferServicio implements IChoferServicio{
 	}
 
 	/**
+	 * Obtener chofer por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public ChoferDTO findObtenerChoferByDocumento(Integer codigoCompania, String numeroDocumento) throws ERPException{
+		return this.choferGestor.obtenerChoferByDocumento(codigoCompania, numeroDocumento);
+	}
+	
+	/**
 	 * M\u00e9todo para obtener lista de choferes
 	 * @param codigoCompania
 	 * @param numeroDocumento

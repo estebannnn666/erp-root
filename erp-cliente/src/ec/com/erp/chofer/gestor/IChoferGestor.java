@@ -15,6 +15,15 @@ import ec.com.erp.cliente.mdl.dto.ContactoDTO;
 public interface IChoferGestor {
 	
 	/**
+	 * Obtener chofer por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	ChoferDTO obtenerChoferByDocumento(Integer codigoCompania, String numeroDocumento) throws ERPException;
+	
+	/**
 	 * M\u00e9todo para obtener lista de choferes
 	 * @param codigoCompania
 	 * @param numeroDocumento

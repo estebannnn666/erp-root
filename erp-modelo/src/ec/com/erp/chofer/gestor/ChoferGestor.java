@@ -2,6 +2,8 @@ package ec.com.erp.chofer.gestor;
 
 import java.util.Collection;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import ec.com.erp.chofer.dao.IChoferDAO;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
@@ -40,6 +42,34 @@ public class ChoferGestor implements IChoferGestor{
 	public void setContactoGestor(IContactoGestor contactoGestor) {
 		this.contactoGestor = contactoGestor;
 	}
+	
+	/**
+	 * Obtener chofer por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public ChoferDTO obtenerChoferByDocumento(Integer codigoCompania, String numeroDocumento) throws ERPException{
+		Collection<ChoferDTO> choferDTOCols =  this.choferDAO.obtenerListaChoferes(codigoCompania, numeroDocumento, null);
+		ChoferDTO choferDTO = new ChoferDTO();
+		if(CollectionUtils.isEmpty(choferDTOCols)) {
+			Collection<PersonaDTO> personaDTOCols = this.personaGestor.obtenerListaPersona(codigoCompania, numeroDocumento);
+			if(CollectionUtils.isNotEmpty(personaDTOCols)) {
+				choferDTO.setPersonaDTO(personaDTOCols.iterator().next());
+			}
+			// Validar que exista empresa o persona para controlar el mensaje a mostrar
+			if(choferDTO.getPersonaDTO() == null) {
+				choferDTO = null;
+			}
+		}
+		else
+		{
+			choferDTO = choferDTOCols.iterator().next();
+		}
+		return choferDTO;
+	}
 
 	/**
 	 * M\u00e9todo para obtener lista de choferes
@@ -74,10 +104,10 @@ public class ChoferGestor implements IChoferGestor{
 			}
 			nombreCompleto += " "+personaDTO.getPrimerNombre();
 			if(personaDTO.getSegundoNombre() != null){
-				personaDTO.setSegundoNombre(personaDTO.getSegundoNombre());
+				personaDTO.setSegundoNombre(personaDTO.getSegundoNombre().toUpperCase());
 				nombreCompleto += " "+personaDTO.getSegundoNombre();
 			}
-			personaDTO.setNombreCompleto(nombreCompleto);
+			personaDTO.setNombreCompleto(nombreCompleto.toUpperCase());
 			personaDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			personaDTO.setUsuarioRegistro(choferDTO.getUsuarioRegistro());
 			this.personaGestor.crearActualizarPersona(personaDTO);
@@ -109,6 +139,7 @@ public class ChoferGestor implements IChoferGestor{
 			
 			//Creamos o actualizamos el cliente
 			choferDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			choferDTO.setCodigoTipoLicencia(ERPConstantes.CODIGO_CATALOGO_TIPOS_LICENCIAS);
 			choferDTO.setPersonaDTO(null);
 			this.choferDAO.guardarActualizarChofer(choferDTO);
 		}

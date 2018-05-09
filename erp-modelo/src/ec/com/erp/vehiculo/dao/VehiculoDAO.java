@@ -119,7 +119,7 @@ public class VehiculoDAO implements IVehiculoDAO {
 			
 			// Proyecciones entidad transportista
 			projectionList.add(Projections.property("transportistaDTO.id.codigoCompania"), "transportistaDTO_id_codigoCompania");
-			projectionList.add(Projections.property("transportistaDTO.id.codigoCliente"), "transportistaDTO_id_codigoCliente");
+			projectionList.add(Projections.property("transportistaDTO.id.codigoTransportista"), "transportistaDTO_id_codigoTransportista");
 			projectionList.add(Projections.property("transportistaDTO.codigoPersona"), "transportistaDTO_codigoPersona");
 			projectionList.add(Projections.property("transportistaDTO.codigoEmpresa"), "transportistaDTO_codigoEmpresa");
 			projectionList.add(Projections.property("transportistaDTO.codigoValorTipoTransportista"), "transportistaDTO_codigoValorTipoTransportista");
