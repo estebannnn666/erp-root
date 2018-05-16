@@ -82,20 +82,26 @@ public class VehiculoDAO implements IVehiculoDAO {
 			criteria.createAlias("root.transportistaDTO", "transportistaDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("transportistaDTO.personaDTO", "personaDTOTrans", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("transportistaDTO.empresaDTO", "empresaDTOTrans", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("root.vehiculoChoferDTOCols", "vehiculoChoferDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("vehiculoChoferDTOCols.tipoChoferCatalogoValorDTO", "tipoChoferCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("vehiculoChoferDTOCols.choferDTO", "choferDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("choferDTO.personaDTO", "personaDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("choferDTO.tipoLicenciaCatalogoValorDTO", "tipoLicenciaCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			
 			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 
-			if(placa != null) {
+			if(placa != null && placa.trim() != "") {
 				criteria.add(Restrictions.eq("root.placa", placa));
 			}
 			
-			if(documentoTransportista != null) {
+			if(documentoTransportista != null && documentoTransportista.trim() != "") {
 				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", documentoTransportista), Restrictions.eq("empresaDTO.numeroRuc", documentoTransportista)));
 			}
 			
-			if(nombreTransportista != null) {
+			if(nombreTransportista != null && nombreTransportista.trim() != "") {
 				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.nombreCompleto", nombreTransportista), Restrictions.eq("empresaDTO.razonSocial", nombreTransportista)));
 			}
 			
@@ -138,6 +144,36 @@ public class VehiculoDAO implements IVehiculoDAO {
 			projectionList.add(Projections.property("empresaDTOTrans.numeroRuc"), "transportistaDTO_empresaDTO_numeroRuc");
 			projectionList.add(Projections.property("empresaDTOTrans.razonSocial"), "transportistaDTO_empresaDTO_razonSocial");
 			
+			// Proyecciones entidad vehiculo chofer
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.id.codigoCompania"), "vehiculoChoferDTOCols_id_codigoCompania");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.id.codigoVehiculoChofer"), "vehiculoChoferDTOCols_id_codigoVehiculoChofer");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.codigoVehiculo"), "vehiculoChoferDTOCols_codigoVehiculo");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.codigoChofer"), "vehiculoChoferDTOCols_codigoChofer");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.codigoValorTipoChofer"), "vehiculoChoferDTOCols_codigoValorTipoChofer");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.codigoTipoChofer"), "vehiculoChoferDTOCols_codigoTipoChofer");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.descripcion"), "vehiculoChoferDTOCols_descripcion");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.estado"), "vehiculoChoferDTOCols_estado");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.usuarioRegistro"), "vehiculoChoferDTOCols_usuarioRegistro");
+			projectionList.add(Projections.property("vehiculoChoferDTOCols.fechaRegistro"), "vehiculoChoferDTOCols_fechaRegistro");
+			
+			// Proyecciones catalogo tipo chofer
+			projectionList.add(Projections.property("tipoChoferCatalogoValorDTO.nombreCatalogoValor"), "vehiculoChoferDTOCols_tipoChoferCatalogoValorDTO_nombreCatalogoValor");
+			
+			// Proyecciones entidad chofer
+			projectionList.add(Projections.property("choferDTO.id.codigoCompania"), "vehiculoChoferDTOCols_choferDTO_id_codigoCompania");
+			projectionList.add(Projections.property("choferDTO.id.codigoChofer"), "vehiculoChoferDTOCols_choferDTO_id_codigoChofer");
+			projectionList.add(Projections.property("choferDTO.estado"), "vehiculoChoferDTOCols_choferDTO_estado");
+			projectionList.add(Projections.property("choferDTO.usuarioRegistro"), "vehiculoChoferDTOCols_choferDTO_usuarioRegistro");
+			
+			// Proyecciones catalogo tipo licencia
+			projectionList.add(Projections.property("tipoLicenciaCatalogoValorDTO.nombreCatalogoValor"), "vehiculoChoferDTOCols_choferDTO_tipoLicenciaCatalogoValorDTO_nombreCatalogoValor");
+						
+			// Proyecciones entidad persona del chofer
+			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "vehiculoChoferDTOCols_choferDTO_personaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("personaDTO.id.codigoPersona"), "vehiculoChoferDTOCols_choferDTO_personaDTO_id_codigoPersona");
+			projectionList.add(Projections.property("personaDTO.numeroDocumento"), "vehiculoChoferDTOCols_choferDTO_personaDTO_numeroDocumento");
+			projectionList.add(Projections.property("personaDTO.nombreCompleto"), "vehiculoChoferDTOCols_choferDTO_personaDTO_nombreCompleto");
+						
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(VehiculoDTO.class));
 			Collection<VehiculoDTO> vehiculoDTOCols = new  ArrayList<VehiculoDTO>();

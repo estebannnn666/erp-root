@@ -56,13 +56,18 @@ public class VehiculoGestor implements IVehiculoGestor{
 			Collection<VehiculoChoferDTO> vehiculoChoferDTOCols = vehiculoDTO.getVehiculoChoferDTOCols();
 			
 			//Creamos o actualizamos el cliente
-			vehiculoDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			vehiculoDTO.setPlaca(vehiculoDTO.getPlaca().toUpperCase());
+			vehiculoDTO.setMarca(vehiculoDTO.getMarca().toUpperCase());
+			vehiculoDTO.setColor(vehiculoDTO.getColor().toUpperCase());
+			vehiculoDTO.setModelo(vehiculoDTO.getModelo().toUpperCase());
 			vehiculoDTO.setCodigoTipoVehiculo(ERPConstantes.CODIGO_CATALOGO_TIPOS_VEHICULOS);
 			this.vehiculoDAO.guardarActualizarVehiculo(vehiculoDTO);
 			
 			//Creamos o actualizamos los choferes asignados al vehiculo
 			for(VehiculoChoferDTO vehiculoChoferDTO : vehiculoChoferDTOCols) {
 				vehiculoChoferDTO.setCodigoVehiculo(vehiculoDTO.getId().getCodigoVehiculo());
+				vehiculoChoferDTO.getId().setCodigoCompania(vehiculoDTO.getId().getCodigoCompania());
+				vehiculoChoferDTO.setUsuarioRegistro(vehiculoDTO.getUsuarioRegistro());
 				this.vehiculoChoferGestor.guardarActualizarVehiculoChofer(vehiculoChoferDTO);
 			}
 		}
