@@ -17,6 +17,14 @@ public class GuiaDespachoPedidoGestor implements IGuiaDespachoPedidoGestor {
 
 	private IGuiaDespachoPedidoDAO guiaDespachoPedidoDAO;
 
+	public IGuiaDespachoPedidoDAO getGuiaDespachoPedidoDAO() {
+		return guiaDespachoPedidoDAO;
+	}
+
+	public void setGuiaDespachoPedidoDAO(IGuiaDespachoPedidoDAO guiaDespachoPedidoDAO) {
+		this.guiaDespachoPedidoDAO = guiaDespachoPedidoDAO;
+	}
+
 	/**
 	 * M\u00e9todo para obtener lista de pedidos por guia de despacho
 	 * @param codigoCompania

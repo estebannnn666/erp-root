@@ -45,12 +45,13 @@ public class PedidoGestor implements IPedidoGestor{
 	/**
 	 *  M\u00e9todo para obtener lista de pedidos
 	 * @param codigoCompania
+	 * @param estadoPedido
 	 * @return
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania) throws ERPException{
-		return this.pedidoDAO.obtenerPedidosRegistrados(codigoCompania);
+	public Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania, String estadoPedido) throws ERPException{
+		return this.pedidoDAO.obtenerPedidosRegistrados(codigoCompania, estadoPedido);
 	}
 	
 	/**

@@ -59,13 +59,6 @@
 		<property name="vehiculoChoferDAO"><ref bean="erpVehiculoChoferDAO"/></property>
 	</bean>
 	
-	<!-- Gestor guiaDespacho -->
-	<bean id="erpGuiaDespachoGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoGestor">
-		<property name="guiaDespachoDAO"><ref bean="erpGuiaDespachoDAO"/></property>
-		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoPedidoGestor"/></property>
-		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
-	</bean>
-	
 	<!-- Gestor guiaDespachoPedido -->
 	<bean id="erpGuiaDespachoPedidoGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoPedidoGestor">
 		<property name="guiaDespachoPedidoDAO"><ref bean="erpGuiaDespachoPedidoDAO"/></property>
@@ -74,6 +67,13 @@
 	<!-- Gestor guiaDespachoExtras -->
 	<bean id="erpGuiaDespachoExtrasGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoExtrasGestor">
 		<property name="guiaDespachoExtrasDAO"><ref bean="erpGuiaDespachoExtrasDAO"/></property>
+	</bean>
+	
+	<!-- Gestor guiaDespacho -->
+	<bean id="erpGuiaDespachoGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoGestor">
+		<property name="guiaDespachoDAO"><ref bean="erpGuiaDespachoDAO"/></property>
+		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoPedidoGestor"/></property>
+		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
 	</bean>
 	
 	<!-- Inyeccion bean  CompaniaGestor -->

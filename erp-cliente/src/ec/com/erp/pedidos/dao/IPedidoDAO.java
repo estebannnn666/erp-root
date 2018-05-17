@@ -16,10 +16,11 @@ public interface IPedidoDAO {
 	/**
 	 *  M\u00e9todo para obtener lista de pedidos
 	 * @param codigoCompania
+	 * @param estadoPedido
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania) throws ERPException;
+	Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania, String estadoPedido) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para crear o actualizar personas

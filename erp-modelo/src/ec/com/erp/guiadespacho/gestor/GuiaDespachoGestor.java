@@ -80,6 +80,8 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			
 			// Guardar pedidos guia despacho
 			for(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO : guiaDespachoPedidoDTOCols) {
+				guiaDespachoPedidoDTO.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
+				guiaDespachoPedidoDTO.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
 				guiaDespachoPedidoDTO.setCodigoGuiaDespacho(guiaDespachoDTO.getId().getCodigoGuiaDespacho());
 				if(guiaDespachoPedidoDTO.getObservacion() != null) {
 					guiaDespachoPedidoDTO.setObservacion(guiaDespachoPedidoDTO.getObservacion().toUpperCase());
@@ -89,11 +91,18 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			
 			// Guardar pedidos guia despacho
 			for(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO : guiaDespachoExtrasDTOCols) {
-				guiaDespachoExtrasDTO.setCodigoGuiaDespacho(guiaDespachoDTO.getId().getCodigoGuiaDespacho());
-				if(guiaDespachoExtrasDTO.getObservacion() != null) {
-					guiaDespachoExtrasDTO.setObservacion(guiaDespachoExtrasDTO.getObservacion().toUpperCase());
+				if(guiaDespachoExtrasDTO.getDescripcionProducto() != null && guiaDespachoExtrasDTO.getDescripcionProducto().trim() != "" && guiaDespachoExtrasDTO.getCantidad() != null) {
+					guiaDespachoExtrasDTO.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
+					guiaDespachoExtrasDTO.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
+					guiaDespachoExtrasDTO.setCodigoGuiaDespacho(guiaDespachoDTO.getId().getCodigoGuiaDespacho());
+					if(guiaDespachoExtrasDTO.getDescripcionProducto() != null) {
+						guiaDespachoExtrasDTO.setDescripcionProducto(guiaDespachoExtrasDTO.getDescripcionProducto().toUpperCase());
+					}
+					if(guiaDespachoExtrasDTO.getObservacion() != null) {
+						guiaDespachoExtrasDTO.setObservacion(guiaDespachoExtrasDTO.getObservacion().toUpperCase());
+					}
+					this.guiaDespachoExtrasGestor.crearActualizarExtrasGuiaDespacho(guiaDespachoExtrasDTO);
 				}
-				this.guiaDespachoExtrasGestor.crearActualizarExtrasGuiaDespacho(guiaDespachoExtrasDTO);
 			}
 		} catch (ERPException e) {
 			throw new ERPException("Error, ", e.getMessage());

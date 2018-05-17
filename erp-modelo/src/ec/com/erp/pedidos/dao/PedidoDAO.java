@@ -63,12 +63,13 @@ public class PedidoDAO implements IPedidoDAO {
 	/**
 	 *  M\u00e9todo para obtener lista de pedidos
 	 * @param codigoCompania
+	 * @param estadoPedido
 	 * @return
 	 * @throws ERPException
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania) throws ERPException{
+	public Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania, String estadoPedido) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -92,6 +93,10 @@ public class PedidoDAO implements IPedidoDAO {
 			criteria.add(Restrictions.isNull("estadoPedidoDTO.fechaFin"));
 			criteria.add(Restrictions.eq("estadoPedidoDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			criteria.add(Restrictions.eq("detallePedidoDTOCols.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			
+			if(estadoPedido != null && estadoPedido.trim() != "") {
+				criteria.add(Restrictions.eq("estadoPedidoDTO.codigoValorEstadoPedido", estadoPedido));
+			}
 
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();

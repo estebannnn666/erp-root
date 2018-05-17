@@ -16,10 +16,11 @@ public interface IPedidoServicio {
 	/**
 	 *  M\u00e9todo para obtener lista de pedidos
 	 * @param codigoCompania
+	 * @param estadoPedido
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<PedidoDTO> findObtenerPedidosRegistrados(Integer codigoCompania) throws ERPException;
+	Collection<PedidoDTO> findObtenerPedidosRegistrados(Integer codigoCompania, String estadoPedido) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para guardar pedido
