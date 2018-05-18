@@ -17,10 +17,12 @@ public interface IClientesServicio {
 	/**
 	 * M\u00e9todo para obtener lista de clientes
 	 * @param codigoCompania
-	 * @return 
+	 * @param numeroDocumento
+	 * @param nombreCliente
+	 * @return
 	 * @throws ERPException
 	 */
-	Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania) throws ERPException;
+	Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para guardar y actualizar cliente

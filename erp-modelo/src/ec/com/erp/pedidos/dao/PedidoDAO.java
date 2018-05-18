@@ -226,9 +226,9 @@ public class PedidoDAO implements IPedidoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar la persona."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el pedido."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar la persona."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el pedido."+e.getMessage());
 		} 
 	}
 }

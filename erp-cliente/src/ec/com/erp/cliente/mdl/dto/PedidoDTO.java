@@ -41,6 +41,12 @@ public class PedidoDTO implements Serializable{
 	private Long codigoCliente ;
 	
 	/**
+	 * Especifica el numero del pedido
+	 */
+	@Column(name = "NUMEROPEDIDO")
+	private String numeroPedido ;
+	
+	/**
 	 * Especifica la fecha del pedido
 	 */
 	@Column(name = "FECHAPEDIDO")
@@ -227,5 +233,13 @@ public class PedidoDTO implements Serializable{
 
 	public void setFacturaCreada(Boolean facturaCreada) {
 		this.facturaCreada = facturaCreada;
+	}
+
+	public String getNumeroPedido() {
+		return numeroPedido;
+	}
+
+	public void setNumeroPedido(String numeroPedido) {
+		this.numeroPedido = numeroPedido;
 	}
 }

@@ -49,7 +49,7 @@ public class TestServicioVolumenes {
 	
 	@Test
 	public void testClientes(){
-		Collection<ClienteDTO> clienteDTOCols = ERPFactory.clientes.getClientesServicio().findObtenerListaClientes(1);
+		Collection<ClienteDTO> clienteDTOCols = ERPFactory.clientes.getClientesServicio().findObtenerListaClientes(1, null, null);
 		System.out.println("Tamanio: "+clienteDTOCols.size());
 	}
 }

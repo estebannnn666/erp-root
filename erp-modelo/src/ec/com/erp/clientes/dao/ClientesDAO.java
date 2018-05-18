@@ -60,16 +60,17 @@ public class ClientesDAO implements IClientesDAO {
 		this.secuenciaDAO = secuenciaDAO;
 	}
 
-
 	/**
 	 * M\u00e9todo para obtener lista de clientes
 	 * @param codigoCompania
-	 * @return 
+	 * @param numeroDocumento
+	 * @param nombreCliente
+	 * @return
 	 * @throws ERPException
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania) throws ERPException{
+	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -84,7 +85,12 @@ public class ClientesDAO implements IClientesDAO {
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-
+			if(numeroDocumento != null && numeroDocumento.trim() != "") {
+				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", numeroDocumento), Restrictions.eq("empresaDTO.numeroRuc", numeroDocumento)));
+			}
+			if(nombreCliente != null && nombreCliente.trim() != "") {
+				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.nombreCompleto", nombreCliente), Restrictions.eq("empresaDTO.razonSocial", nombreCliente)));
+			}
 			// Proyecciones entidad clientes 
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");

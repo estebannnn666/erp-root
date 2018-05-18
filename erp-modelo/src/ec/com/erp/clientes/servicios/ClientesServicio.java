@@ -21,11 +21,14 @@ public class ClientesServicio implements IClientesServicio{
 
 	/**
 	 * M\u00e9todo para obtener lista de clientes
-	 * @return 
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param nombreCliente
+	 * @return
 	 * @throws ERPException
 	 */
-	public Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania) throws ERPException{
-		return this.clientesGestor.obtenerListaClientes(codigoCompania);
+	public Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException{
+		return this.clientesGestor.obtenerListaClientes(codigoCompania, numeroDocumento, nombreCliente);
 	}
 
 	/**

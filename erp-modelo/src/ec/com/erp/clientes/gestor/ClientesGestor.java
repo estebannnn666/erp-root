@@ -66,11 +66,13 @@ public class ClientesGestor implements IClientesGestor{
 	/**
 	 * M\u00e9todo para obtener lista de clientes
 	 * @param codigoCompania
-	 * @return Collection<ClienteDTO>
+	 * @param numeroDocumento
+	 * @param nombreCliente
+	 * @return
 	 * @throws ERPException
 	 */
-	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania) throws ERPException{
-		return this.clientesDAO.obtenerListaClientes(codigoCompania);
+	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException{	
+		return this.clientesDAO.obtenerListaClientes(codigoCompania, numeroDocumento, nombreCliente);
 	}
 	
 	/**
