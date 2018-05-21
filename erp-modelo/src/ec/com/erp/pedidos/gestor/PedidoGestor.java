@@ -3,6 +3,8 @@ package ec.com.erp.pedidos.gestor;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.DetallePedidoDTO;
@@ -66,13 +68,21 @@ public class PedidoGestor implements IPedidoGestor{
 		pedidoDTO.getId().setCodigoCompania(codigoCompania);
 		this.pedidoDAO.crearActualizarPedido(pedidoDTO);
 		for(DetallePedidoDTO detallePedidoDTO : detallePedidoDTOCols) {
-			detallePedidoDTO.getId().setCodigoCompania(codigoCompania);
-			detallePedidoDTO.getId().setCodigoPedido(pedidoDTO.getId().getCodigoPedido());
-			detallePedidoDTO.setArticuloDTO(null);
-			detallePedidoDTO.setUsuarioRegistro(pedidoDTO.getUsuarioRegistro());
-			this.detallePedidoDAO.crearActualizarDetallePedido(detallePedidoDTO);
+			if(detallePedidoDTO.getCodigoArticulo() != null && detallePedidoDTO.getCantidad() != null && detallePedidoDTO.getSubTotal() != null) {
+				detallePedidoDTO.getId().setCodigoCompania(codigoCompania);
+				detallePedidoDTO.getId().setCodigoPedido(pedidoDTO.getId().getCodigoPedido());
+				detallePedidoDTO.setArticuloDTO(null);
+				detallePedidoDTO.setUsuarioRegistro(pedidoDTO.getUsuarioRegistro());
+				this.detallePedidoDAO.crearActualizarDetallePedido(detallePedidoDTO);
+			}
 		}
-		EstadoPedidoDTO estadoPedidoDTO = pedidoDTO.getEstadoPedidoDTOCols().iterator().next();
+		EstadoPedidoDTO estadoPedidoDTO = null;
+		if(CollectionUtils.isEmpty(pedidoDTO.getEstadoPedidoDTOCols())) {
+			estadoPedidoDTO = new EstadoPedidoDTO();
+		}
+		else {
+			estadoPedidoDTO = pedidoDTO.getEstadoPedidoDTOCols().iterator().next();
+		}
 		estadoPedidoDTO.getId().setCodigoCompania(codigoCompania);
 		estadoPedidoDTO.getId().setCodigoPedido(pedidoDTO.getId().getCodigoPedido());
 		estadoPedidoDTO.setCodigoTipoEstadoPedido(ERPConstantes.CODIGO_CATALOGO_TIPOS_ESTADO_PEDIDO);

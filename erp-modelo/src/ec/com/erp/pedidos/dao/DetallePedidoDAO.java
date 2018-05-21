@@ -119,7 +119,7 @@ public class DetallePedidoDAO implements IDetallePedidoDAO {
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
-			if(detallePedidoDTO.getId().getCodigoPedido() ==  null){
+			if(detallePedidoDTO.getId().getCodigoDetallePedido() ==  null){
 				Integer secuencialPedido  = this.secuenciaDAO.obtenerSecuencialTabla(DetallePedidoID.NOMBRE_SECUENCIA);
 				detallePedidoDTO.getId().setCodigoDetallePedido(Long.parseLong(""+secuencialPedido));
 				detallePedidoDTO.setFechaRegistro(new Date());
@@ -134,9 +134,9 @@ public class DetallePedidoDAO implements IDetallePedidoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar la persona."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el detalle del pedido.");
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar la persona."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el detalle del pedido.");
 		} 
 	}
 }

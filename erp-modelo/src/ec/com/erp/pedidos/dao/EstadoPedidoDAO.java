@@ -136,9 +136,9 @@ public class EstadoPedidoDAO implements IEstadoPedidoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar la persona."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el estado del pedido.");
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar la persona."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el estado del pedido.");
 		} 
 	}
 }
