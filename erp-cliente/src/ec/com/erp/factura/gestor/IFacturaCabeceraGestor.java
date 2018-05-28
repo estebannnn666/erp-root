@@ -35,4 +35,12 @@ public interface IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	void guardarActualizarFacturaCabecera(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
+	
+	/**
+	 * Devuelve html de reporte de facturas
+	 * @param facturaCabeceraDTOCols
+	 * @return
+	 * @throws ERPException
+	 */
+	String procesarXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) throws ERPException;
 }

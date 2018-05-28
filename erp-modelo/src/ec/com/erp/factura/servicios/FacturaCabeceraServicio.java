@@ -54,4 +54,13 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 		this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
 	}
 
+	/**
+	 * Devuelve html de reporte de facturas
+	 * @param facturaCabeceraDTOCols
+	 * @return
+	 * @throws ERPException
+	 */
+	public String finObtenerXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) throws ERPException{
+		return this.facturaCabeceraGestor.procesarXMLReporteFacturas(facturaCabeceraDTOCols);
+	}
 }

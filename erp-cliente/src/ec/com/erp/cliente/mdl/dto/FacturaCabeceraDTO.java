@@ -46,12 +46,6 @@ public class FacturaCabeceraDTO implements Serializable{
 	private Date fechaDocumento ;
 	
 	/**
-	 * Especifica la fecha de entrega
-	 */
-	@Column(name = "FECHAENTREGA")
-	private Date fechaEntrega ;
-	
-	/**
 	 * Especifica el ruc o documento para la factura o gasto
 	 */
 	@Column(name = "RUC")
@@ -156,14 +150,6 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setFechaDocumento(Date fechaDocumento) {
 		this.fechaDocumento = fechaDocumento;
-	}
-
-	public Date getFechaEntrega() {
-		return fechaEntrega;
-	}
-
-	public void setFechaEntrega(Date fechaEntrega) {
-		this.fechaEntrega = fechaEntrega;
 	}
 
 	public String getRucDocumento() {
