@@ -28,9 +28,10 @@ public class ERPConstantes {
 	public static final String CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_REGISTRADO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.estado.pedido.registrado");
 	public static final String CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_PENDIENTE = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.estado.pedido.pendiente");
 	public static final String CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_ENTREGADO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.estado.pedido.entregado");
-		
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_CHOFER_PRINCIPAL = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.chofer.principal");
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_CHOFER_AYUDANTE = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.chofer.ayudante");
+	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.ventas");
+	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.compras");
 	
 	/************ CODIGOS CATALAGOS TIPOS *****************/
 	public static final Integer CODIGO_CATALOGO_TIPOS_CONTACTOS = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.contacto");
