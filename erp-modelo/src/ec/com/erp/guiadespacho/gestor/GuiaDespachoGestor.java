@@ -4,13 +4,22 @@
 package ec.com.erp.guiadespacho.gestor;
 
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.jdom.Document;
+
+import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 import ec.com.erp.guiadespacho.dao.IGuiaDespachoDAO;
+import ec.com.erp.utilitario.commons.util.TransformerUtil;
 
 /**
  * @author Esteban Gudino
@@ -111,4 +120,55 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 		} 
 	}
 
+	/**
+	 * Devuelve html para la impresion de la guia de despacho
+	 * @param guiaDespachoDTO
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public String procesarXMLImprimirGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException{
+		StringBuilder contenidoXml = new StringBuilder();
+		String html = "";
+		String urlTipoReporte = "";
+		try{
+			Date fechaactual = new Date();
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+			String fechaFormateada =  formatoFecha.format(fechaactual);
+			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
+			formatoDecimales.setMinimumFractionDigits(2);
+
+			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_IMPRIMIR_GUIA_DESPACHO;
+			
+			contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+			contenidoXml.append("<guiaDespacho>");
+
+			contenidoXml.append("<numeroGuiaDespacho>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getNumeroGuiaDespacho())).append("</numeroGuiaDespacho>");
+//			int cont = 1;
+//			//detalle reposicion
+//			contenidoXml.append("<listaDestinos>");
+//			for(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO : guiaDespachoDTO.getGuiaDespachoPedidoDTOCols()){
+//				contenidoXml.append("<destino>");
+//				contenidoXml.append("<numeroFila>").append(StringEscapeUtils.escapeXml(""+cont)).append("</numeroFila>");
+//				contenidoXml.append("<cliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getNombreCompleto())).append("</cliente>");
+//				contenidoXml.append("<totalPedido>").append(StringEscapeUtils.escapeXml(""+guiaDespachoPedidoDTO.getPedidoDTO().getTotalCompra())).append("</totalPedido>");
+//				contenidoXml.append("<observacion>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getObservacion())).append("</observacion>");
+//				contenidoXml.append("</destino>");
+//				cont++;
+//			}
+//			contenidoXml.append("</listaDestinos>");			
+			contenidoXml.append("</guiaDespacho>");
+			String contenidoXSL=null;
+			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);
+			Document docXML = TransformerUtil.stringToXML(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			HashMap<String , String> parametros = new HashMap<String, String>();
+			result = TransformerUtil.transformar(docXML, docXSL, parametros);
+			html = TransformerUtil.xmlToString(result);
+		} catch (Exception en) {
+			throw new ERPException("Error al procesar plantilla xsl") ;
+		}
+		return html;
+	}
 }

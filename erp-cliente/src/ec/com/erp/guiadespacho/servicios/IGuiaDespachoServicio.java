@@ -34,4 +34,11 @@ public interface IGuiaDespachoServicio {
 	 */
 	void transCrearActualizarGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException;
 	
+	/**
+	 * Devuelve html para la impresion de la guia de despacho
+	 * @param guiaDespachoDTO
+	 * @return
+	 * @throws ERPException
+	 */
+	String finObtenerXMLImprimirGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException;
 }

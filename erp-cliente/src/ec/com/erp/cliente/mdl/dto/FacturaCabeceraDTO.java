@@ -39,6 +39,13 @@ public class FacturaCabeceraDTO implements Serializable{
 	@Column(name = "NUMERODOCUMENTO")
 	private String numeroDocumento ;
 	
+	
+	/**
+	 * Especifica el codigo de referencia de la factura
+	 */
+	@Column(name = "CODIGOREFERENCIAFACTURA")
+	private String codigoReferenciaFactura ;
+	
 	/**
 	 * Especifica la fecha de factura o documento
 	 */
@@ -270,5 +277,13 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setTotalCuenta(BigDecimal totalCuenta) {
 		this.totalCuenta = totalCuenta;
+	}
+
+	public String getCodigoReferenciaFactura() {
+		return codigoReferenciaFactura;
+	}
+
+	public void setCodigoReferenciaFactura(String codigoReferenciaFactura) {
+		this.codigoReferenciaFactura = codigoReferenciaFactura;
 	}
 }

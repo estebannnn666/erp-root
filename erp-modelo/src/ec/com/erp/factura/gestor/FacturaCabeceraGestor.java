@@ -3,7 +3,9 @@
  */
 package ec.com.erp.factura.gestor;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
@@ -102,30 +104,37 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		String html = "";
 		String urlTipoReporte = "";
 		try{
+			BigDecimal total = BigDecimal.ZERO;
 			Date fechaactual = new Date();
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 			String fechaFormateada =  formatoFecha.format(fechaactual);
+			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
+			formatoDecimales.setMinimumFractionDigits(2);
 
 			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_REPORTE_FACTURAS;
 			
 			contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
 			contenidoXml.append("<facturas>");
-			
 
 			contenidoXml.append("<fechaReporte>").append(StringEscapeUtils.escapeXml(""+fechaFormateada)).append("</fechaReporte>");
-
+			int cont = 1;
 			//detalle reposicion
 			contenidoXml.append("<listaFacturas>");
 			for(FacturaCabeceraDTO facturaCabeceraDTO : facturaCabeceraDTOCols){
 				contenidoXml.append("<factura>");
+				contenidoXml.append("<numeroFila>").append(StringEscapeUtils.escapeXml(""+cont)).append("</numeroFila>");
 				contenidoXml.append("<numeroDocumento>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getNumeroDocumento())).append("</numeroDocumento>");
 				contenidoXml.append("<documentoCliente>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getRucDocumento())).append("</documentoCliente>");
 				contenidoXml.append("<nombreClienteProveedor>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getNombreClienteProveedor())).append("</nombreClienteProveedor>");
-				contenidoXml.append("<direccion>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getDireccion())).append("</direccion>");
+				contenidoXml.append("<fechaEmision>").append(StringEscapeUtils.escapeXml(formatoFecha.format(facturaCabeceraDTO.getFechaDocumento()))).append("</fechaEmision>");
+				contenidoXml.append("<valorTotal>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalCuenta().doubleValue()))).append("</valorTotal>");
+				contenidoXml.append("<estado>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getPagado() ? "SI":"NO")).append("</estado>");
 				contenidoXml.append("</factura>");
+				cont++;
+				total = total.add(facturaCabeceraDTO.getTotalCuenta());
 			}
-
-			contenidoXml.append("</listaFacturas>");
+			contenidoXml.append("</listaFacturas>");			
+			contenidoXml.append("<totalPago>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(total.doubleValue()))).append("</totalPago>");
 			contenidoXml.append("</facturas>");
 			String contenidoXSL=null;
 			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);

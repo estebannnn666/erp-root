@@ -45,4 +45,14 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 		this.guiaDespachoGestor.crearActualizarGuiaDespacho(guiaDespachoDTO);
 	}
 	
+	/**
+	 * Devuelve html para la impresion de la guia de despacho
+	 * @param guiaDespachoDTO
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public String finObtenerXMLImprimirGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException{
+		return this.guiaDespachoGestor.procesarXMLImprimirGuiaDespacho(guiaDespachoDTO);
+	}
 }

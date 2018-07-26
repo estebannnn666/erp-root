@@ -117,14 +117,15 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoFactura"), "id_codigoFactura");
+			projectionList.add(Projections.property("root.codigoReferenciaFactura"), "codigoReferenciaFactura");
 			projectionList.add(Projections.property("root.numeroDocumento"), "numeroDocumento");
 			projectionList.add(Projections.property("root.fechaDocumento"), "fechaDocumento");
-			projectionList.add(Projections.property("root.fechaEntrega"), "fechaEntrega");
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
 			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
 			projectionList.add(Projections.property("root.direccion"), "direccion");
 			projectionList.add(Projections.property("root.telefono"), "telefono");
 			projectionList.add(Projections.property("root.pagado"), "pagado");
+			projectionList.add(Projections.property("root.totalCuenta"), "totalCuenta");
 			projectionList.add(Projections.property("root.codigoTipoDocumento"), "codigoTipoDocumento");
 			projectionList.add(Projections.property("root.codigoValorTipoDocumento"), "codigoValorTipoDocumento");
 			projectionList.add(Projections.property("root.estado"), "estado");
@@ -177,11 +178,11 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 				facturaCabeceraDTO.getId().setCodigoFactura(Long.parseLong(""+secuencialFactura));
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
 					Integer secuencialFacturaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_VENTA);
-					facturaCabeceraDTO.setNumeroDocumento("FAC-"+secuencialFacturaVentas);
+					facturaCabeceraDTO.setCodigoReferenciaFactura("FAC-"+secuencialFacturaVentas);
 				}
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS)) {
 					Integer secuencialFacturaCompras = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_COMPRA);
-					facturaCabeceraDTO.setNumeroDocumento("FAC-"+secuencialFacturaCompras);
+					facturaCabeceraDTO.setCodigoReferenciaFactura("DOC-"+secuencialFacturaCompras);
 				}
 				facturaCabeceraDTO.setFechaRegistro(new Date());
 				facturaCabeceraDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);

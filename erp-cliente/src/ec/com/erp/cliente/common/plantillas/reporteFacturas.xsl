@@ -7,124 +7,98 @@
 	<xsl:template match="/">
 		<html>
 		    <table>				
-				<tr><td style="height:1.5cm;"></td></tr>
+				<tr><td style="height:0.5cm;"></td></tr>
 				<col style="width:20.0cm;"/> 
+				<tr>
+				  <td>
+					<table>
+						<col style="width:19cm; "/>
+						<col style="width:1cm; "/>
+						<tr>
+							<td align="right" valign="botton"><b style="font-size:12px;"><xsl:value-of select="facturas/fechaReporte"/></b></td>
+							<td></td>
+						</tr>						
+					</table>        
+				  </td>
+				</tr>
+				<tr><td style="height:0.5cm;"></td></tr>
 				<tr>
 				  <td>
 					<table>
 						<col style="width:20cm; "/>
 						<tr>
-							<td align="center" valign="botton" style="text-transform: uppercase;"><pre>AUTORIZACI&#xf3;N DE DESCUENTO</pre></td>
+							<td align="center" valign="botton" style="text-transform: uppercase;"><pre>LISTA DE FACTURAS</pre></td>
 						</tr>						
 					</table>        
 				  </td>
-				</tr>
-				<tr><td style="height:1.0cm;"></td></tr>
-				<col style="width:18.0cm;"/> 
-				<tr>
-				  <td>
-					<table>
-						<col style="width:2.5cm; "/>
-						<col style="width:14.0cm; "/>
-						<col style="width:1.5cm; "/>
-						<tr>
-							<td align="left" valign="botton"></td>
-							<td style="text-align: justify;" valign="botton"><b style="font-size:12px;">Yo,</b> <b style="font-weight:bold; font-size:12px; text-transform: uppercase;"></b> <b style="font-size:12px;">con C.I. #</b> <b style="font-weight:bold; font-size:12px;"></b> <b style="font-size:12px;">colaborador de la Corporaci&#xf3;n Favorita con c&#xf3;digo #</b> <b style="font-weight:bold; font-size:12px;"></b> <b style="font-size:12px;">expreso mi deseo de comprar acciones de la empresa.</b></td>
-							<td align="left" valign="botton"></td>
-						</tr>
-					</table>        
-				  </td>
-				</tr>
+				</tr>						
 				<tr><td style="height:0.5cm;"></td></tr>
-				<col style="width:18.0cm;"/> 
-				<tr>
-				  <td>
-					<table>
-						<col style="width:2.5cm; "/>
-						<col style="width:14.0cm; "/>
-						<col style="width:1.5cm; "/>
-						<tr>
-							<td align="left" valign="botton"></td>
-							<td style="text-align: justify;" valign="botton"><b style="font-size:12px;">Autorizo a Corporaci&#xf3;n Favorita para comprar acciones a mi nombre y que dicho valor sea descontado de mis utilidades a recibir en abril.</b></td>
-							<td align="left" valign="botton"></td>
-						</tr>
-					</table> 
-				  </td>
-				</tr>
-				<tr><td style="height:0.5cm;"></td></tr>
-				<col style="width:18.0cm;"/> 
-				<tr>
-				  <td>
-					<table>
-						<col style="width:2.5cm; "/>
-						<col style="width:15.0cm; "/>
-						<col style="width:1.5cm; "/>
-						<tr>
-							<td align="left" valign="botton"></td>
-							<td align="center" valign="botton" style="font-weight:bold;"><b style="font-size:12px;">Fecha: Quito, <xsl:value-of select="facturas/fechaReporte"/></b></td>
-							<td align="left" valign="botton"></td>
-						</tr>
-					</table>        
-				  </td>
-				</tr>
-				<tr><td style="height:2.0cm;"></td></tr>					
+				<col style="width:20.0cm;"/> 				
 				<tr>
 					<td>
 						<table>
-							<col style="width:20cm; "/>
-							<tr>
-								<td align="center" valign="botton"><pre>DETALLE DE COMPRA</pre></td>
-							</tr>
-						</table>        
-					</td>
-				</tr>	
-				
-				
-				<tr><td style="height:0.5cm;"></td></tr>				
-				<tr>
-					<td>
-						<table>
-							<col style="width:2.0cm;"/>
+							<col style="width:1.0cm;"/>
 							<col style="width:18.0cm;"/>
 							<col style="width:1.0cm;"/>
 							<tr>
 								<td align="left" valign="botton"></td>
 								<td align="center" valign="botton">
 									<table>
-										<col style="width:8.0cm;"/>
-										<col style="width:4.0cm; "/>
-										<col style="width:3.0cm; "/>
+										<col style="width:1.0cm;"/>
+										<col style="width:2.0cm;"/>
+										<col style="width:2.0cm;"/>
+										<col style="width:6.0cm;"/>
 										<col style="width:2.0cm; "/>
+										<col style="width:2.0cm; "/>
+										<col style="width:3.0cm; "/>
 										<tr>
 											<td class="borde" align="center">
 												<table border="1">
 													<tr>
-														<td align="center" valign="botton" style="width:8.0cm;">  
-															<h3>Numero factura</h3>
+														<td align="center" valign="botton" style="width:1.0cm;">  
+															<h3>Nro.</h3>
 														</td>
-														<td align="center" valign="botton" style="width:4.0cm;">  
+														<td align="center" valign="botton" style="width:2.0cm;">  
+															<h3>Nro factura</h3>
+														</td>
+														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>Doc. cliente</h3>
 														</td>
-														<td align="center" valign="botton" style="width:3.0cm;">  
-															<h3>Nombres</h3>
+														<td align="center" valign="botton" style="width:6.0cm;">  
+															<h3>Raz&#xf3;n social</h3>
 														</td>
-														<td align="right" valign="botton" style="width:2.0cm;">  
-															<h3>Direccion</h3>
+														<td align="center" valign="botton" style="width:2.0cm;">  
+															<h3>Fecha</h3>
+														</td>
+														<td align="center" valign="botton" style="width:2.0cm;">  
+															<h3>Valor</h3>
+														</td>
+														<td align="center" valign="botton" style="width:3.0cm;">  
+															<h3>Cobrada/Pagada</h3>
 														</td>
 													</tr>
 													<xsl:for-each select="facturas/listaFacturas/factura">
 														<tr>
-															<td align="left" style="width:8.0cm; text-transform: uppercase;">
+															<td align="center" style="width:1.0cm;">
+																<xsl:value-of select="numeroFila"/>
+															</td>
+															<td align="left" style="padding-left: 3px; width:2.0cm;">
 																<xsl:value-of select="numeroDocumento"/>
 															</td>
-															<td align="left" style="width:4.0cm;">
+															<td align="left" style="padding-left: 3px; width:2.0cm;">
 																<xsl:value-of select="documentoCliente"/>
 															</td>
-															<td align="left" style="width:3.0cm;">
+															<td align="left" style="padding-left: 3px; width:6.0cm;">
 																<xsl:value-of select="nombreClienteProveedor"/>
 															</td>											
-															<td align="right" style="width:2.0cm;">
-																<xsl:value-of select="direccion"/>
+															<td align="center" style="width:2.0cm;">
+																<xsl:value-of select="fechaEmision"/>
+															</td>
+															<td align="right" style="padding-right: 3px; width:2.0cm;">
+																<xsl:value-of select="valorTotal"/>
+															</td>
+															<td align="center" style="width:3.0cm;">
+																<xsl:value-of select="estado"/>
 															</td>
 														</tr>
 													</xsl:for-each>
@@ -134,18 +108,22 @@
 										 <tr>
 											<td class="borde" align="center">
 												<table border="1">
-													<tr>									
-														<td align="center" valign="botton" style="width:8.0cm;">  
-															
+													<tr>	
+														<td align="right" style="width:1.0cm;">
 														</td>
-														<td align="center" valign="botton" style="width:4.0cm;">  
-														
+														<td align="right" style="width:2.0cm;">
 														</td>
-														<td align="center" valign="botton" style="width:3.0cm;" border="1">  
+														<td align="right" style="width:2.0cm;">
+														</td>
+														<td align="center" valign="botton" style="width:6.0cm;">  															
+														</td>
+														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>TOTAL</h3>
 														</td>
-														<td align="right" valign="botton" style="width:2.0cm;">  
-															<h3><xsl:value-of select="format-number(compras/totalCompra,'###.##0,00','numerico')"/></h3>
+														<td align="right" valign="botton" style=" padding-right: 3px; width:2.0cm;" border="1">  
+															<h3><xsl:value-of select="facturas/totalPago"/></h3>
+														</td>
+														<td align="right" valign="botton" style="width:3.0cm;">  															
 														</td>
 													</tr>
 												</table>
@@ -157,33 +135,7 @@
 							</tr>
 						</table>						
 				    </td>
-				</tr>
-				<tr><td style="height:3.0cm;"></td></tr>	
-				<col style="width:18.0cm;"/>                  
-				<tr>
-				  <td>
-					<table>	
-						<col style="width:2.5cm; "/>
-						<col style="width:14.0cm; "/>
-						<col style="width:1.5cm; "/>
-						<tr>
-							<td align="left" valign="botton"></td>
-							<td align="center" valign="botton">_____________________________________</td>
-							<td align="left" valign="botton"></td>
-						</tr>
-						<tr>
-							<td align="left" valign="botton"></td>
-							<td align="center" valign="botton"><h3>FIRMA DEL COLABORADOR</h3></td>
-							<td align="left" valign="botton"></td>
-						</tr>
-						<tr>
-							<td align="left" valign="botton"></td>
-							<td align="center" valign="botton" style="text-transform: uppercase;"><h3><xsl:value-of select="compras/repreLegal"/></h3></td>
-							<td align="left" valign="botton"></td>
-						</tr>
-					</table>        
-				  </td>
-				</tr>				
+				</tr>							
 			</table>			
 		</html>
 	</xsl:template>
