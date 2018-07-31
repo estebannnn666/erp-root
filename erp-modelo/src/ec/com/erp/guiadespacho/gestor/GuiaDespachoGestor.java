@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jdom.Document;
 
@@ -133,8 +134,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 		String urlTipoReporte = "";
 		try{
 			Date fechaactual = new Date();
-			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-			String fechaFormateada =  formatoFecha.format(fechaactual);
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
 			formatoDecimales.setMinimumFractionDigits(2);
 
@@ -144,19 +144,44 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			contenidoXml.append("<guiaDespacho>");
 
 			contenidoXml.append("<numeroGuiaDespacho>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getNumeroGuiaDespacho())).append("</numeroGuiaDespacho>");
-//			int cont = 1;
-//			//detalle reposicion
-//			contenidoXml.append("<listaDestinos>");
-//			for(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO : guiaDespachoDTO.getGuiaDespachoPedidoDTOCols()){
-//				contenidoXml.append("<destino>");
-//				contenidoXml.append("<numeroFila>").append(StringEscapeUtils.escapeXml(""+cont)).append("</numeroFila>");
-//				contenidoXml.append("<cliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getNombreCompleto())).append("</cliente>");
-//				contenidoXml.append("<totalPedido>").append(StringEscapeUtils.escapeXml(""+guiaDespachoPedidoDTO.getPedidoDTO().getTotalCompra())).append("</totalPedido>");
-//				contenidoXml.append("<observacion>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getObservacion())).append("</observacion>");
-//				contenidoXml.append("</destino>");
-//				cont++;
-//			}
-//			contenidoXml.append("</listaDestinos>");			
+			contenidoXml.append("<despachador>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getUsuarioRegistro())).append("</despachador>");
+			contenidoXml.append("<fechaDespacho>").append(StringEscapeUtils.escapeXml(""+formatoFecha.format(fechaactual))).append("</fechaDespacho>");
+			contenidoXml.append("<placaVehiculo>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getPlaca())).append("</placaVehiculo>");
+			contenidoXml.append("<transportista>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getNombreTransportista())).append("</transportista>");
+			contenidoXml.append("<marcaVehiculo>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getMarca())).append("</marcaVehiculo>");
+			contenidoXml.append("<choferPrincipal>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getDocumentoChoferA())).append("</choferPrincipal>");
+			contenidoXml.append("<choferSecundario>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getDocumentoChoferB())).append("</choferSecundario>");
+			int cont = 1;
+			//detalle reposicion
+			contenidoXml.append("<listaDestinos>");
+			for(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO : guiaDespachoDTO.getGuiaDespachoPedidoDTOCols()){
+				contenidoXml.append("<destino>");
+				contenidoXml.append("<nroDestino>").append(StringEscapeUtils.escapeXml(""+cont)).append("</nroDestino>");
+				contenidoXml.append("<nombreCliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO() == null ? guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getEmpresaDTO().getRazonSocial()  : guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getNombreCompleto())).append("</nombreCliente>");
+				contenidoXml.append("<direccionCliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO() == null ? guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getEmpresaDTO().getContactoEmpresaDTO().getDireccionPrincipal() : guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getContactoPersonaDTO().getDireccionPrincipal())).append("</direccionCliente>");
+				contenidoXml.append("<cantidadPedida>").append(StringEscapeUtils.escapeXml(""+guiaDespachoPedidoDTO.getPedidoDTO().getTotalCompra())).append("</cantidadPedida>");
+				contenidoXml.append("<observacion>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getObservacion())).append("</observacion>");
+				contenidoXml.append("</destino>");
+				cont++;
+			}
+			contenidoXml.append("</listaDestinos>");
+			// Validar si existen extras
+			if(CollectionUtils.isNotEmpty(guiaDespachoDTO.getGuiaDespachoExtrasDTOCols())){
+				int contExtras = 1;
+				//detalle reposicion
+				contenidoXml.append("<listaExtras>");
+				for(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO : guiaDespachoDTO.getGuiaDespachoExtrasDTOCols()){
+					contenidoXml.append("<extra>");
+					contenidoXml.append("<nroExtra>").append(StringEscapeUtils.escapeXml(""+contExtras)).append("</nroExtra>");
+					contenidoXml.append("<descripcionProducto>").append(StringEscapeUtils.escapeXml(guiaDespachoExtrasDTO.getDescripcionProducto())).append("</descripcionProducto>");
+					contenidoXml.append("<cantidad>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getCantidad())).append("</cantidad>");
+					contenidoXml.append("<observacionExtra>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getObservacion())).append("</observacionExtra>");
+					contenidoXml.append("</extra>");
+					contExtras++;
+				}
+				contenidoXml.append("</listaExtras>");
+			}
+			
 			contenidoXml.append("</guiaDespacho>");
 			String contenidoXSL=null;
 			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);
