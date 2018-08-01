@@ -18,14 +18,15 @@ public interface IGuiaDespachoServicio {
 	 * M\u00e9todo para obtener lista de despachos
 	 * @param codigoCompania
 	 * @param numeroGuia
-	 * @param fechaDespacho
+	 * @param fechaDespachoInicio
+	 * @param fechaDespachoFin
 	 * @param placa
 	 * @param documentoChofer
 	 * @param nombreChofer
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<GuiaDespachoDTO> findObtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespacho, String placa, String documentoChofer, String nombreChofer) throws ERPException;
+	Collection<GuiaDespachoDTO> findObtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespachoInicio, Timestamp fechaDespachoFin, String placa, String documentoChofer, String nombreChofer) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para guardar y actualizar guia despacho

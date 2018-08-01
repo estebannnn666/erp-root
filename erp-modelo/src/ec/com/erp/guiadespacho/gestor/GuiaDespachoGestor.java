@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.Document;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
@@ -60,7 +61,8 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	 * M\u00e9todo para obtener lista de despachos
 	 * @param codigoCompania
 	 * @param numeroGuia
-	 * @param fechaDespacho
+	 * @param fechaDespachoInicio
+	 * @param fechaDespachoFin
 	 * @param placa
 	 * @param documentoChofer
 	 * @param nombreChofer
@@ -68,9 +70,11 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<GuiaDespachoDTO> obtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespacho, String placa, String documentoChofer, String nombreChofer) throws ERPException{
-		return this.guiaDespachoDAO.obtenerListaDespachosByFiltrosBusqueda(codigoCompania, numeroGuia, fechaDespacho, placa, documentoChofer, nombreChofer);
+	public Collection<GuiaDespachoDTO> obtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespachoInicio, Timestamp fechaDespachoFin, String placa, String documentoChofer, String nombreChofer) throws ERPException{
+		return this.guiaDespachoDAO.obtenerListaDespachosByFiltrosBusqueda(codigoCompania, numeroGuia, fechaDespachoInicio, fechaDespachoFin, placa, documentoChofer, nombreChofer);
 	}
+	
+	
 	
 	/**
 	 * M\u00e9todo para guardar y actualizar guia despacho
@@ -149,8 +153,8 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			contenidoXml.append("<placaVehiculo>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getPlaca())).append("</placaVehiculo>");
 			contenidoXml.append("<transportista>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getNombreTransportista())).append("</transportista>");
 			contenidoXml.append("<marcaVehiculo>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getMarca())).append("</marcaVehiculo>");
-			contenidoXml.append("<choferPrincipal>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getDocumentoChoferA())).append("</choferPrincipal>");
-			contenidoXml.append("<choferSecundario>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getDocumentoChoferB())).append("</choferSecundario>");
+			contenidoXml.append("<choferPrincipal>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getNombreChoferA())).append("</choferPrincipal>");
+			contenidoXml.append("<choferSecundario>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDTO.getNombreChoferB())).append("</choferSecundario>");
 			int cont = 1;
 			//detalle reposicion
 			contenidoXml.append("<listaDestinos>");
@@ -159,7 +163,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 				contenidoXml.append("<nroDestino>").append(StringEscapeUtils.escapeXml(""+cont)).append("</nroDestino>");
 				contenidoXml.append("<nombreCliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO() == null ? guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getEmpresaDTO().getRazonSocial()  : guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getNombreCompleto())).append("</nombreCliente>");
 				contenidoXml.append("<direccionCliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO() == null ? guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getEmpresaDTO().getContactoEmpresaDTO().getDireccionPrincipal() : guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getContactoPersonaDTO().getDireccionPrincipal())).append("</direccionCliente>");
-				contenidoXml.append("<cantidadPedida>").append(StringEscapeUtils.escapeXml(""+guiaDespachoPedidoDTO.getPedidoDTO().getTotalCompra())).append("</cantidadPedida>");
+				contenidoXml.append("<cantidadPedida>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(guiaDespachoPedidoDTO.getPedidoDTO().getTotalCompra().doubleValue()))).append("</cantidadPedida>");
 				contenidoXml.append("<observacion>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getObservacion())).append("</observacion>");
 				contenidoXml.append("</destino>");
 				cont++;
@@ -171,13 +175,15 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 				//detalle reposicion
 				contenidoXml.append("<listaExtras>");
 				for(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO : guiaDespachoDTO.getGuiaDespachoExtrasDTOCols()){
-					contenidoXml.append("<extra>");
-					contenidoXml.append("<nroExtra>").append(StringEscapeUtils.escapeXml(""+contExtras)).append("</nroExtra>");
-					contenidoXml.append("<descripcionProducto>").append(StringEscapeUtils.escapeXml(guiaDespachoExtrasDTO.getDescripcionProducto())).append("</descripcionProducto>");
-					contenidoXml.append("<cantidad>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getCantidad())).append("</cantidad>");
-					contenidoXml.append("<observacionExtra>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getObservacion())).append("</observacionExtra>");
-					contenidoXml.append("</extra>");
-					contExtras++;
+					if(StringUtils.isNotEmpty(guiaDespachoExtrasDTO.getDescripcionProducto()) && guiaDespachoExtrasDTO.getCantidad() != null){
+						contenidoXml.append("<extra>");
+						contenidoXml.append("<nroExtra>").append(StringEscapeUtils.escapeXml(""+contExtras)).append("</nroExtra>");
+						contenidoXml.append("<descripcionProducto>").append(StringEscapeUtils.escapeXml(guiaDespachoExtrasDTO.getDescripcionProducto())).append("</descripcionProducto>");
+						contenidoXml.append("<cantidad>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getCantidad())).append("</cantidad>");
+						contenidoXml.append("<observacionExtra>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getObservacion() == null ? "" : guiaDespachoExtrasDTO.getObservacion())).append("</observacionExtra>");
+						contenidoXml.append("</extra>");
+						contExtras++;
+					}
 				}
 				contenidoXml.append("</listaExtras>");
 			}

@@ -64,7 +64,8 @@ public class GuiaDespachoDAO implements IGuiaDespachoDAO {
 	 * M\u00e9todo para obtener lista de despachos
 	 * @param codigoCompania
 	 * @param numeroGuia
-	 * @param fechaDespacho
+	 * @param fechaDespachoInicio
+	 * @param fechaDespachoFin
 	 * @param placa
 	 * @param documentoChofer
 	 * @param nombreChofer
@@ -73,7 +74,7 @@ public class GuiaDespachoDAO implements IGuiaDespachoDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<GuiaDespachoDTO> obtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespacho, String placa, String documentoChofer, String nombreChofer) throws ERPException{
+	public Collection<GuiaDespachoDTO> obtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespachoInicio, Timestamp fechaDespachoFin, String placa, String documentoChofer, String nombreChofer) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -83,19 +84,21 @@ public class GuiaDespachoDAO implements IGuiaDespachoDAO {
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			if(numeroGuia != null) {
+			if(numeroGuia != null && numeroGuia.trim() !=""){
 				criteria.add(Restrictions.eq("root.numeroGuiaDespacho", numeroGuia));
 			}
-			if(fechaDespacho != null) {
-				criteria.add(Restrictions.eq("root.fechaDespacho", fechaDespacho));
+			
+			if(fechaDespachoInicio != null && fechaDespachoFin != null){
+				criteria.add(Restrictions.between("root.fechaDespacho", fechaDespachoInicio, fechaDespachoFin));
 			}
-			if(placa != null) {
+			
+			if(placa != null && placa.trim() !=""){
 				criteria.add(Restrictions.eq("root.placa", placa));
 			}
-			if(documentoChofer != null) {
+			if(documentoChofer != null && documentoChofer.trim() !=""){
 				criteria.add(Restrictions.eq("root.documentoChoferA", documentoChofer));
 			}
-			if(nombreChofer != null) {
+			if(nombreChofer != null && nombreChofer.trim() !=""){
 				criteria.add(Restrictions.eq("root.nombreChoferA", nombreChofer));
 			}
 			

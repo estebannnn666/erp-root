@@ -23,7 +23,8 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	 * M\u00e9todo para obtener lista de despachos
 	 * @param codigoCompania
 	 * @param numeroGuia
-	 * @param fechaDespacho
+	 * @param fechaDespachoInicio
+	 * @param fechaDespachoFin
 	 * @param placa
 	 * @param documentoChofer
 	 * @param nombreChofer
@@ -31,8 +32,8 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<GuiaDespachoDTO> findObtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespacho, String placa, String documentoChofer, String nombreChofer) throws ERPException{
-		return this.guiaDespachoGestor.obtenerListaDespachosByFiltrosBusqueda(codigoCompania, numeroGuia, fechaDespacho, placa, documentoChofer, nombreChofer);
+	public Collection<GuiaDespachoDTO> findObtenerListaDespachosByFiltrosBusqueda(Integer codigoCompania, String numeroGuia, Timestamp fechaDespachoInicio, Timestamp fechaDespachoFin, String placa, String documentoChofer, String nombreChofer) throws ERPException{
+		return this.guiaDespachoGestor.obtenerListaDespachosByFiltrosBusqueda(codigoCompania, numeroGuia, fechaDespachoInicio, fechaDespachoFin, placa, documentoChofer, nombreChofer);
 	}
 	
 	/**
