@@ -15,10 +15,11 @@ public interface IUsuariosGestor {
 	
 	/**
 	 * M\u00e9todo para obtener lista de usuarios
+	 * @param nombreUsuario
 	 * @return 
 	 * @throws ERPException
 	 */
-	Collection<UsuariosDTO> obtenerListaUsuarios() throws ERPException;
+	Collection<UsuariosDTO> obtenerListaUsuarios(String nombreUsuario) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para logearse 
@@ -42,5 +43,12 @@ public interface IUsuariosGestor {
 	 * @throws ERPException
 	 */
 	void actualizarUsuario(UsuariosDTO usuarioDTO) throws ERPException;
+	
+	/**
+	 * M\u009etodo para guardar y actualizar usuario
+	 * @param usuarioDTO
+	 * @throws ERPException
+	 */
+	void guardarActualizarUsuarios(UsuariosDTO usuarioDTO) throws ERPException;
 	
 }

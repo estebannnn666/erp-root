@@ -6,9 +6,11 @@ package ec.com.erp.usuarios.dao;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -59,30 +61,41 @@ public class UsuariosDAO implements IUsuariosDAO {
 	}
 
 	/**
-	 * M\u00e9todo para obtener lista de articulos
+	 * M\u00e9todo para obtener lista de usuarios
+	 * @param nombreUsuario
 	 * @return 
 	 * @throws ERPException
 	 */
 	@SuppressWarnings("unchecked")
-	public Collection<UsuariosDTO> obtenerListaUsuarios() throws ERPException{
+	public Collection<UsuariosDTO> obtenerListaUsuarios(String nombreUsuario) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
 
 			//joins
 			Criteria criteria  = session.createCriteria(UsuariosDTO.class, "root");
+			criteria.createAlias("root.perfilDTO", "perfilDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("perfilDTO.perfilCatalogoValorDTO", "perfilCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 
 			//restricciones
-			criteria.add(Restrictions.eq("root.estado", "1"));
-			
+			if(StringUtils.isNotEmpty(nombreUsuario)){
+				criteria.add(Restrictions.eq("root.nombreUsuario", nombreUsuario));
+			}
 
-			//proyecciones entidad negociacion proveedor
+			//proyecciones entidad usuario
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.userId"), "id_userId");
 			projectionList.add(Projections.property("root.codigoPerfil"), "codigoPerfil");
 			projectionList.add(Projections.property("root.nombreUsuario"), "nombreUsuario");
 			projectionList.add(Projections.property("root.passwordUsuario"), "passwordUsuario");
 			projectionList.add(Projections.property("root.estado"), "estado");
+			// Proyecciones perfil
+			projectionList.add(Projections.property("perfilDTO.id.codigoPerfil"), "perfilDTO_id_codigoPerfil");
+			projectionList.add(Projections.property("perfilDTO.nombrePerfil"), "perfilDTO_nombrePerfil");
+			projectionList.add(Projections.property("perfilDTO.descripcion"), "perfilDTO_descripcion");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("perfilCatalogoValorDTO.nombreCatalogoValor"), "perfilDTO_perfilCatalogoValorDTO_nombreCatalogoValor");
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(UsuariosDTO.class));

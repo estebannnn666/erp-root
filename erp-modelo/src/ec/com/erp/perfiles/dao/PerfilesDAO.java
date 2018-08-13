@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -52,10 +53,11 @@ public class PerfilesDAO implements IPerfilesDAO{
 
 			//joins
 			Criteria criteria  = session.createCriteria(PerfilDTO.class, "root");
-
+			criteria.createAlias("root.perfilCatalogoValorDTO", "perfilCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			
 			//restricciones
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-
+			
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoPerfil"), "id_codigoPerfil");
@@ -64,9 +66,10 @@ public class PerfilesDAO implements IPerfilesDAO{
 			projectionList.add(Projections.property("root.codigoValorTipoPerfil"), "codigoValorTipoPerfil");
 			projectionList.add(Projections.property("root.codigoTipoPerfil"), "codigoTipoPerfil");
 			projectionList.add(Projections.property("root.estado"), "estado");
-			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
-			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("perfilCatalogoValorDTO.nombreCatalogoValor"), "perfilCatalogoValorDTO_nombreCatalogoValor");
+						
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(PerfilDTO.class));
 			Collection<PerfilDTO> perfilDTOCols = new  ArrayList<PerfilDTO>();

@@ -8,7 +8,6 @@ import ec.com.erp.cliente.mdl.dto.ClienteDTO;
 import ec.com.erp.cliente.mdl.dto.ContactoDTO;
 import ec.com.erp.cliente.mdl.dto.EmpresaDTO;
 import ec.com.erp.cliente.mdl.dto.PersonaDTO;
-import ec.com.erp.cliente.mdl.dto.UsuariosDTO;
 import ec.com.erp.clientes.dao.IClientesDAO;
 import ec.com.erp.contacto.gestor.IContactoGestor;
 import ec.com.erp.empresa.gestor.IEmpresaGestor;
@@ -83,11 +82,11 @@ public class ClientesGestor implements IClientesGestor{
 	 */
 	public void guardarActualizarClientes(ClienteDTO clienteDTO, ContactoDTO contactoDTO) throws ERPException{
 		try {
-			UsuariosDTO usuarioDTO = clienteDTO.getUsuariosDTO();
+//			UsuariosDTO usuarioDTO = clienteDTO.getUsuariosDTO();
 			PersonaDTO personaDTO = clienteDTO.getPersonaDTO();
 			EmpresaDTO empresaDTO = clienteDTO.getEmpresaDTO();
 			// Se valida si el cliente ya existe para actualizar o guardar los datos de usuario
-			if(clienteDTO.getId().getCodigoCliente() == null){
+			/*if(clienteDTO.getId().getCodigoCliente() == null){
 				usuarioDTO.setCodigoPerfil(ERPConstantes.CODIGO_PERFIL_CLIENTES);
 				usuarioDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
 				this.usuariosGestor.crearUsuario(usuarioDTO);
@@ -95,7 +94,7 @@ public class ClientesGestor implements IClientesGestor{
 			else
 			{
 				this.usuariosGestor.actualizarUsuario(usuarioDTO);
-			}
+			}*/
 			// Creamos o actualizamos la persona o empresa
 			if(clienteDTO.getCodigoValorTipoCliente().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_PERSONA)){
 				personaDTO.setPrimerApellido(personaDTO.getPrimerApellido().toUpperCase());
@@ -112,7 +111,7 @@ public class ClientesGestor implements IClientesGestor{
 				}
 				personaDTO.setNombreCompleto(nombreCompleto.toUpperCase());
 				personaDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-				personaDTO.setUsuarioRegistro(usuarioDTO.getId().getUserId());
+				personaDTO.setUsuarioRegistro(clienteDTO.getUserId());
 				this.personaGestor.crearActualizarPersona(personaDTO);
 				contactoDTO.setCodigoPersona(personaDTO.getId().getCodigoPersona());
 				clienteDTO.setCodigoPersona(personaDTO.getId().getCodigoPersona());
@@ -120,7 +119,7 @@ public class ClientesGestor implements IClientesGestor{
 			else
 			{
 				empresaDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-				empresaDTO.setUsuarioRegistro(usuarioDTO.getId().getUserId());
+				empresaDTO.setUsuarioRegistro(clienteDTO.getUserId());
 				empresaDTO.setRazonSocial(empresaDTO.getRazonSocial().toUpperCase());
 				if(empresaDTO.getDescripcionEmpresa() != null){
 					empresaDTO.setDescripcionEmpresa(empresaDTO.getDescripcionEmpresa().toUpperCase());
@@ -132,7 +131,7 @@ public class ClientesGestor implements IClientesGestor{
 			
 			// Creamos o actualizamos el contacto
 			contactoDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			contactoDTO.setUsuarioRegistro(usuarioDTO.getId().getUserId());
+			contactoDTO.setUsuarioRegistro(clienteDTO.getUserId());
 			contactoDTO.setCallePrincipal(contactoDTO.getCallePrincipal().toUpperCase());
 			String direccion = contactoDTO.getCallePrincipal();
 			if(contactoDTO.getNumeroCasa() != null){
@@ -155,8 +154,8 @@ public class ClientesGestor implements IClientesGestor{
 			
 			//Creamos o actualizamos el cliente
 			clienteDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			clienteDTO.setUsuarioRegistro(usuarioDTO.getId().getUserId());
-			clienteDTO.setUserId(usuarioDTO.getId().getUserId());
+			clienteDTO.setUsuarioRegistro(clienteDTO.getUserId());
+			clienteDTO.setUserId(clienteDTO.getUserId());
 			clienteDTO.setEmpresaDTO(null);
 			clienteDTO.setUsuariosDTO(null);
 			clienteDTO.setPersonaDTO(null);

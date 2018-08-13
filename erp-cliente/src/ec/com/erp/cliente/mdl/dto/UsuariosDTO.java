@@ -6,6 +6,10 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -47,6 +51,15 @@ public class UsuariosDTO implements Serializable{
 	 */
 	@Transient
 	private Boolean logeado;
+	
+	/**
+	 * Referencia a la relacion con la entidad perfilDTO
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOPERFIL", referencedColumnName = "CODIGOPERFIL", insertable = false, updatable = false)
+	})
+	private PerfilDTO perfilDTO;
 	
 	/**
 	 * Estado del registro usuario
@@ -100,5 +113,13 @@ public class UsuariosDTO implements Serializable{
 
 	public void setLogeado(Boolean logeado) {
 		this.logeado = logeado;
+	}
+
+	public PerfilDTO getPerfilDTO() {
+		return perfilDTO;
+	}
+
+	public void setPerfilDTO(PerfilDTO perfilDTO) {
+		this.perfilDTO = perfilDTO;
 	}
 }

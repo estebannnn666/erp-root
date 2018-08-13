@@ -77,7 +77,7 @@ public class ClientesDAO implements IClientesDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(ClienteDTO.class, "root");
-			criteria.createAlias("root.usuariosDTO", "usuariosDTO", CriteriaSpecification.INNER_JOIN);
+//			criteria.createAlias("root.usuariosDTO", "usuariosDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
@@ -107,11 +107,11 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
 			// Proyecciones usuarios
-			projectionList.add(Projections.property("usuariosDTO.id.userId"), "usuariosDTO_id_userId");
-			projectionList.add(Projections.property("usuariosDTO.codigoPerfil"), "usuariosDTO_codigoPerfil");
-			projectionList.add(Projections.property("usuariosDTO.nombreUsuario"), "usuariosDTO_nombreUsuario");
-			projectionList.add(Projections.property("usuariosDTO.passwordUsuario"), "usuariosDTO_passwordUsuario");
-			projectionList.add(Projections.property("usuariosDTO.estado"), "usuariosDTO_estado");
+//			projectionList.add(Projections.property("usuariosDTO.id.userId"), "usuariosDTO_id_userId");
+//			projectionList.add(Projections.property("usuariosDTO.codigoPerfil"), "usuariosDTO_codigoPerfil");
+//			projectionList.add(Projections.property("usuariosDTO.nombreUsuario"), "usuariosDTO_nombreUsuario");
+//			projectionList.add(Projections.property("usuariosDTO.passwordUsuario"), "usuariosDTO_passwordUsuario");
+//			projectionList.add(Projections.property("usuariosDTO.estado"), "usuariosDTO_estado");
 			// Proyecciones catalogos
 			projectionList.add(Projections.property("tipoClienteCatalogoValorDTO.nombreCatalogoValor"), "tipoClienteCatalogoValorDTO_nombreCatalogoValor");
 			

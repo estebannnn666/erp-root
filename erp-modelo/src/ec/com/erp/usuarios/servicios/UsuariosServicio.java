@@ -20,11 +20,12 @@ public class UsuariosServicio implements IUsuariosServicio {
 
 	/**
 	 * M\u00e9todo para obtener lista de usuarios
+	 * @param nombreUsuario
 	 * @return 
 	 * @throws ERPException
 	 */
-	public Collection<UsuariosDTO> findObtenerListaUsuarios() throws ERPException{
-		return this.usuariosGestor.obtenerListaUsuarios();
+	public Collection<UsuariosDTO> findObtenerListaUsuarios(String nombreUsuario) throws ERPException{		
+		return this.usuariosGestor.obtenerListaUsuarios(nombreUsuario);
 	}
 	
 	/**
@@ -36,5 +37,14 @@ public class UsuariosServicio implements IUsuariosServicio {
 	 */
 	public UsuariosDTO findLoginUser(String nombreUsuario, String password) throws ERPException{
 		return this.usuariosGestor.loginUser(nombreUsuario, password);
+	}
+	
+	/**
+	 * M\u009etodo para guardar y actualizar usuario
+	 * @param usuarioDTO
+	 * @throws ERPException
+	 */
+	public void transGuardarActualizarUsuarios(UsuariosDTO usuarioDTO) throws ERPException{
+		this.usuariosGestor.guardarActualizarUsuarios(usuarioDTO);
 	}
 }

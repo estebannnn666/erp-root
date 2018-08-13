@@ -15,10 +15,11 @@ public interface IUsuariosDAO {
 	
 	/**
 	 * M\u00e9todo para obtener lista de usuarios
+	 * @param nombreUsuario
 	 * @return 
 	 * @throws ERPException
 	 */
-	Collection<UsuariosDTO> obtenerListaUsuarios() throws ERPException;
+	Collection<UsuariosDTO> obtenerListaUsuarios(String nombreUsuario) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para logearse 
