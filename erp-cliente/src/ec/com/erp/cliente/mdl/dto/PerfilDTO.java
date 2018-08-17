@@ -1,6 +1,7 @@
 package ec.com.erp.cliente.mdl.dto;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -9,9 +10,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CollectionTypeInfo;
+
 import ec.com.erp.cliente.mdl.dto.id.PerfilID;
+import ec.com.erp.utilitario.commons.constantes.CollectionType;
 
 /**
  * 
@@ -65,6 +70,13 @@ public class PerfilDTO implements Serializable{
 		@JoinColumn(name = "CODIGOTIPOPERFIL", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
 	})
 	private CatalogoValorDTO perfilCatalogoValorDTO;
+	
+	/**
+	 * Referencia a la entidad modulo perfil
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "perfilDTO")
+	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
+	private Collection<ModuloPerfilDTO> moduloPerfilDTOCols;
 
 	public PerfilID getId() {
 		return id;
@@ -121,5 +133,12 @@ public class PerfilDTO implements Serializable{
 	public void setPerfilCatalogoValorDTO(CatalogoValorDTO perfilCatalogoValorDTO) {
 		this.perfilCatalogoValorDTO = perfilCatalogoValorDTO;
 	}
-	
+
+	public Collection<ModuloPerfilDTO> getModuloPerfilDTOCols() {
+		return moduloPerfilDTOCols;
+	}
+
+	public void setModuloPerfilDTOCols(Collection<ModuloPerfilDTO> moduloPerfilDTOCols) {
+		this.moduloPerfilDTOCols = moduloPerfilDTOCols;
+	}
 }

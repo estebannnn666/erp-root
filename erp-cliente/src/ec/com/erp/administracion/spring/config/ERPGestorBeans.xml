@@ -111,6 +111,7 @@
     <!-- Inyeccion bean  perfilesGestor -->
     <bean id="erpPerfilesGestor" class="ec.com.erp.perfiles.gestor.PerfilesGestor">
         <property name="perfilesDAO"><ref bean="erpPerfilesDAO"/></property>
+        <property name="moduloDAO"><ref bean="erpModuloDAO"/></property>
     </bean>
     
     <!-- Inyeccion bean  PersonaGestor -->
@@ -133,4 +134,9 @@
 	<bean id="erpFacturaDetalleGestor" class="ec.com.erp.factura.gestor.FacturaDetalleGestor">
 		<property name="facturaDetalleDAO"><ref bean="erpFacturaDetalleDAO"/></property>
 	</bean>
+	
+	 <!-- Inyeccion bean  ModuloGestor -->
+    <bean id="erpModuloGestor" class="ec.com.erp.modulos.gestor.ModuloGestor">
+        <property name="moduloDAO"><ref bean="erpModuloDAO"/></property>
+    </bean>
 </beans>

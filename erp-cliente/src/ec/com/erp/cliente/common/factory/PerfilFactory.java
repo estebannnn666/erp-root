@@ -14,7 +14,6 @@ public class PerfilFactory extends ERPSpringContextFactory {
 		appCTx = appCtx;
 	}
 
-
 	/**
 	 * Devuelve los servicios de perfiles
 	 * @return

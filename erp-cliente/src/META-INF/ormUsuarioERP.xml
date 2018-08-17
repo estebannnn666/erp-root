@@ -26,5 +26,7 @@
 	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ModuloDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ModuloPerfilDTO"></entity>
 	
 </entity-mappings>

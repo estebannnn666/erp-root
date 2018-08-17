@@ -31,6 +31,7 @@ public class ERPFactory {
 	public static final FacturasFactory facturas = new FacturasFactory(APP_CTX);
 	public static final SecuenciasFactory secuencias = new SecuenciasFactory(APP_CTX);
 	public static final PerfilFactory perfiles = new PerfilFactory(APP_CTX);
+	public static final ModuloFactory modulos = new ModuloFactory(APP_CTX);
 	
 	private static ApplicationContext activateFactory(){
 		try{

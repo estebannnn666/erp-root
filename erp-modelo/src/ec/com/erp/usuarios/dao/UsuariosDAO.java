@@ -125,7 +125,9 @@ public class UsuariosDAO implements IUsuariosDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(UsuariosDTO.class, "root");
-
+			criteria.createAlias("root.perfilDTO", "perfilDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("perfilDTO.moduloPerfilDTOCols", "moduloPerfilDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("moduloPerfilDTOCols.moduloDTO", "moduloDTO", CriteriaSpecification.LEFT_JOIN);
 			//restricciones
 			criteria.add(Restrictions.eq("root.estado", "1"));
 			criteria.add(Restrictions.eq("root.nombreUsuario", nombreUsuario));
@@ -138,6 +140,24 @@ public class UsuariosDAO implements IUsuariosDAO {
 			projectionList.add(Projections.property("root.nombreUsuario"), "nombreUsuario");
 			projectionList.add(Projections.property("root.passwordUsuario"), "passwordUsuario");
 			projectionList.add(Projections.property("root.estado"), "estado");
+			
+			projectionList.add(Projections.property("perfilDTO.id.codigoPerfil"), "perfilDTO_id_codigoPerfil");
+			projectionList.add(Projections.property("perfilDTO.nombrePerfil"), "perfilDTO_nombrePerfil");
+			projectionList.add(Projections.property("perfilDTO.descripcion"), "perfilDTO_descripcion");
+			
+			// Proyecciones entidad modulo perfil
+			projectionList.add(Projections.property("moduloPerfilDTOCols.id.codigoModulo"), "perfilDTO_moduloPerfilDTOCols_id_codigoModulo");
+			projectionList.add(Projections.property("moduloPerfilDTOCols.id.codigoPerfil"), "perfilDTO_moduloPerfilDTOCols_id_codigoPerfil");
+			projectionList.add(Projections.property("moduloPerfilDTOCols.estado"), "perfilDTO_moduloPerfilDTOCols_estado");
+			
+			// Proyecciones modulos
+			projectionList.add(Projections.property("moduloDTO.id.codigoModulo"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_id_codigoModulo");
+			projectionList.add(Projections.property("moduloDTO.codigoReferencia"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_codigoReferencia");
+			projectionList.add(Projections.property("moduloDTO.nombreModulo"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_nombreModulo");
+			projectionList.add(Projections.property("moduloDTO.orden"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_orden");
+			projectionList.add(Projections.property("moduloDTO.estilo"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_estilo");
+			projectionList.add(Projections.property("moduloDTO.url"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_url");
+			
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(UsuariosDTO.class));

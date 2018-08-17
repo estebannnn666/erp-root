@@ -112,6 +112,7 @@
     <!-- Inyeccion bean  perfilesDAO -->
     <bean id="erpPerfilesDAO" class="ec.com.erp.perfiles.dao.PerfilesDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
     <!-- Inyeccion bean  PersonaDAO -->
@@ -133,6 +134,12 @@
     
     <!-- Inyeccion bean  FacturaDetalleDAO -->
     <bean id="erpFacturaDetalleDAO" class="ec.com.erp.factura.dao.FacturaDetalleDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+     <!-- Inyeccion bean  ModuloDAO -->
+    <bean id="erpModuloDAO" class="ec.com.erp.modulos.dao.ModuloDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>

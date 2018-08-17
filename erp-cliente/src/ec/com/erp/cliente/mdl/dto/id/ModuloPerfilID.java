@@ -13,12 +13,21 @@ import javax.persistence.Embeddable;
 
 @SuppressWarnings("serial")
 @Embeddable
-public class PerfilID implements Serializable{
+public class ModuloPerfilID implements Serializable{
 
+	@Column(name="CODIGOMODULO")
+	private Long codigoModulo;
+	
 	@Column(name="CODIGOPERFIL")
 	private Long codigoPerfil;
-	
-	public static final String NOMBRE_SECUENCIA = "SCVNSECPERFIL";
+
+	public Long getCodigoModulo() {
+		return codigoModulo;
+	}
+
+	public void setCodigoModulo(Long codigoModulo) {
+		this.codigoModulo = codigoModulo;
+	}
 
 	public Long getCodigoPerfil() {
 		return codigoPerfil;

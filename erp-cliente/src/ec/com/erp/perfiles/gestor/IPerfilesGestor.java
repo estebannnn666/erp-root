@@ -15,9 +15,16 @@ public interface IPerfilesGestor {
 	
 	/**
 	 * M\u00e9todo para obtener lista de perfiles
+	 * @param parametro para buscar por nombre de perfil
 	 * @return 
 	 * @throws ERPException
 	 */
-	Collection<PerfilDTO> obtenerListaPerfiles() throws ERPException;
+	Collection<PerfilDTO> obtenerListaPerfiles(String nombrePerfil) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para crear o actualizar 
+	 * @param perfilDTO
+	 * @throws ERPException
+	 */
+	void crearActualizarPerfil(PerfilDTO perfilDTO)throws ERPException;
 }

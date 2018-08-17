@@ -96,4 +96,9 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
 	<bean id="erpFacturaCabeceraServicio" class="ec.com.erp.factura.servicios.FacturaCabeceraServicio">
 		<property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
 	</bean>
+	
+	<!-- Servicio modulos -->
+    <bean id="erpModuloServicio" class="ec.com.erp.modulos.servicios.ModuloServicio">
+        <property name="moduloGestor"><ref bean="erpModuloGestor"/></property>
+    </bean>
 </beans>

@@ -20,12 +20,23 @@ public class PerfilesServicio implements IPerfilesServicio{
 
 	/**
 	 * M\u00e9todo para obtener lista de perfiles
+	 * @param parametro para buscar por nombre de perfil
 	 * @return 
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<PerfilDTO> findObtenerListaPerfiles() throws ERPException{
-		return this.perfilesGestor.obtenerListaPerfiles();
+	public Collection<PerfilDTO> findObtenerListaPerfiles(String nombrePerfil) throws ERPException{
+		return this.perfilesGestor.obtenerListaPerfiles(nombrePerfil);
+	}
+	
+	/**
+	 * M\u00e9todo para crear o actualizar 
+	 * @param perfilDTO
+	 * @throws ERPException
+	 */
+	@Override
+	public void transCrearActualizarPerfil(PerfilDTO perfilDTO)throws ERPException{
+		this.perfilesGestor.crearActualizarPerfil(perfilDTO);
 	}
 
 }
