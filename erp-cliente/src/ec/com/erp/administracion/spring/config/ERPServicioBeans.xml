@@ -101,4 +101,9 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
     <bean id="erpModuloServicio" class="ec.com.erp.modulos.servicios.ModuloServicio">
         <property name="moduloGestor"><ref bean="erpModuloGestor"/></property>
     </bean>
+    
+    <!-- Servicio inventario -->
+    <bean id="erpInventarioServicio" class="ec.com.erp.inventario.servicios.InventarioServicio">
+        <property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
+    </bean>
 </beans>

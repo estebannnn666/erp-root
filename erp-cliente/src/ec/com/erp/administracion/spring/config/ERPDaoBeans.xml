@@ -138,8 +138,14 @@
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
-     <!-- Inyeccion bean  ModuloDAO -->
+    <!-- Inyeccion bean  ModuloDAO -->
     <bean id="erpModuloDAO" class="ec.com.erp.modulos.dao.ModuloDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  Inventario -->
+    <bean id="erpInventarioDAO" class="ec.com.erp.inventario.dao.InventarioDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>

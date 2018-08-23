@@ -135,8 +135,13 @@
 		<property name="facturaDetalleDAO"><ref bean="erpFacturaDetalleDAO"/></property>
 	</bean>
 	
-	 <!-- Inyeccion bean  ModuloGestor -->
+	<!-- Inyeccion bean  ModuloGestor -->
     <bean id="erpModuloGestor" class="ec.com.erp.modulos.gestor.ModuloGestor">
         <property name="moduloDAO"><ref bean="erpModuloDAO"/></property>
+    </bean>
+    
+    <!-- Inyeccion bean  InventarioGestor -->
+    <bean id="erpInventarioGestor" class="ec.com.erp.inventario.gestor.InventarioGestor">
+        <property name="inventarioDAO"><ref bean="erpInventarioDAO"/></property>
     </bean>
 </beans>
