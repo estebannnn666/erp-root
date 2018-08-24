@@ -32,6 +32,18 @@ public class InventarioServicio implements IInventarioServicio{
 	public Collection<InventarioDTO> findObtenerListaInventarioByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
 		return this.inventarioGestor.obtenerListaInventarioByArticuloFechas(codigoCompania, codigoBarras, fechaFacturaInicio, fechaFacturaFin);
 	}
+	
+	/**
+	 * M\u00e9todo para obtener kardex por codigo de barra
+	 * @param codigoCompania
+	 * @param codigoBarras
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public InventarioDTO findObtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException{
+		return this.inventarioGestor.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras);
+	}
 
 	/**
 	 * M\u00e9todo para crear o actualizar 

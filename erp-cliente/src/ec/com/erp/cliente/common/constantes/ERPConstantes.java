@@ -18,6 +18,7 @@ public class ERPConstantes {
 	
 	/************ Generales ************************/
 	public static final String ESTADO_ACTIVO_NUMERICO = ERPMessages.getString("ec.com.erp.general.estado.numerico.activo");
+	public static final String ESTADO_INACTIVO_NUMERICO = ERPMessages.getString("ec.com.erp.general.estado.numerico.inactivo");
 	public static final String PREFIJO_SECUENCIAL_USUARIO = ERPMessages.getString("ec.com.erp.general.prefijo.secuencial.usuario");
 	
 	/************ CODIGOS CATALAGOS VALORES *****************/

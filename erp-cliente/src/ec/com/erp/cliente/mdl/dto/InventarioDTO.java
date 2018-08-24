@@ -64,6 +64,9 @@ public class InventarioDTO implements Serializable{
 	@Column(name = "VALORTOTALEXISTENCIA")
 	private BigDecimal valorTotalExistencia ;
 	
+	@Column(name="ESULTIMOREGISTRO")
+	private String esUltimoRegistro;
+	
 	/**
 	 * Estado del registro usuario
 	 */
@@ -242,5 +245,13 @@ public class InventarioDTO implements Serializable{
 
 	public void setArticuloDTO(ArticuloDTO articuloDTO) {
 		this.articuloDTO = articuloDTO;
+	}
+
+	public String getEsUltimoRegistro() {
+		return esUltimoRegistro;
+	}
+
+	public void setEsUltimoRegistro(String esUltimoRegistro) {
+		this.esUltimoRegistro = esUltimoRegistro;
 	}
 }

@@ -34,6 +34,18 @@ public class InventarioGestor implements IInventarioGestor{
 	}
 
 	/**
+	 * M\u00e9todo para obtener kardex por codigo de barra
+	 * @param codigoCompania
+	 * @param codigoBarras
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public InventarioDTO obtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException{
+		return this.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras);
+	}
+	
+	/**
 	 * M\u00e9todo para crear o actualizar 
 	 * @param inventarioDTO
 	 * @throws ERPException

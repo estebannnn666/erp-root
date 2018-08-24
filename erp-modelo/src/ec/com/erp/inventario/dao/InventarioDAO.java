@@ -123,10 +123,62 @@ public class InventarioDAO implements IInventarioDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de modulos.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de existencias.").initCause(e);
 		} 
 	}
 	
+	/**
+	 * M\u00e9todo para obtener kardex por codigo de barra
+	 * @param codigoCompania
+	 * @param codigoBarras
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public InventarioDTO obtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(InventarioDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("root.esUltimoRegistro", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("articuloDTO.codigoBarras", codigoBarras));
+						
+			//proyecciones entidad inventario
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoInventario"), "id_codigoInventario");
+			projectionList.add(Projections.property("root.fechaMovimiento"), "fechaMovimiento");
+			projectionList.add(Projections.property("root.detalleMoviento"), "detalleMoviento");
+			projectionList.add(Projections.property("root.cantidadEntrada"), "cantidadEntrada");
+			projectionList.add(Projections.property("root.valorUnidadEntrada"), "valorUnidadEntrada");
+			projectionList.add(Projections.property("root.valorTotalEntrada"), "valorTotalEntrada");
+			projectionList.add(Projections.property("root.cantidadSalida"), "cantidadSalida");
+			projectionList.add(Projections.property("root.valorUnidadSalida"), "valorUnidadSalida");
+			projectionList.add(Projections.property("root.valorTotalSalida"), "valorTotalSalida");
+			projectionList.add(Projections.property("root.cantidadExistencia"), "cantidadExistencia");
+			projectionList.add(Projections.property("root.valorUnidadExistencia"), "valorUnidadExistencia");
+			projectionList.add(Projections.property("root.valorTotalExistencia"), "valorTotalExistencia");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+						
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(InventarioDTO.class));
+
+			return (InventarioDTO)criteria.uniqueResult();
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de modulos.").initCause(e);
+		} 
+	}
 
 	/**
 	 * M\u00e9todo para crear o actualizar 
