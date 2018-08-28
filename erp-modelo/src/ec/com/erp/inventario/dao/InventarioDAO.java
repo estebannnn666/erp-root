@@ -18,7 +18,7 @@ import org.hibernate.criterion.Restrictions;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
-import ec.com.erp.cliente.mdl.dto.id.ModuloID;
+import ec.com.erp.cliente.mdl.dto.id.InventarioID;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.utilitario.dao.commons.hibernate.transformers.MultiLevelResultTransformer;
 
@@ -104,6 +104,7 @@ public class InventarioDAO implements IInventarioDAO {
 			projectionList.add(Projections.property("root.cantidadExistencia"), "cantidadExistencia");
 			projectionList.add(Projections.property("root.valorUnidadExistencia"), "valorUnidadExistencia");
 			projectionList.add(Projections.property("root.valorTotalExistencia"), "valorTotalExistencia");
+			projectionList.add(Projections.property("root.esUltimoRegistro"), "esUltimoRegistro");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
@@ -142,6 +143,7 @@ public class InventarioDAO implements IInventarioDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(InventarioDTO.class, "root");
+			criteria.createAlias("root.articuloDTO", "articuloDTO", CriteriaSpecification.INNER_JOIN);
 
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
@@ -164,6 +166,7 @@ public class InventarioDAO implements IInventarioDAO {
 			projectionList.add(Projections.property("root.cantidadExistencia"), "cantidadExistencia");
 			projectionList.add(Projections.property("root.valorUnidadExistencia"), "valorUnidadExistencia");
 			projectionList.add(Projections.property("root.valorTotalExistencia"), "valorTotalExistencia");
+			projectionList.add(Projections.property("root.esUltimoRegistro"), "esUltimoRegistro");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
@@ -176,7 +179,7 @@ public class InventarioDAO implements IInventarioDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de modulos.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener ultimo movimiento registrado para el item ingresado.").initCause(e);
 		} 
 	}
 
@@ -190,9 +193,10 @@ public class InventarioDAO implements IInventarioDAO {
 		try{
 			sessionFactory.getCurrentSession().clear();
 			if(inventarioDTO.getId().getCodigoInventario() ==  null){
-				Integer secuencialInvetario = this.secuenciaDAO.obtenerSecuencialTabla(ModuloID.NOMBRE_SECUENCIA);
+				Integer secuencialInvetario = this.secuenciaDAO.obtenerSecuencialTabla(InventarioID.NOMBRE_SECUENCIA);
 				inventarioDTO.getId().setCodigoInventario(Long.parseLong(""+secuencialInvetario));
 				inventarioDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
+				inventarioDTO.setFechaRegistro(new Date());
 				sessionFactory.getCurrentSession().save(inventarioDTO);
 			}
 			else

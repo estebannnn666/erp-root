@@ -2,7 +2,9 @@ package ec.com.erp.inventario.gestor;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
+import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
 import ec.com.erp.inventario.dao.IInventarioDAO;
@@ -42,7 +44,7 @@ public class InventarioGestor implements IInventarioGestor{
 	 */
 	@Override
 	public InventarioDTO obtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException{
-		return this.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras);
+		return this.inventarioDAO.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras);
 	}
 	
 	/**
@@ -52,6 +54,13 @@ public class InventarioGestor implements IInventarioGestor{
 	 */
 	@Override
 	public void crearActualizarInventario(InventarioDTO inventarioDTO)throws ERPException{
+		InventarioDTO inventarioDTOAux = this.inventarioDAO.obtenerUltimoInventarioByArticulo(inventarioDTO.getId().getCodigoCompania(), inventarioDTO.getArticuloDTO().getCodigoBarras());
+		if(inventarioDTOAux != null) {
+			inventarioDTOAux.setEsUltimoRegistro(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+			this.inventarioDAO.crearActualizarInventario(inventarioDTOAux);
+		}
+		inventarioDTO.setFechaMovimiento(new Date());
+		inventarioDTO.setEsUltimoRegistro(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
 		this.inventarioDAO.crearActualizarInventario(inventarioDTO);
 	}
 	
