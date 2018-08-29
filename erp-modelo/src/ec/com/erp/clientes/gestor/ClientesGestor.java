@@ -2,6 +2,8 @@ package ec.com.erp.clientes.gestor;
 
 import java.util.Collection;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ClienteDTO;
@@ -167,5 +169,42 @@ public class ClientesGestor implements IClientesGestor{
 		catch (Exception e) {
 			throw new ERPException("Error, "+e.getMessage());
 		}
+	}
+	
+	/**
+	 * Obtener cliente por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param codigoValorTipoCliente
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public ClienteDTO obtenerClienteByCodigo(Integer codigoCompania, String numeroDocumento, String codigoValorTipoCliente) throws ERPException{
+		Collection<ClienteDTO> clienteDTOCols =  this.clientesDAO.obtenerListaClientes(codigoCompania, numeroDocumento, null);
+		ClienteDTO clienteDTO = new ClienteDTO();
+		clienteDTO.setCodigoValorTipoCliente(codigoValorTipoCliente);
+		if(CollectionUtils.isEmpty(clienteDTOCols)) {
+			if(codigoValorTipoCliente.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_PERSONA)) {
+				Collection<PersonaDTO> personaDTOCols = this.personaGestor.obtenerListaPersona(codigoCompania, numeroDocumento);
+				if(CollectionUtils.isNotEmpty(personaDTOCols)) {
+					clienteDTO.setPersonaDTO(personaDTOCols.iterator().next());
+				}
+			}else if(codigoValorTipoCliente.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_EMPRESA)) {
+				EmpresaDTO empresaDTO = this.empresaGestor.obtenerEmpresaByCodigo(codigoCompania, numeroDocumento);
+				if(empresaDTO != null) {
+					clienteDTO.setEmpresaDTO(empresaDTO);
+				}
+			}
+			// Validar que exista empresa o persona para controlar el mensaje a mostrar
+			if(clienteDTO.getPersonaDTO() == null && clienteDTO.getEmpresaDTO() == null) {
+				clienteDTO = null;
+			}
+		}
+		else
+		{
+			clienteDTO = clienteDTOCols.iterator().next();
+		}
+		return clienteDTO;
 	}
 }

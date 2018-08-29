@@ -40,4 +40,17 @@ public class ClientesServicio implements IClientesServicio{
 	public void transGuardarActualizarClientes(ClienteDTO clienteDTO, ContactoDTO contactoDTO) throws ERPException{
 		this.clientesGestor.guardarActualizarClientes(clienteDTO, contactoDTO);
 	}
+	
+	/**
+	 * Obtener cliente por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param codigoValorTipoCliente
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public ClienteDTO findObtenerClienteByCodigo(Integer codigoCompania, String numeroDocumento, String codigoValorTipoCliente) throws ERPException{
+		return this.clientesGestor.obtenerClienteByCodigo(codigoCompania, numeroDocumento, codigoValorTipoCliente);
+	}
 }

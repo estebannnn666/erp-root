@@ -31,4 +31,14 @@ public interface IClientesServicio {
 	 * @throws ERPException
 	 */
 	void transGuardarActualizarClientes(ClienteDTO clienteDTO, ContactoDTO contactoDTO) throws ERPException;
+	
+	/**
+	 * Obtener cliente por documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param codigoValorTipoCliente
+	 * @return
+	 * @throws ERPException
+	 */
+	ClienteDTO findObtenerClienteByCodigo(Integer codigoCompania, String numeroDocumento, String codigoValorTipoCliente) throws ERPException;
 }

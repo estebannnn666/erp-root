@@ -102,6 +102,7 @@ public class PedidoDAO implements IPedidoDAO {
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoPedido"), "id_codigoPedido");
+			projectionList.add(Projections.property("root.numeroPedido"), "numeroPedido");
 			projectionList.add(Projections.property("root.codigoCliente"), "codigoCliente");
 			projectionList.add(Projections.property("root.fechaPedido"), "fechaPedido");
 			projectionList.add(Projections.property("root.fechaEntrega"), "fechaEntrega");
