@@ -31,6 +31,12 @@ public class FacturaDetalleDTO implements Serializable{
 	/**
 	 * Especifica la cantidad pedida
 	 */
+	@Column(name = "CODIGOARTICULO")
+	private Integer codigoArticulo ;
+	
+	/**
+	 * Especifica la cantidad pedida
+	 */
 	@Column(name = "CANTIDAD")
 	private Integer cantidad ;
 	
@@ -83,6 +89,16 @@ public class FacturaDetalleDTO implements Serializable{
 	})
 	private FacturaCabeceraDTO facturaCabeceraDTO;
 
+	/**
+	 * Referencia al entidad Articulo
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOARTICULO", referencedColumnName = "CODIGOARTICULO", insertable = false, updatable = false)
+	})
+	private ArticuloDTO articuloDTO;
+	
 	public FacturaDetalleID getId() {
 		return id;
 	}
@@ -177,5 +193,21 @@ public class FacturaDetalleDTO implements Serializable{
 
 	public void setFacturaCabeceraDTO(FacturaCabeceraDTO facturaCabeceraDTO) {
 		this.facturaCabeceraDTO = facturaCabeceraDTO;
+	}
+
+	public Integer getCodigoArticulo() {
+		return codigoArticulo;
+	}
+
+	public void setCodigoArticulo(Integer codigoArticulo) {
+		this.codigoArticulo = codigoArticulo;
+	}
+
+	public ArticuloDTO getArticuloDTO() {
+		return articuloDTO;
+	}
+
+	public void setArticuloDTO(ArticuloDTO articuloDTO) {
+		this.articuloDTO = articuloDTO;
 	}
 }

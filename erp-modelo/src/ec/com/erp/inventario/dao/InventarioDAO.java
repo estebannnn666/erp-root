@@ -11,6 +11,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -115,10 +116,13 @@ public class InventarioDAO implements IInventarioDAO {
 			projectionList.add(Projections.property("articuloDTO.codigoBarras"), "articuloDTO_codigoBarras");
 			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "articuloDTO_nombreArticulo");
 			projectionList.add(Projections.property("articuloDTO.precio"), "articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.peso"), "articuloDTO_peso");
+			
+			criteria.addOrder(Order.desc("root.fechaMovimiento"));
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(InventarioDTO.class));
-
+			
 			return criteria.list();
 
 		} catch (ERPException e) {
@@ -155,6 +159,7 @@ public class InventarioDAO implements IInventarioDAO {
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoInventario"), "id_codigoInventario");
+			projectionList.add(Projections.property("root.codigoArticulo"), "codigoArticulo");
 			projectionList.add(Projections.property("root.fechaMovimiento"), "fechaMovimiento");
 			projectionList.add(Projections.property("root.detalleMoviento"), "detalleMoviento");
 			projectionList.add(Projections.property("root.cantidadEntrada"), "cantidadEntrada");
