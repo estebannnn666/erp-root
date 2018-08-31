@@ -2,6 +2,7 @@ package ec.com.erp.inventario.servicios;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
@@ -53,5 +54,18 @@ public class InventarioServicio implements IInventarioServicio{
 	@Override
 	public void transCrearActualizarInventario(InventarioDTO inventarioDTO)throws ERPException{
 		this.inventarioGestor.crearActualizarInventario(inventarioDTO);
+	}
+	
+	/**
+	 * Devuelve html de reporte de inventarios
+	 * @param inventarioDTOCols
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public String findObtenerXMLReporteKardex(Collection<InventarioDTO> inventarioDTOCols, Date fechaInicio, Date fechaFin) throws ERPException{
+		return this.inventarioGestor.procesarXMLReporteKardex(inventarioDTOCols, fechaInicio, fechaFin); 
 	}
 }

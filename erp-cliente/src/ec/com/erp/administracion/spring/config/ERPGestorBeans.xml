@@ -128,6 +128,7 @@
 	<bean id="erpFacturaCabeceraGestor" class="ec.com.erp.factura.gestor.FacturaCabeceraGestor">
 		<property name="facturaCabeceraDAO"><ref bean="erpFacturaCabeceraDAO"/></property>
 		<property name="facturaDetalleGestor"><ref bean="erpFacturaDetalleGestor"/></property>
+		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
 	</bean>
 	
 	<!-- Gestor facturaDetalle -->

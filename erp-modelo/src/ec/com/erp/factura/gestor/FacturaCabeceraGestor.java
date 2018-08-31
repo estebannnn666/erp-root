@@ -16,9 +16,12 @@ import org.jdom.Document;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.common.resources.ERPMessages;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO;
+import ec.com.erp.cliente.mdl.dto.InventarioDTO;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
+import ec.com.erp.inventario.gestor.IInventarioGestor;
 import ec.com.erp.utilitario.commons.util.TransformerUtil;
 
 /**
@@ -29,6 +32,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 
 	private IFacturaCabeceraDAO facturaCabeceraDAO;
 	private IFacturaDetalleGestor facturaDetalleGestor;
+	private IInventarioGestor inventarioGestor;
 	
 	
 	public IFacturaCabeceraDAO getFacturaCabeceraDAO() {
@@ -45,6 +49,14 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 
 	public void setFacturaDetalleGestor(IFacturaDetalleGestor facturaDetalleGestor) {
 		this.facturaDetalleGestor = facturaDetalleGestor;
+	}
+	
+	public IInventarioGestor getInventarioGestor() {
+		return inventarioGestor;
+	}
+
+	public void setInventarioGestor(IInventarioGestor inventarioGestor) {
+		this.inventarioGestor = inventarioGestor;
 	}
 
 	/**
@@ -83,6 +95,9 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			for (FacturaDetalleDTO facturaDetalleDTO : facturaDetalleDTOCols) {
 				facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 				facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
+				if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
+					this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+				}
 				this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
 			}
 		} catch (ERPException e) {
@@ -90,6 +105,38 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		} catch (Exception e) {
 			throw new ERPException("Error, {0}",e.getMessage());
 		} 
+	}
+	
+	/**
+	 * Metodo para registrar movimiento de mercaderia
+	 * @param facturaDetalleDTO
+	 */
+	public void registrarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura) {
+		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras());
+		InventarioDTO inventarioDTO = new InventarioDTO();
+		if(inventarioDTOAux != null) {
+			if(facturaDetalleDTO.getCantidad().intValue() > inventarioDTOAux.getCantidadExistencia().intValue()) {
+				throw new ERPException("No se puede registrar la venta por que no has existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+			}
+			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
+			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.venta")+" "+numeroFactura);
+			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
+			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
+			inventarioDTO.setCantidadSalida(facturaDetalleDTO.getCantidad());
+			inventarioDTO.setValorUnidadSalida(facturaDetalleDTO.getValorUnidad());
+			inventarioDTO.setValorTotalSalida(facturaDetalleDTO.getSubTotal());
+			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() - facturaDetalleDTO.getCantidad());
+			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getValorUnidad());
+			inventarioDTO.setValorTotalExistencia(inventarioDTOAux.getValorTotalExistencia().subtract(facturaDetalleDTO.getSubTotal()));
+			inventarioDTO.setCantidadEntrada(null);
+			inventarioDTO.setValorUnidadEntrada(null);
+			inventarioDTO.setValorTotalEntrada(null);
+			inventarioDTO.setUsuarioRegistro(facturaDetalleDTO.getUsuarioRegistro());
+			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
+		}
+		else {
+			throw new ERPException("No se puede registrar la venta por que no has existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+		}
 	}
 
 
