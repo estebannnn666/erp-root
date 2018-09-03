@@ -95,8 +95,10 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			for (FacturaDetalleDTO facturaDetalleDTO : facturaDetalleDTOCols) {
 				facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 				facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
-				if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
-					this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)){
+					if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
+						this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+					}
 				}
 				this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
 			}
@@ -108,7 +110,38 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	}
 	
 	/**
-	 * Metodo para registrar movimiento de mercaderia
+	 * Funcionalidad para cancelar factura o inactivar
+	 * @param facturaCabeceraDTO
+	 * @throws ERPException
+	 */
+	@Override
+	public void cancelarFacturaInactivar(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
+		try{
+			// Obtenemos la lista de detalle a guardar
+			Collection<FacturaDetalleDTO> facturaDetalleDTOCols = facturaCabeceraDTO.getFacturaDetalleDTOCols();
+			// Guardamos la cabecera de la factura
+			facturaCabeceraDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+			this.facturaCabeceraDAO.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
+			
+			// Guardamos los detalle de la factura 
+			for (FacturaDetalleDTO facturaDetalleDTO : facturaDetalleDTOCols) {
+				facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+				facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
+				facturaDetalleDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)){
+					this.reversarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+				}
+				this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
+			}
+		} catch (ERPException e) {
+			throw new ERPException("Error, {0}",e.getMessage()) ;
+		} catch (Exception e) {
+			throw new ERPException("Error, {0}",e.getMessage());
+		} 
+	}
+	
+	/**
+	 * Metodo para registrar movimiento de mercaderia salida
 	 * @param facturaDetalleDTO
 	 */
 	public void registrarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura) {
@@ -116,7 +149,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			if(facturaDetalleDTO.getCantidad().intValue() > inventarioDTOAux.getCantidadExistencia().intValue()) {
-				throw new ERPException("No se puede registrar la venta por que no has existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+				throw new ERPException("No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
 			}
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
 			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.venta")+" "+numeroFactura);
@@ -135,10 +168,38 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
 		}
 		else {
-			throw new ERPException("No se puede registrar la venta por que no has existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+			throw new ERPException("No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
 		}
 	}
 
+	/**
+	 * Metodo para registrar movimiento de mercaderia reversa
+	 * @param facturaDetalleDTO
+	 */
+	public void reversarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura) {
+		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras());
+		InventarioDTO inventarioDTO = new InventarioDTO();
+		if(inventarioDTOAux != null) {
+			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
+			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.reversa")+" "+numeroFactura);
+			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
+			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
+			inventarioDTO.setCantidadEntrada(facturaDetalleDTO.getCantidad());
+			inventarioDTO.setValorUnidadEntrada(facturaDetalleDTO.getValorUnidad());
+			inventarioDTO.setValorTotalEntrada(facturaDetalleDTO.getSubTotal());
+			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() + facturaDetalleDTO.getCantidad());
+			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getValorUnidad());
+			inventarioDTO.setValorTotalExistencia(inventarioDTOAux.getValorTotalExistencia().add(facturaDetalleDTO.getSubTotal()));
+			inventarioDTO.setCantidadSalida(null);
+			inventarioDTO.setValorUnidadSalida(null);
+			inventarioDTO.setValorTotalSalida(null);
+			inventarioDTO.setUsuarioRegistro(facturaDetalleDTO.getUsuarioRegistro());
+			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
+		}
+		else {
+			throw new ERPException("No se puede registrar la resersa por que no hay existencias para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+		}
+	}
 
 	/**
 	 * Devuelve html de reporte de facturas

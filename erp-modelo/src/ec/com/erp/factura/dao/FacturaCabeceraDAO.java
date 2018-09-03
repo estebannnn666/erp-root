@@ -85,6 +85,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			//joins
 			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
 			criteria.createAlias("root.facturaDetalleDTOCols", "facturaDetalleDTOCols", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.tipoDocumentoCatalogoValorDTO", "tipoDocumentoCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			
 			//restricciones
@@ -135,6 +136,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			// Proyecciones entidad detalle pedido
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoCompania"), "facturaDetalleDTOCols_id_codigoCompania");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoDetalleFactura"), "facturaDetalleDTOCols_id_codigoDetalleFactura");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoArticulo"), "facturaDetalleDTOCols_codigoArticulo");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.cantidad"), "facturaDetalleDTOCols_cantidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoFactura"), "facturaDetalleDTOCols_codigoFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.descripcion"), "facturaDetalleDTOCols_descripcion");
@@ -143,6 +145,15 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("facturaDetalleDTOCols.estado"), "facturaDetalleDTOCols_estado");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.usuarioRegistro"), "facturaDetalleDTOCols_usuarioRegistro");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.fechaRegistro"), "facturaDetalleDTOCols_fechaRegistro");
+			
+			projectionList.add(Projections.property("articuloDTO.id.codigoCompania"), "facturaDetalleDTOCols_articuloDTO_id_codigoCompania");
+			projectionList.add(Projections.property("articuloDTO.id.codigoArticulo"), "facturaDetalleDTOCols_articuloDTO_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloDTO.codigoBarras"), "facturaDetalleDTOCols_articuloDTO_codigoBarras");
+			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "facturaDetalleDTOCols_articuloDTO_nombreArticulo");
+			projectionList.add(Projections.property("articuloDTO.peso"), "facturaDetalleDTOCols_articuloDTO_peso");
+			projectionList.add(Projections.property("articuloDTO.precio"), "facturaDetalleDTOCols_articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.cantidadStock"), "facturaDetalleDTOCols_articuloDTO_cantidadStock");
+			projectionList.add(Projections.property("articuloDTO.estado"), "facturaDetalleDTOCols_articuloDTO_estado");
 			
 			// Proyecciobes entidad catalogo valor
 			projectionList.add(Projections.property("tipoDocumentoCatalogoValorDTO.nombreCatalogoValor"), "tipoDocumentoCatalogoValorDTO_nombreCatalogoValor");

@@ -63,4 +63,14 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	public String finObtenerXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) throws ERPException{
 		return this.facturaCabeceraGestor.procesarXMLReporteFacturas(facturaCabeceraDTOCols);
 	}
+	
+	/**
+	 * Funcionalidad para cancelar factura o inactivar
+	 * @param facturaCabeceraDTO
+	 * @throws ERPException
+	 */
+	@Override
+	public void transCancelarFacturaInactivar(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
+		this.facturaCabeceraGestor.cancelarFacturaInactivar(facturaCabeceraDTO);
+	}
 }

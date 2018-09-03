@@ -43,4 +43,11 @@ public interface IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	String procesarXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) throws ERPException;
+	
+	/**
+	 * Funcionalidad para cancelar factura o inactivar
+	 * @param facturaCabeceraDTO
+	 * @throws ERPException
+	 */
+	void cancelarFacturaInactivar(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
 }
