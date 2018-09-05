@@ -115,6 +115,9 @@ public class PedidoDTO implements Serializable{
 	@Transient
 	private EstadoPedidoDTO estadoPedidoDTO;
 	
+	@Transient
+	private Boolean seleccionado;
+	
 	public PedidoID getId() {
 		return id;
 	}
@@ -241,5 +244,13 @@ public class PedidoDTO implements Serializable{
 
 	public void setNumeroPedido(String numeroPedido) {
 		this.numeroPedido = numeroPedido;
+	}
+
+	public Boolean getSeleccionado() {
+		return seleccionado;
+	}
+
+	public void setSeleccionado(Boolean seleccionado) {
+		this.seleccionado = seleccionado;
 	}
 }

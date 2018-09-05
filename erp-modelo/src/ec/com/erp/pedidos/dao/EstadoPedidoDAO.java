@@ -80,6 +80,7 @@ public class EstadoPedidoDAO implements IEstadoPedidoDAO {
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.id.codigoPedido", codigoPedido));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.isNull("root.fechaFin"));
 
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();

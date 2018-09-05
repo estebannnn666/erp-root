@@ -17,10 +17,12 @@ import org.jdom.Document;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.mdl.dto.EstadoPedidoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 import ec.com.erp.guiadespacho.dao.IGuiaDespachoDAO;
+import ec.com.erp.pedidos.dao.IEstadoPedidoDAO;
 import ec.com.erp.utilitario.commons.util.TransformerUtil;
 
 /**
@@ -32,6 +34,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	private IGuiaDespachoDAO guiaDespachoDAO;
 	private IGuiaDespachoExtrasGestor guiaDespachoExtrasGestor;
 	private IGuiaDespachoPedidoGestor guiaDespachoPedidoGestor;
+	private IEstadoPedidoDAO estadoPedidoDAO;
 	
 	public IGuiaDespachoDAO getGuiaDespachoDAO() {
 		return guiaDespachoDAO;
@@ -55,6 +58,14 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 
 	public void setGuiaDespachoPedidoGestor(IGuiaDespachoPedidoGestor guiaDespachoPedidoGestor) {
 		this.guiaDespachoPedidoGestor = guiaDespachoPedidoGestor;
+	}
+
+	public IEstadoPedidoDAO getEstadoPedidoDAO() {
+		return estadoPedidoDAO;
+	}
+
+	public void setEstadoPedidoDAO(IEstadoPedidoDAO estadoPedidoDAO) {
+		this.estadoPedidoDAO = estadoPedidoDAO;
 	}
 
 	/**
@@ -101,6 +112,20 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 					guiaDespachoPedidoDTO.setObservacion(guiaDespachoPedidoDTO.getObservacion().toUpperCase());
 				}
 				this.guiaDespachoPedidoGestor.crearActualizarGuiaDespachoPedidos(guiaDespachoPedidoDTO);
+				Collection<EstadoPedidoDTO> estadoPedidoActualCol = this.estadoPedidoDAO.obtenerEstadoPedido(guiaDespachoDTO.getId().getCodigoCompania(), guiaDespachoPedidoDTO.getCodigoPedido());
+				EstadoPedidoDTO estadoPedidoDTOActual = estadoPedidoActualCol.iterator().next();
+				estadoPedidoDTOActual.setFechaFin(new Date());
+				this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTOActual);
+				EstadoPedidoDTO estadoPedidoDTONuevo = new EstadoPedidoDTO();
+				estadoPedidoDTONuevo.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
+				estadoPedidoDTONuevo.getId().setCodigoPedido(guiaDespachoPedidoDTO.getCodigoPedido());
+				estadoPedidoDTONuevo.setCodigoTipoEstadoPedido(ERPConstantes.CODIGO_CATALOGO_TIPOS_ESTADO_PEDIDO);
+				estadoPedidoDTONuevo.setCodigoValorEstadoPedido(ERPConstantes.CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_PENDIENTE);
+				estadoPedidoDTONuevo.setFechaInicio(new Date());
+				estadoPedidoDTONuevo.setFechaFin(null);
+				estadoPedidoDTONuevo.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
+				this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTONuevo);
+				
 			}	
 			
 			// Guardar pedidos guia despacho

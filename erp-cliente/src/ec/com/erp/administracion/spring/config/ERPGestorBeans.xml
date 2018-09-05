@@ -74,6 +74,7 @@
 		<property name="guiaDespachoDAO"><ref bean="erpGuiaDespachoDAO"/></property>
 		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoPedidoGestor"/></property>
 		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
+		<property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>
 	</bean>
 	
 	<!-- Inyeccion bean  CompaniaGestor -->

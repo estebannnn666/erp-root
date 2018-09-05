@@ -78,6 +78,13 @@ public class GuiaDespachoPedidoDAO implements IGuiaDespachoPedidoDAO {
 			//joins
 			Criteria criteria  = session.createCriteria(GuiaDespachoPedidoDTO.class, "root");
 			criteria.createAlias("root.guiaDespachoDTO", "guiaDespachoDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.pedidoDTO", "pedidoDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("pedidoDTO.clienteDTO", "clienteDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("clienteDTO.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("clienteDTO.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("clienteDTO.empresaDTO", "empresaDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("empresaDTO.contactoDTOCols", "contactoEmpresaDTO", CriteriaSpecification.LEFT_JOIN);
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
@@ -97,6 +104,54 @@ public class GuiaDespachoPedidoDAO implements IGuiaDespachoPedidoDAO {
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			projectionList.add(Projections.property("pedidoDTO.id.codigoCompania"), "pedidoDTO_id_codigoCompania");
+			projectionList.add(Projections.property("pedidoDTO.id.codigoPedido"), "pedidoDTO_id_codigoPedido");
+			projectionList.add(Projections.property("pedidoDTO.numeroPedido"), "pedidoDTO_numeroPedido");
+			projectionList.add(Projections.property("pedidoDTO.codigoCliente"), "pedidoDTO_codigoCliente");
+			projectionList.add(Projections.property("pedidoDTO.fechaPedido"), "pedidoDTO_fechaPedido");
+			projectionList.add(Projections.property("pedidoDTO.fechaEntrega"), "pedidoDTO_fechaEntrega");
+			projectionList.add(Projections.property("pedidoDTO.totalCompra"), "pedidoDTO_totalCompra");
+			projectionList.add(Projections.property("pedidoDTO.estado"), "pedidoDTO_estado");
+			projectionList.add(Projections.property("pedidoDTO.usuarioRegistro"), "pedidoDTO_usuarioRegistro");
+			projectionList.add(Projections.property("pedidoDTO.fechaRegistro"), "pedidoDTO_fechaRegistro");
+			
+			// Proyecciones entidad clientes 
+			projectionList.add(Projections.property("clienteDTO.id.codigoCompania"), "pedidoDTO_clienteDTO_id_codigoCompania");
+			projectionList.add(Projections.property("clienteDTO.id.codigoCliente"), "pedidoDTO_clienteDTO_id_codigoCliente");
+			projectionList.add(Projections.property("clienteDTO.codigoPersona"), "pedidoDTO_clienteDTO_codigoPersona");
+			projectionList.add(Projections.property("clienteDTO.codigoEmpresa"), "pedidoDTO_clienteDTO_codigoEmpresa");
+			projectionList.add(Projections.property("clienteDTO.userId"), "pedidoDTO_clienteDTO_userId");
+			projectionList.add(Projections.property("clienteDTO.codigoValorTipoCliente"), "pedidoDTO_clienteDTO_codigoValorTipoCliente");
+			projectionList.add(Projections.property("clienteDTO.codigoTipoCliente"), "pedidoDTO_clienteDTO_codigoTipoCliente");
+			projectionList.add(Projections.property("clienteDTO.estado"), "pedidoDTO_clienteDTO_estado");
+			projectionList.add(Projections.property("clienteDTO.usuarioRegistro"), "pedidoDTO_clienteDTO_usuarioRegistro");
+			projectionList.add(Projections.property("clienteDTO.fechaRegistro"), "pedidoDTO_clienteDTO_fechaRegistro");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("tipoClienteCatalogoValorDTO.nombreCatalogoValor"), "pedidoDTO_clienteDTO_tipoClienteCatalogoValorDTO_nombreCatalogoValor");
+			
+			// Proyecciones entidad persona 
+			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "pedidoDTO_clienteDTO_personaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("personaDTO.id.codigoPersona"), "pedidoDTO_clienteDTO_personaDTO_id_codigoPersona");
+			projectionList.add(Projections.property("personaDTO.numeroDocumento"), "pedidoDTO_clienteDTO_personaDTO_numeroDocumento");
+			projectionList.add(Projections.property("personaDTO.nombreCompleto"), "pedidoDTO_clienteDTO_personaDTO_nombreCompleto");
+			
+			// Proyecciones entidad contacto persona 
+			projectionList.add(Projections.property("contactoPersonaDTO.direccionPrincipal"), "pedidoDTO_clienteDTO_personaDTO_contactoPersonaDTO_direccionPrincipal");
+			projectionList.add(Projections.property("contactoPersonaDTO.ciudad"), "pedidoDTO_clienteDTO_personaDTO_contactoPersonaDTO_ciudad");
+			projectionList.add(Projections.property("contactoPersonaDTO.telefonoPrincipal"), "pedidoDTO_clienteDTO_personaDTO_contactoPersonaDTO_telefonoPrincipal");
+			
+			// Proyecciones entidad empresa   
+			projectionList.add(Projections.property("empresaDTO.id.codigoCompania"), "pedidoDTO_clienteDTO_empresaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("empresaDTO.id.codigoEmpresa"), "pedidoDTO_clienteDTO_empresaDTO_id_codigoEmpresa");
+			projectionList.add(Projections.property("empresaDTO.numeroRuc"), "pedidoDTO_clienteDTO_empresaDTO_numeroRuc");
+			projectionList.add(Projections.property("empresaDTO.razonSocial"), "pedidoDTO_clienteDTO_empresaDTO_razonSocial");
+			
+			// Proyecciones entidad contacto empresa
+			projectionList.add(Projections.property("contactoEmpresaDTO.direccionPrincipal"), "pedidoDTO_clienteDTO_empresaDTO_contactoEmpresaDTO_direccionPrincipal");
+			projectionList.add(Projections.property("contactoEmpresaDTO.ciudad"), "pedidoDTO_clienteDTO_empresaDTO_contactoEmpresaDTO_ciudad");
+			projectionList.add(Projections.property("contactoEmpresaDTO.telefonoPrincipal"), "pedidoDTO_clienteDTO_empresaDTO_contactoEmpresaDTO_telefonoPrincipal");
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(GuiaDespachoPedidoDTO.class));
