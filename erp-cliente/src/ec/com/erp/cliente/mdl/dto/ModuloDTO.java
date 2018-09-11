@@ -59,6 +59,12 @@ public class ModuloDTO implements Serializable{
 	private String url ;
 	
 	/**
+	 * Tipo de modulo
+	 */
+	@Column(name = "VALORTIPO", nullable = false)
+	private String valorTipo ;
+	
+	/**
 	 * Estado del registro
 	 */
 	@Column(name="ESTADO",  nullable = false)
@@ -137,5 +143,13 @@ public class ModuloDTO implements Serializable{
 
 	public void setSeleccionado(Boolean seleccionado) {
 		this.seleccionado = seleccionado;
+	}
+
+	public String getValorTipo() {
+		return valorTipo;
+	}
+
+	public void setValorTipo(String valorTipo) {
+		this.valorTipo = valorTipo;
 	}
 }

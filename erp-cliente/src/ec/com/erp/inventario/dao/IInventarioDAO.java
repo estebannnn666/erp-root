@@ -40,4 +40,16 @@ public interface IInventarioDAO {
 	 * @throws ERPException
 	 */
 	void crearActualizarInventario(InventarioDTO inventarioDTO)throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener existencias por codigo de barra y fechas
+	 * @param codigoCompania
+	 * @param codigoBarras
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	Collection<InventarioDTO> obtenerListaExistenciasByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
+	
 }

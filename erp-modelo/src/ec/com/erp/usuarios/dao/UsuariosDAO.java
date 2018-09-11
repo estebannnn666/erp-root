@@ -157,6 +157,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 			projectionList.add(Projections.property("moduloDTO.orden"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_orden");
 			projectionList.add(Projections.property("moduloDTO.estilo"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_estilo");
 			projectionList.add(Projections.property("moduloDTO.url"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_url");
+			projectionList.add(Projections.property("moduloDTO.valorTipo"), "perfilDTO_moduloPerfilDTOCols_moduloDTO_valorTipo");
 			
 			
 			criteria.setProjection(projectionList);

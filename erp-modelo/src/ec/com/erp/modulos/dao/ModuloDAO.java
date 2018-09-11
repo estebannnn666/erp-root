@@ -88,6 +88,7 @@ public class ModuloDAO implements IModuloDAO {
 			projectionList.add(Projections.property("root.nombreModulo"), "nombreModulo");
 			projectionList.add(Projections.property("root.descripcion"), "descripcion");
 			projectionList.add(Projections.property("root.estilo"), "estilo");
+			projectionList.add(Projections.property("root.valorTipo"), "valorTipo");
 			projectionList.add(Projections.property("root.url"), "url");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			

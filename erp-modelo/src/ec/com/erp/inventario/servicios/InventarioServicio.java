@@ -35,6 +35,20 @@ public class InventarioServicio implements IInventarioServicio{
 	}
 	
 	/**
+	 * M\u00e9todo para obtener existencias por codigo de barra y fechas
+	 * @param codigoCompania
+	 * @param codigoBarras
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<InventarioDTO> findObtenerListaExistenciasByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.inventarioGestor.obtenerListaExistenciasByArticuloFechas(codigoCompania, codigoBarras, fechaFacturaInicio, fechaFacturaFin);
+	}
+	
+	/**
 	 * M\u00e9todo para obtener kardex por codigo de barra
 	 * @param codigoCompania
 	 * @param codigoBarras
@@ -67,5 +81,15 @@ public class InventarioServicio implements IInventarioServicio{
 	@Override
 	public String findObtenerXMLReporteKardex(Collection<InventarioDTO> inventarioDTOCols, Date fechaInicio, Date fechaFin) throws ERPException{
 		return this.inventarioGestor.procesarXMLReporteKardex(inventarioDTOCols, fechaInicio, fechaFin); 
+	}
+	
+	/**
+	 * Devuelve html de reporte de existencias
+	 * @param inventarioDTOCols
+	 * @return
+	 * @throws ERPException
+	 */
+	public String findObtenerXMLReporteExistencias(Collection<InventarioDTO> inventarioDTOCols) throws ERPException{
+		return this.inventarioGestor.procesarXMLReporteExistencias(inventarioDTOCols);
 	}
 }

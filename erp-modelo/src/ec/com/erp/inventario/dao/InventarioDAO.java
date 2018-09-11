@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -85,6 +86,80 @@ public class InventarioDAO implements IInventarioDAO {
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			criteria.add(Restrictions.eq("articuloDTO.codigoBarras", codigoBarras));
+			
+			if(fechaFacturaInicio != null && fechaFacturaFin != null){
+				criteria.add(Restrictions.between("root.fechaMovimiento", fechaFacturaInicio, fechaFacturaFin));
+			}
+			
+			//proyecciones entidad inventario
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoInventario"), "id_codigoInventario");
+			projectionList.add(Projections.property("root.fechaMovimiento"), "fechaMovimiento");
+			projectionList.add(Projections.property("root.detalleMoviento"), "detalleMoviento");
+			projectionList.add(Projections.property("root.cantidadEntrada"), "cantidadEntrada");
+			projectionList.add(Projections.property("root.valorUnidadEntrada"), "valorUnidadEntrada");
+			projectionList.add(Projections.property("root.valorTotalEntrada"), "valorTotalEntrada");
+			projectionList.add(Projections.property("root.cantidadSalida"), "cantidadSalida");
+			projectionList.add(Projections.property("root.valorUnidadSalida"), "valorUnidadSalida");
+			projectionList.add(Projections.property("root.valorTotalSalida"), "valorTotalSalida");
+			projectionList.add(Projections.property("root.cantidadExistencia"), "cantidadExistencia");
+			projectionList.add(Projections.property("root.valorUnidadExistencia"), "valorUnidadExistencia");
+			projectionList.add(Projections.property("root.valorTotalExistencia"), "valorTotalExistencia");
+			projectionList.add(Projections.property("root.esUltimoRegistro"), "esUltimoRegistro");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			// Proyecciones entidad articulo
+			projectionList.add(Projections.property("articuloDTO.id.codigoCompania"), "articuloDTO_id_codigoCompania");
+			projectionList.add(Projections.property("articuloDTO.id.codigoArticulo"), "articuloDTO_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloDTO.codigoBarras"), "articuloDTO_codigoBarras");
+			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "articuloDTO_nombreArticulo");
+			projectionList.add(Projections.property("articuloDTO.precio"), "articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.peso"), "articuloDTO_peso");
+			
+			criteria.addOrder(Order.desc("root.fechaMovimiento"));
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(InventarioDTO.class));
+			
+			return criteria.list();
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de existencias.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para obtener existencias por codigo de barra y fechas
+	 * @param codigoCompania
+	 * @param codigoBarras
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<InventarioDTO> obtenerListaExistenciasByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(InventarioDTO.class, "root");
+			criteria.createAlias("root.articuloDTO", "articuloDTO", CriteriaSpecification.INNER_JOIN);
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("root.esUltimoRegistro", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			if(StringUtils.isNotEmpty(codigoBarras)){
+				criteria.add(Restrictions.eq("articuloDTO.codigoBarras", codigoBarras));
+			}
 			
 			if(fechaFacturaInicio != null && fechaFacturaFin != null){
 				criteria.add(Restrictions.between("root.fechaMovimiento", fechaFacturaInicio, fechaFacturaFin));

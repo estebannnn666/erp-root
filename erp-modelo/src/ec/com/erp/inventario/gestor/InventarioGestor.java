@@ -46,6 +46,20 @@ public class InventarioGestor implements IInventarioGestor{
 	}
 
 	/**
+	 * M\u00e9todo para obtener existencias por codigo de barra y fechas
+	 * @param codigoCompania
+	 * @param codigoBarras
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<InventarioDTO> obtenerListaExistenciasByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.inventarioDAO.obtenerListaExistenciasByArticuloFechas(codigoCompania, codigoBarras, fechaFacturaInicio, fechaFacturaFin);
+	}
+	
+	/**
 	 * M\u00e9todo para obtener kardex por codigo de barra
 	 * @param codigoCompania
 	 * @param codigoBarras
@@ -73,7 +87,6 @@ public class InventarioGestor implements IInventarioGestor{
 		inventarioDTO.setEsUltimoRegistro(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
 		this.inventarioDAO.crearActualizarInventario(inventarioDTO);
 	}
-	
 	
 	/**
 	 * Devuelve html de reporte de inventarios
@@ -141,4 +154,58 @@ public class InventarioGestor implements IInventarioGestor{
 		return html;
 	}
 	
+	/**
+	 * Devuelve html de reporte de existencias
+	 * @param inventarioDTOCols
+	 * @return
+	 * @throws ERPException
+	 */
+	public String procesarXMLReporteExistencias(Collection<InventarioDTO> inventarioDTOCols) throws ERPException{
+		StringBuilder contenidoXml = new StringBuilder();
+		String html = "";
+		String urlTipoReporte = "";
+		try{
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
+			formatoDecimales.setMinimumFractionDigits(2);
+
+			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_REPORTE_EXISTENCIA;
+			
+			if(CollectionUtils.isNotEmpty(inventarioDTOCols)) {
+				contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+				contenidoXml.append("<reporte>");
+				contenidoXml.append("<fechaReporte>").append(StringEscapeUtils.escapeXml(""+formatoFecha.format(new Date()))).append("</fechaReporte>");
+				//detalle reposicion
+				contenidoXml.append("<listaMovimientos>");
+				int cont = 1;
+				for(InventarioDTO inventarioDTO : inventarioDTOCols){
+					contenidoXml.append("<movimiento>");
+					contenidoXml.append("<numero>").append(StringEscapeUtils.escapeXml(""+cont)).append("</numero>");
+					contenidoXml.append("<fechaMovimiento>").append(StringEscapeUtils.escapeXml(StringEscapeUtils.escapeXml(""+formatoFecha.format(inventarioDTO.getFechaMovimiento())))).append("</fechaMovimiento>");
+					contenidoXml.append("<codigoBarras>").append(StringEscapeUtils.escapeXml(inventarioDTO.getArticuloDTO().getCodigoBarras())).append("</codigoBarras>");
+					contenidoXml.append("<nombreArticulo>").append(StringEscapeUtils.escapeXml(inventarioDTO.getArticuloDTO().getNombreArticulo())).append("</nombreArticulo>");
+					contenidoXml.append("<detalleMovimiento>").append(StringEscapeUtils.escapeXml(inventarioDTO.getDetalleMoviento())).append("</detalleMovimiento>");
+					contenidoXml.append("<cantidadExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getCantidadExistencia() == null ? "-" : ""+inventarioDTO.getCantidadExistencia())).append("</cantidadExistencia>");
+					contenidoXml.append("<valorUnidadExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getValorUnidadExistencia() == null ? "-" : ""+formatoDecimales.format(inventarioDTO.getValorUnidadExistencia().doubleValue()))).append("</valorUnidadExistencia>");
+					contenidoXml.append("<valorTotalExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getValorTotalExistencia() == null ? "-" : ""+formatoDecimales.format(inventarioDTO.getValorTotalExistencia().doubleValue()))).append("</valorTotalExistencia>");
+					contenidoXml.append("</movimiento>");
+					cont++;
+				}
+				contenidoXml.append("</listaMovimientos>");			
+				contenidoXml.append("</reporte>");
+			}
+			
+			String contenidoXSL=null;
+			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);
+			Document docXML = TransformerUtil.stringToXML(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			HashMap<String , String> parametros = new HashMap<String, String>();
+			result = TransformerUtil.transformar(docXML, docXSL, parametros);
+			html = TransformerUtil.xmlToString(result);
+		} catch (Exception en) {
+			throw new ERPException("Error al procesar plantilla xsl") ;
+		}
+		return html;
+	}
 }
