@@ -17,6 +17,7 @@
 	<!-- Gestor articulos -->
 	<bean id="erpArticuloGestor" class="ec.com.erp.articulo.gestor.ArticuloGestor">
 		<property name="articuloDAO"><ref bean="erpArticuloDAO"/></property>
+		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
 	</bean>
 	
 	<!-- Gestor catalogos -->
