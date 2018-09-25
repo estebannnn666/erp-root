@@ -28,11 +28,18 @@ public class UsuariosDTO implements Serializable{
 
 	@EmbeddedId
 	private UsuariosID id = new UsuariosID();
+	
 	/**
 	 * Nombre de usuario
 	 */
 	@Column(name = "CODIGOPERFIL", nullable = false)
 	private BigDecimal codigoPerfil ;
+	
+	/**
+	 * Codigo de compania
+	 */
+	@Column(name = "CODIGOCOMPANIA", nullable = false)
+	private Integer codigoCompania ;
 	
 	/**
 	 * Nombre de usuario
@@ -60,6 +67,15 @@ public class UsuariosDTO implements Serializable{
 		@JoinColumn(name = "CODIGOPERFIL", referencedColumnName = "CODIGOPERFIL", insertable = false, updatable = false)
 	})
 	private PerfilDTO perfilDTO;
+	
+	/**
+	 * Referencia a la relacion con la entidad companiaDTO
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false)
+	})
+	private CompaniaDTO companiaDTO;
 	
 	/**
 	 * Estado del registro usuario
@@ -121,5 +137,21 @@ public class UsuariosDTO implements Serializable{
 
 	public void setPerfilDTO(PerfilDTO perfilDTO) {
 		this.perfilDTO = perfilDTO;
+	}
+
+	public Integer getCodigoCompania() {
+		return codigoCompania;
+	}
+
+	public void setCodigoCompania(Integer codigoCompania) {
+		this.codigoCompania = codigoCompania;
+	}
+
+	public CompaniaDTO getCompaniaDTO() {
+		return companiaDTO;
+	}
+
+	public void setCompaniaDTO(CompaniaDTO companiaDTO) {
+		this.companiaDTO = companiaDTO;
 	}
 }

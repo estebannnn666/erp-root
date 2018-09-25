@@ -86,6 +86,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.userId"), "id_userId");
 			projectionList.add(Projections.property("root.codigoPerfil"), "codigoPerfil");
+			projectionList.add(Projections.property("root.codigoCompania"), "codigoCompania");
 			projectionList.add(Projections.property("root.nombreUsuario"), "nombreUsuario");
 			projectionList.add(Projections.property("root.passwordUsuario"), "passwordUsuario");
 			projectionList.add(Projections.property("root.estado"), "estado");
@@ -126,6 +127,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 			//joins
 			Criteria criteria  = session.createCriteria(UsuariosDTO.class, "root");
 			criteria.createAlias("root.perfilDTO", "perfilDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.companiaDTO", "companiaDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("perfilDTO.moduloPerfilDTOCols", "moduloPerfilDTOCols", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("moduloPerfilDTOCols.moduloDTO", "moduloDTO", CriteriaSpecification.LEFT_JOIN);
 			//restricciones
@@ -136,6 +138,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.userId"), "id_userId");
+			projectionList.add(Projections.property("root.codigoCompania"), "codigoCompania");
 			projectionList.add(Projections.property("root.codigoPerfil"), "codigoPerfil");
 			projectionList.add(Projections.property("root.nombreUsuario"), "nombreUsuario");
 			projectionList.add(Projections.property("root.passwordUsuario"), "passwordUsuario");
@@ -144,6 +147,10 @@ public class UsuariosDAO implements IUsuariosDAO {
 			projectionList.add(Projections.property("perfilDTO.id.codigoPerfil"), "perfilDTO_id_codigoPerfil");
 			projectionList.add(Projections.property("perfilDTO.nombrePerfil"), "perfilDTO_nombrePerfil");
 			projectionList.add(Projections.property("perfilDTO.descripcion"), "perfilDTO_descripcion");
+			
+			projectionList.add(Projections.property("companiaDTO.id.codigoCompania"), "companiaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("companiaDTO.nombreCompania"), "companiaDTO_nombreCompania");
+			projectionList.add(Projections.property("companiaDTO.descripcionCompania"), "companiaDTO_descripcionCompania");
 			
 			// Proyecciones entidad modulo perfil
 			projectionList.add(Projections.property("moduloPerfilDTOCols.id.codigoModulo"), "perfilDTO_moduloPerfilDTOCols_id_codigoModulo");

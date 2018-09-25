@@ -33,6 +33,7 @@ public class ERPFactory {
 	public static final PerfilFactory perfiles = new PerfilFactory(APP_CTX);
 	public static final ModuloFactory modulos = new ModuloFactory(APP_CTX);
 	public static final InventarioFactory inventario = new InventarioFactory(APP_CTX);
+	public static final EstadoPedidoFactory estadopedido = new EstadoPedidoFactory(APP_CTX);
 	
 	private static ApplicationContext activateFactory(){
 		try{

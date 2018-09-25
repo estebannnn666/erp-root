@@ -67,7 +67,6 @@ public class UsuariosGestor implements IUsuariosGestor {
 		try {
 			// Se valida si el cliente ya existe para actualizar o guardar los datos de usuario
 			if(usuarioDTO.getId().getUserId() == null){
-				usuarioDTO.setCodigoPerfil(ERPConstantes.CODIGO_PERFIL_CLIENTES);
 				usuarioDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
 				this.crearUsuario(usuarioDTO);
 			}

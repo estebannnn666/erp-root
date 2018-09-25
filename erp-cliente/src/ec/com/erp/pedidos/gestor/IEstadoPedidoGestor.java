@@ -31,4 +31,14 @@ public interface IEstadoPedidoGestor {
 	 */
 	void crearActualizarEstadoPedido(EstadoPedidoDTO estadoPedidoDTO, String estado) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para actualizar el estado del pedido enviando el estado como parametro
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @param valorEstado
+	 * @param userId
+	 * @throws ERPException
+	 */
+	void actualizarEstadoPorEstadoyPedido(Integer codigoCompania, Long codigoPedido, String valorEstado, String userId) throws ERPException;
+	
 }

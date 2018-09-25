@@ -1,6 +1,7 @@
 package ec.com.erp.pedidos.gestor;
 
 import java.util.Collection;
+import java.util.Date;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
@@ -41,5 +42,34 @@ public class EstadoPedidoGestor implements IEstadoPedidoGestor{
 	public void crearActualizarEstadoPedido(EstadoPedidoDTO estadoPedidoDTO, String estado) throws ERPException{ 
 		estadoPedidoDTO.setCodigoTipoEstadoPedido(ERPConstantes.CODIGO_CATALOGO_TIPOS_ESTADO_PEDIDO);
 		this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTO);
+	}
+	
+	/**
+	 * M\u00e9todo para actualizar el estado del pedido enviando el estado como parametro
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @param valorEstado
+	 * @param userId
+	 * @throws ERPException
+	 */
+	@Override
+	public void actualizarEstadoPorEstadoyPedido(Integer codigoCompania, Long codigoPedido, String valorEstado, String userId) throws ERPException{
+		try {
+			Collection<EstadoPedidoDTO> estadoPedidoActualCol = this.estadoPedidoDAO.obtenerEstadoPedido(codigoCompania, codigoPedido);
+			EstadoPedidoDTO estadoPedidoDTOActual = estadoPedidoActualCol.iterator().next();
+			estadoPedidoDTOActual.setFechaFin(new Date());
+			this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTOActual);
+			EstadoPedidoDTO estadoPedidoDTONuevo = new EstadoPedidoDTO();
+			estadoPedidoDTONuevo.getId().setCodigoCompania(codigoCompania);
+			estadoPedidoDTONuevo.getId().setCodigoPedido(codigoPedido);
+			estadoPedidoDTONuevo.setCodigoTipoEstadoPedido(ERPConstantes.CODIGO_CATALOGO_TIPOS_ESTADO_PEDIDO);
+			estadoPedidoDTONuevo.setCodigoValorEstadoPedido(valorEstado);
+			estadoPedidoDTONuevo.setFechaInicio(new Date());
+			estadoPedidoDTONuevo.setFechaFin(null);
+			estadoPedidoDTONuevo.setUsuarioRegistro(userId);
+			this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTONuevo);
+		} catch (Exception e) {
+			throw new ERPException(e.getMessage());
+		}
 	}
 }

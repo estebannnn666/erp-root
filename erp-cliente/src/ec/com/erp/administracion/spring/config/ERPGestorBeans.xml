@@ -146,5 +146,6 @@
     <!-- Inyeccion bean  InventarioGestor -->
     <bean id="erpInventarioGestor" class="ec.com.erp.inventario.gestor.InventarioGestor">
         <property name="inventarioDAO"><ref bean="erpInventarioDAO"/></property>
+        <property name="articuloGestor"><ref bean="erpArticuloGestor"/></property>
     </bean>
 </beans>

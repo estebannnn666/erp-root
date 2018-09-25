@@ -22,4 +22,13 @@ public interface IEstadoPedidoServicio {
 	 */
 	Collection<EstadoPedidoDTO> findObtenerEstadoPedido(Integer codigoCompania, Long codigoPedido) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para actualizar el estado del pedido enviando el estado como parametro
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @param valorEstado
+	 * @param userId
+	 * @throws ERPException
+	 */
+	void transActualizarEstadoPorEstadoyPedido(Integer codigoCompania, Long codigoPedido, String valorEstado, String userId) throws ERPException;
 }

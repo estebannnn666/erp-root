@@ -30,4 +30,16 @@ public class EstadoPedidoServicio implements IEstadoPedidoServicio{
 		return this.estadoPedidoGestor.obtenerEstadoPedido(codigoCompania, codigoPedido);
 	}
 
+	/**
+	 * M\u00e9todo para actualizar el estado del pedido enviando el estado como parametro
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @param valorEstado
+	 * @param userId
+	 * @throws ERPException
+	 */
+	@Override
+	public void transActualizarEstadoPorEstadoyPedido(Integer codigoCompania, Long codigoPedido, String valorEstado, String userId) throws ERPException{
+		this.estadoPedidoGestor.actualizarEstadoPorEstadoyPedido(codigoCompania, codigoPedido, valorEstado, userId);
+	}
 }

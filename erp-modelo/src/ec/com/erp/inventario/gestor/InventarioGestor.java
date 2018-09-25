@@ -10,8 +10,10 @@ import java.util.HashMap;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.Document;
 
+import ec.com.erp.articulo.gestor.IArticuloGestor;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
@@ -22,6 +24,7 @@ import ec.com.erp.utilitario.commons.util.TransformerUtil;
 public class InventarioGestor implements IInventarioGestor{
 
 	private IInventarioDAO inventarioDAO;
+	private IArticuloGestor articuloGestor;
 	
 	public IInventarioDAO getInventarioDAO() {
 		return inventarioDAO;
@@ -29,6 +32,14 @@ public class InventarioGestor implements IInventarioGestor{
 
 	public void setInventarioDAO(IInventarioDAO inventarioDAO) {
 		this.inventarioDAO = inventarioDAO;
+	}
+
+	public IArticuloGestor getArticuloGestor() {
+		return articuloGestor;
+	}
+
+	public void setArticuloGestor(IArticuloGestor articuloGestor) {
+		this.articuloGestor = articuloGestor;
 	}
 
 	/**
@@ -78,14 +89,26 @@ public class InventarioGestor implements IInventarioGestor{
 	 */
 	@Override
 	public void crearActualizarInventario(InventarioDTO inventarioDTO)throws ERPException{
+		Boolean actualizarArticulo = Boolean.FALSE;
+		String codigoBarras = StringUtils.EMPTY;
 		InventarioDTO inventarioDTOAux = this.inventarioDAO.obtenerUltimoInventarioByArticulo(inventarioDTO.getId().getCodigoCompania(), inventarioDTO.getArticuloDTO().getCodigoBarras());
 		if(inventarioDTOAux != null) {
 			inventarioDTOAux.setEsUltimoRegistro(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
 			this.inventarioDAO.crearActualizarInventario(inventarioDTOAux);
+			actualizarArticulo = Boolean.TRUE;
+			codigoBarras = inventarioDTO.getArticuloDTO().getCodigoBarras();
 		}
 		inventarioDTO.setFechaMovimiento(new Date());
 		inventarioDTO.setEsUltimoRegistro(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
 		this.inventarioDAO.crearActualizarInventario(inventarioDTO);
+		// Se actualiza el stock del articulo
+		if(actualizarArticulo){
+			Collection<ArticuloDTO> articulosDTOCols = this.articuloGestor.obtenerListaArticulos(inventarioDTO.getId().getCodigoCompania(), codigoBarras, null);
+			ArticuloDTO articuloDTO = articulosDTOCols.iterator().next();
+			articuloDTO.setCantidadStock(inventarioDTO.getCantidadExistencia());
+			articuloDTO.setPrecio(inventarioDTO.getValorUnidadExistencia());
+			this.articuloGestor.transGuardarActualizarArticulo(articuloDTO);
+		}
 	}
 	
 	/**
