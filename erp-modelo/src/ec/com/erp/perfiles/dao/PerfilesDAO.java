@@ -106,6 +106,7 @@ public class PerfilesDAO implements IPerfilesDAO{
 			projectionList.add(Projections.property("moduloDTO.id.codigoModulo"), "moduloPerfilDTOCols_moduloDTO_id_codigoModulo");
 			projectionList.add(Projections.property("moduloDTO.codigoReferencia"), "moduloPerfilDTOCols_moduloDTO_codigoReferencia");
 			projectionList.add(Projections.property("moduloDTO.nombreModulo"), "moduloPerfilDTOCols_moduloDTO_nombreModulo");
+			projectionList.add(Projections.property("moduloDTO.orden"), "moduloPerfilDTOCols_moduloDTO_orden");
 						
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(PerfilDTO.class));

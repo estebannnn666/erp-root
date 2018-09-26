@@ -73,6 +73,9 @@ public class ModuloDTO implements Serializable{
 	@Transient
 	private Boolean seleccionado;
 	
+	@Transient
+	private Boolean mostrarPerfil;
+	
 	public ModuloID getId() {
 		return id;
 	}
@@ -151,5 +154,13 @@ public class ModuloDTO implements Serializable{
 
 	public void setValorTipo(String valorTipo) {
 		this.valorTipo = valorTipo;
+	}
+
+	public Boolean getMostrarPerfil() {
+		return mostrarPerfil;
+	}
+
+	public void setMostrarPerfil(Boolean mostrarPerfil) {
+		this.mostrarPerfil = mostrarPerfil;
 	}
 }
