@@ -76,6 +76,9 @@ public class ModuloDTO implements Serializable{
 	@Transient
 	private Boolean mostrarPerfil;
 	
+	@Transient
+	private Boolean menuActivo;
+	
 	public ModuloID getId() {
 		return id;
 	}
@@ -162,5 +165,13 @@ public class ModuloDTO implements Serializable{
 
 	public void setMostrarPerfil(Boolean mostrarPerfil) {
 		this.mostrarPerfil = mostrarPerfil;
+	}
+
+	public Boolean getMenuActivo() {
+		return menuActivo;
+	}
+
+	public void setMenuActivo(Boolean menuActivo) {
+		this.menuActivo = menuActivo;
 	}
 }

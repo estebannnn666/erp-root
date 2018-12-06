@@ -71,4 +71,13 @@ public interface IInventarioServicio {
 	 */
 	String findObtenerXMLReporteExistencias(Collection<InventarioDTO> inventarioDTOCols) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para obtener valores estadisticos de inventario
+	 * @param codigoCompania
+	 * @param existenciaActual
+	 * @return
+	 * @throws ERPException
+	 */
+	Long findObtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException;
+	
 }

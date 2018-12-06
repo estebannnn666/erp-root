@@ -231,4 +231,16 @@ public class InventarioGestor implements IInventarioGestor{
 		}
 		return html;
 	}
+	
+	/**
+	 * M\u00e9todo para obtener valores estadisticos de inventario
+	 * @param codigoCompania
+	 * @param existenciaActual
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long obtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException{
+		return this.inventarioDAO.obtenerCantidadTotalEntradas(codigoCompania, existenciaActual);
+	}
 }

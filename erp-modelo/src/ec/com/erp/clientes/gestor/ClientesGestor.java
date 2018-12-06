@@ -1,5 +1,6 @@
 package ec.com.erp.clientes.gestor;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -185,15 +186,17 @@ public class ClientesGestor implements IClientesGestor{
 		ClienteDTO clienteDTO = new ClienteDTO();
 		clienteDTO.setCodigoValorTipoCliente(codigoValorTipoCliente);
 		if(CollectionUtils.isEmpty(clienteDTOCols)) {
-			if(codigoValorTipoCliente.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_PERSONA)) {
-				Collection<PersonaDTO> personaDTOCols = this.personaGestor.obtenerListaPersona(codigoCompania, numeroDocumento);
-				if(CollectionUtils.isNotEmpty(personaDTOCols)) {
-					clienteDTO.setPersonaDTO(personaDTOCols.iterator().next());
-				}
-			}else if(codigoValorTipoCliente.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_EMPRESA)) {
-				EmpresaDTO empresaDTO = this.empresaGestor.obtenerEmpresaByCodigo(codigoCompania, numeroDocumento);
-				if(empresaDTO != null) {
-					clienteDTO.setEmpresaDTO(empresaDTO);
+			if(codigoValorTipoCliente != null){
+				if(codigoValorTipoCliente.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_PERSONA)) {
+					Collection<PersonaDTO> personaDTOCols = this.personaGestor.obtenerListaPersona(codigoCompania, numeroDocumento);
+					if(CollectionUtils.isNotEmpty(personaDTOCols)) {
+						clienteDTO.setPersonaDTO(personaDTOCols.iterator().next());
+					}
+				}else if(codigoValorTipoCliente.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_EMPRESA)) {
+					EmpresaDTO empresaDTO = this.empresaGestor.obtenerEmpresaByCodigo(codigoCompania, numeroDocumento);
+					if(empresaDTO != null) {
+						clienteDTO.setEmpresaDTO(empresaDTO);
+					}
 				}
 			}
 			// Validar que exista empresa o persona para controlar el mensaje a mostrar
@@ -206,5 +209,18 @@ public class ClientesGestor implements IClientesGestor{
 			clienteDTO = clienteDTOCols.iterator().next();
 		}
 		return clienteDTO;
+	}
+	
+	/**
+	 * Metood para obtener cantidad de clientes todos o por fecha
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long obtenerClientesTodosOFecha(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin) throws ERPException{
+		return this.clientesDAO.obtenerClientesTodosOFecha(codigoCompania, fechaInicio, fechaFin);
 	}
 }

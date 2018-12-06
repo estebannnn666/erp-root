@@ -1,5 +1,6 @@
 package ec.com.erp.clientes.gestor;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
@@ -41,4 +42,14 @@ public interface IClientesGestor {
 	 * @throws ERPException
 	 */
 	ClienteDTO obtenerClienteByCodigo(Integer codigoCompania, String numeroDocumento, String codigoValorTipoCliente) throws ERPException;
+	
+	/**
+	 * Metood para obtener cantidad de clientes todos o por fecha
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	Long obtenerClientesTodosOFecha(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin) throws ERPException;
 }

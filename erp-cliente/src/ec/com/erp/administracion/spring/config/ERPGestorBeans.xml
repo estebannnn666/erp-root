@@ -42,6 +42,14 @@
 		<property name="contactoGestor"><ref bean="erpContactoGestor"/></property>
 	</bean>
 	
+	<!-- Gestor proveedor -->
+	<bean id="erpProveedorGestor" class="ec.com.erp.proveedor.gestor.ProveedorGestor">
+		<property name="proveedorDAO"><ref bean="erpProveedorDAO"/></property>
+		<property name="personaGestor"><ref bean="erpPersonaGestor"/></property>
+		<property name="empresaGestor"><ref bean="erpEmpresaGestor"/></property>
+		<property name="contactoGestor"><ref bean="erpContactoGestor"/></property>
+	</bean>
+	
 	<!-- Gestor chofer -->
 	<bean id="erpChoferGestor" class="ec.com.erp.chofer.gestor.ChoferGestor">
 		<property name="choferDAO"><ref bean="erpChoferDAO"/></property>

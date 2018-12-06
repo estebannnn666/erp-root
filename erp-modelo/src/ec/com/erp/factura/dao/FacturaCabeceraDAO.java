@@ -3,6 +3,7 @@
  */
 package ec.com.erp.factura.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -213,4 +214,98 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 		} 
 	}
 
+	/**
+	 * Metodo para obtener el valor de venta por mes y tipo
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param tipoDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public BigDecimal obtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
+			
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.between("root.fechaDocumento", fechaInicio, fechaFin));
+			if(tipoDocumento != null && tipoDocumento !=""){
+				tipoDocumento = tipoDocumento.toUpperCase();
+				criteria.add(Restrictions.eq("root.codigoValorTipoDocumento", tipoDocumento));
+			}
+			
+			if(pagada != null){
+				criteria.add(Restrictions.eq("root.pagado", pagada));
+			}
+			
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.sum("root.totalCuenta"));
+			criteria.setProjection(projectionList);
+			BigDecimal resultado = (BigDecimal)criteria.uniqueResult();
+
+			return resultado;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de facturas.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * Obtener numero de facturas por filtros
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param tipoDocumento
+	 * @param pagada
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
+			
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.between("root.fechaDocumento", fechaInicio, fechaFin));
+			if(tipoDocumento != null && tipoDocumento !=""){
+				tipoDocumento = tipoDocumento.toUpperCase();
+				criteria.add(Restrictions.eq("root.codigoValorTipoDocumento", tipoDocumento));
+			}
+			
+			if(pagada != null){
+				criteria.add(Restrictions.eq("root.pagado", pagada));
+			}
+
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.count("root.numeroDocumento"));
+			criteria.setProjection(projectionList);
+			Long resultado = (Long)criteria.uniqueResult();
+			if(resultado == null){
+				resultado = 0L;
+			}
+			return resultado;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de facturas.").initCause(e);
+		} 
+	}
 }

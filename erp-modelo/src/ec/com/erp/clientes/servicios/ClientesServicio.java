@@ -1,5 +1,6 @@
 package ec.com.erp.clientes.servicios;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
@@ -52,5 +53,18 @@ public class ClientesServicio implements IClientesServicio{
 	@Override
 	public ClienteDTO findObtenerClienteByCodigo(Integer codigoCompania, String numeroDocumento, String codigoValorTipoCliente) throws ERPException{
 		return this.clientesGestor.obtenerClienteByCodigo(codigoCompania, numeroDocumento, codigoValorTipoCliente);
+	}
+	
+	/**
+	 * Metood para obtener cantidad de clientes todos o por fecha
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long findObtenerClientesTodosOFecha(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin) throws ERPException{
+		return this.clientesGestor.obtenerClientesTodosOFecha(codigoCompania, fechaInicio, fechaFin);
 	}
 }

@@ -1,5 +1,6 @@
 package ec.com.erp.factura.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -35,4 +36,27 @@ public interface IFacturaCabeceraDAO {
 	 * @throws ERPException
 	 */
 	void guardarActualizarFacturaCabecera(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
+	
+	/**
+	 * Metodo para obtener el valor de venta por mes y tipo
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param tipoDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	BigDecimal obtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException;
+	
+	/**
+	 * Obtener numero de facturas por filtros
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param tipoDocumento
+	 * @param pagada
+	 * @return
+	 * @throws ERPException
+	 */
+	Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException;
 }

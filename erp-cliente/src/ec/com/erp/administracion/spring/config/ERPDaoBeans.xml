@@ -38,6 +38,12 @@
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
+    <!-- Inyeccion bean  ProveedorDAO -->
+    <bean id="erpProveedorDAO" class="ec.com.erp.proveedor.dao.ProveedorDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
     <!-- Inyeccion bean  ChoferDAO -->
     <bean id="erpChoferDAO" class="ec.com.erp.chofer.dao.ChoferDAO">
         <property name="sessionFactory" ref="sessionFactory"/>

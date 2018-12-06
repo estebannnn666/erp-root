@@ -11,6 +11,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -81,7 +82,8 @@ public class PerfilesDAO implements IPerfilesDAO{
 			
 			//restricciones
 			if(StringUtils.isNotEmpty(nombrePerfil)) {
-				criteria.add(Restrictions.eq("root.nombrePerfil", nombrePerfil));
+				nombrePerfil = nombrePerfil.toUpperCase();
+				criteria.add(Restrictions.like("root.nombrePerfil", nombrePerfil, MatchMode.ANYWHERE));
 			}
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			

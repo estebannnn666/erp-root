@@ -134,6 +134,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 			criteria.add(Restrictions.eq("root.estado", "1"));
 			criteria.add(Restrictions.eq("root.nombreUsuario", nombreUsuario));
 			criteria.add(Restrictions.eq("root.passwordUsuario", password));
+			criteria.add(Restrictions.eq("moduloDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();

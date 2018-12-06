@@ -292,4 +292,50 @@ public class InventarioDAO implements IInventarioDAO {
 			throw new ERPException("Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
 		} 
 	}
+	
+	/**
+	 * M\u00e9todo para obtener valores estadisticos de inventario
+	 * @param codigoCompania
+	 * @param existenciaActual
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long obtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(InventarioDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			if(existenciaActual){
+				criteria.add(Restrictions.eq("root.esUltimoRegistro", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			}else{
+				criteria.add(Restrictions.isNotNull("root.cantidadEntrada"));
+			}
+						
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			if(existenciaActual){
+				projectionList.add(Projections.sum("root.cantidadExistencia"));
+			}else{
+				projectionList.add(Projections.sum("root.cantidadEntrada"));
+			}
+			criteria.setProjection(projectionList);
+			Long resultado = (Long)criteria.uniqueResult();
+			if(resultado == null){
+				resultado = 0L;
+			}
+			return resultado;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener ultimo movimiento registrado para el item ingresado.").initCause(e);
+		} 
+	}
 }

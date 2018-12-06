@@ -29,4 +29,5 @@
 	<entity class="ec.com.erp.cliente.mdl.dto.ModuloDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.ModuloPerfilDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.InventarioDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ProveedorDTO"></entity>
 </entity-mappings>

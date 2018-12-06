@@ -52,4 +52,13 @@ public interface IInventarioDAO {
 	 */
 	Collection<InventarioDTO> obtenerListaExistenciasByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para obtener valores estadisticos de inventario
+	 * @param codigoCompania
+	 * @param existenciaActual
+	 * @return
+	 * @throws ERPException
+	 */
+	Long obtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException;
+	
 }

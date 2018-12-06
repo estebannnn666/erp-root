@@ -92,4 +92,16 @@ public class InventarioServicio implements IInventarioServicio{
 	public String findObtenerXMLReporteExistencias(Collection<InventarioDTO> inventarioDTOCols) throws ERPException{
 		return this.inventarioGestor.procesarXMLReporteExistencias(inventarioDTOCols);
 	}
+	
+	/**
+	 * M\u00e9todo para obtener valores estadisticos de inventario
+	 * @param codigoCompania
+	 * @param existenciaActual
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long findObtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException{
+		return this.inventarioGestor.obtenerCantidadTotalEntradas(codigoCompania, existenciaActual);
+	}
 }

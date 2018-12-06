@@ -1,9 +1,8 @@
 /**
  * 
  */
-package ec.com.erp.clientes.dao;
+package ec.com.erp.proveedor.dao;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,22 +11,23 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
-import ec.com.erp.cliente.mdl.dto.ClienteDTO;
-import ec.com.erp.cliente.mdl.dto.id.ClienteID;
+import ec.com.erp.cliente.mdl.dto.ProveedorDTO;
+import ec.com.erp.cliente.mdl.dto.id.ProveedorID;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.utilitario.dao.commons.hibernate.transformers.MultiLevelResultTransformer;
 
 /**
  * @author Esteban Gudino
- * 2017-06-27
+ * 2018-04-20
  */
-public class ClientesDAO implements IClientesDAO {
+public class ProveedorDAO implements IProveedorDAO {
 
 	/**
 	 * SessionFactory sessionFactory.
@@ -62,59 +62,55 @@ public class ClientesDAO implements IClientesDAO {
 	}
 
 	/**
-	 * M\u00e9todo para obtener lista de clientes
+	 * M\u00e9todo para obtener lista de proveedores
 	 * @param codigoCompania
 	 * @param numeroDocumento
-	 * @param nombreCliente
-	 * @return
+	 * @param razonSocial
+	 * @return 
 	 * @throws ERPException
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException{
+	public Collection<ProveedorDTO> obtenerListaProveedores(Integer codigoCompania, String numeroDocumento, String razonSocial) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
 
-			//joins
-			Criteria criteria  = session.createCriteria(ClienteDTO.class, "root");
-//			criteria.createAlias("root.usuariosDTO", "usuariosDTO", CriteriaSpecification.INNER_JOIN);
-			criteria.createAlias("root.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			//joins 
+			Criteria criteria  = session.createCriteria(ProveedorDTO.class, "root");
+			criteria.createAlias("root.tipoProveedorCatalogoValorDTO", "tipoProveedorCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.empresaDTO", "empresaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("empresaDTO.contactoDTOCols", "contactoEmpresaDTO", CriteriaSpecification.LEFT_JOIN);
-			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+
 			if(numeroDocumento != null && numeroDocumento.trim() != "") {
+				numeroDocumento = numeroDocumento.toUpperCase();
 				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", numeroDocumento), Restrictions.eq("empresaDTO.numeroRuc", numeroDocumento)));
 			}
-			if(nombreCliente != null && nombreCliente.trim() != "") {
-				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.nombreCompleto", nombreCliente), Restrictions.eq("empresaDTO.razonSocial", nombreCliente)));
+			
+			if(razonSocial != null && razonSocial.trim() != "") {
+				razonSocial = razonSocial.toUpperCase();
+				criteria.add(Restrictions.or(Restrictions.like("personaDTO.nombreCompleto", razonSocial, MatchMode.ANYWHERE), Restrictions.like("empresaDTO.razonSocial", razonSocial, MatchMode.ANYWHERE)));
 			}
+			
 			// Proyecciones entidad clientes 
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
-			projectionList.add(Projections.property("root.id.codigoCliente"), "id_codigoCliente");
+			projectionList.add(Projections.property("root.id.codigoProveedor"), "id_codigoProveedor");
 			projectionList.add(Projections.property("root.codigoPersona"), "codigoPersona");
 			projectionList.add(Projections.property("root.codigoEmpresa"), "codigoEmpresa");
-			projectionList.add(Projections.property("root.userId"), "userId");
-			projectionList.add(Projections.property("root.codigoValorTipoCliente"), "codigoValorTipoCliente");
-			projectionList.add(Projections.property("root.codigoTipoCliente"), "codigoTipoCliente");
+			projectionList.add(Projections.property("root.codigoValorTipoProveedor"), "codigoValorTipoProveedor");
+			projectionList.add(Projections.property("root.codigoTipoProveedor"), "codigoTipoProveedor");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
-			// Proyecciones usuarios
-//			projectionList.add(Projections.property("usuariosDTO.id.userId"), "usuariosDTO_id_userId");
-//			projectionList.add(Projections.property("usuariosDTO.codigoPerfil"), "usuariosDTO_codigoPerfil");
-//			projectionList.add(Projections.property("usuariosDTO.nombreUsuario"), "usuariosDTO_nombreUsuario");
-//			projectionList.add(Projections.property("usuariosDTO.passwordUsuario"), "usuariosDTO_passwordUsuario");
-//			projectionList.add(Projections.property("usuariosDTO.estado"), "usuariosDTO_estado");
 			// Proyecciones catalogos
-			projectionList.add(Projections.property("tipoClienteCatalogoValorDTO.nombreCatalogoValor"), "tipoClienteCatalogoValorDTO_nombreCatalogoValor");
+			projectionList.add(Projections.property("tipoProveedorCatalogoValorDTO.nombreCatalogoValor"), "tipoProveedorCatalogoValorDTO_nombreCatalogoValor");
 			
 			// Proyecciones entidad persona 
 			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "personaDTO_id_codigoCompania");
@@ -146,10 +142,10 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("contactoPersonaDTO.codigoValarTipoContacto"), "personaDTO_contactoPersonaDTO_codigoValarTipoContacto");
 			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoContacto"), "personaDTO_contactoPersonaDTO_codigoTipoContacto");			
 			projectionList.add(Projections.property("contactoPersonaDTO.estado"), "personaDTO_contactoPersonaDTO_estado");
-			projectionList.add(Projections.property("contactoPersonaDTO.usuarioRegistro"), "personaDTO_contactoPersonaDTO_usuarioRegistro");
 			projectionList.add(Projections.property("contactoPersonaDTO.fechaRegistro"), "personaDTO_contactoPersonaDTO_fechaRegistro");
+			projectionList.add(Projections.property("contactoPersonaDTO.usuarioRegistro"), "personaDTO_contactoPersonaDTO_usuarioRegistro");
 			
-			// Proyecciones entidad empresa   
+			//Proyecciones entidad empresa
 			projectionList.add(Projections.property("empresaDTO.id.codigoCompania"), "empresaDTO_id_codigoCompania");
 			projectionList.add(Projections.property("empresaDTO.id.codigoEmpresa"), "empresaDTO_id_codigoEmpresa");
 			projectionList.add(Projections.property("empresaDTO.numeroRuc"), "empresaDTO_numeroRuc");
@@ -179,92 +175,50 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("contactoEmpresaDTO.fechaRegistro"), "empresaDTO_contactoEmpresaDTO_fechaRegistro");
 			
 			criteria.setProjection(projectionList);
-			criteria.setResultTransformer(new MultiLevelResultTransformer(ClienteDTO.class));
-			Collection<ClienteDTO> clienteDTOCols = new  ArrayList<ClienteDTO>();
-			clienteDTOCols =  criteria.list();
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ProveedorDTO.class));
+			Collection<ProveedorDTO> proveedoresDTOCols = new  ArrayList<ProveedorDTO>();
+			proveedoresDTOCols =  criteria.list();
 
-			return clienteDTOCols;
+			return proveedoresDTOCols;
 
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de proveedores.").initCause(e);
 		} 
 	}
 	
 	
 	/**
-	 * M\u00e9todo para guardar y actualizar cliente
-	 * @param clienteDTO
+	 * M\u00e9todo para guardar y actualizar proveedor
+	 * @param transportistaDTO
 	 * @throws ERPException
 	 */
-	public void guardarActualizarClientes(ClienteDTO clienteDTO) throws ERPException{
+	@Override
+	public void guardarActualizarProveedor(ProveedorDTO proveedorDTO) throws ERPException{
 		try{
-			if (clienteDTO.getId().getCodigoCompania() == null || clienteDTO.getUsuarioRegistro() == null) {
+			if (proveedorDTO.getId().getCodigoCompania() == null || proveedorDTO.getUsuarioRegistro() == null) {
 				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
-			if(clienteDTO.getId().getCodigoCliente() ==  null){
-				Integer secuencialCliente  = this.secuenciaDAO.obtenerSecuencialTabla(ClienteID.NOMBRE_SECUENCIA);
-				clienteDTO.getId().setCodigoCliente(Long.parseLong(""+secuencialCliente));
-				clienteDTO.setFechaRegistro(new Date());
-				clienteDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
-				sessionFactory.getCurrentSession().save(clienteDTO);
-			}
-			else
-			{
-				clienteDTO.setFechaModificacion(new Date());
-				clienteDTO.setUsuarioModificacion(clienteDTO.getUsuarioRegistro());
-				sessionFactory.getCurrentSession().update(clienteDTO);
+			if(proveedorDTO.getId().getCodigoProveedor() ==  null){
+				Integer secuencialProveedor  = this.secuenciaDAO.obtenerSecuencialTabla(ProveedorID.NOMBRE_SECUENCIA);
+				proveedorDTO.getId().setCodigoProveedor(Long.parseLong(""+secuencialProveedor));
+				proveedorDTO.setFechaRegistro(new Date());
+				proveedorDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
+				sessionFactory.getCurrentSession().save(proveedorDTO);
+			}else{
+				proveedorDTO.setFechaModificacion(new Date());
+				proveedorDTO.setUsuarioModificacion(proveedorDTO.getUsuarioRegistro());
+				sessionFactory.getCurrentSession().update(proveedorDTO);
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el cliente."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el proveedor."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el cliente."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el proveedor."+e.getMessage());
 		} 
 	}
 
-	
-	/**
-	 * Metood para obtener cantidad de clientes todos o por fecha
-	 * @param codigoCompania
-	 * @param fechaInicio
-	 * @param fechaFin
-	 * @return
-	 * @throws ERPException
-	 */
-	@Override
-	public Long obtenerClientesTodosOFecha(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin) throws ERPException{
-		try {
-			Session session = sessionFactory.getCurrentSession();
-			session.clear();
-
-			//joins
-			Criteria criteria  = session.createCriteria(ClienteDTO.class, "root");
-			
-			//restricciones
-			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
-			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			if(fechaInicio != null && fechaFin != null){
-				criteria.add(Restrictions.between("root.fechaRegistro", fechaInicio, fechaFin));
-			}
-			//proyecciones entidad negociacion proveedor
-			ProjectionList projectionList = Projections.projectionList();
-			projectionList.add(Projections.count("root.id.codigoCliente"));
-			criteria.setProjection(projectionList);
-			Long resultado = (Long)criteria.uniqueResult();
-			if(resultado == null){
-				resultado = 0L;
-			}
-			return resultado;
-
-		} catch (ERPException e) {
-			throw e;
-		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de facturas.").initCause(e);
-		} 
-	}
-	
 }

@@ -3,6 +3,7 @@
  */
 package ec.com.erp.factura.servicios;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -72,5 +73,32 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	@Override
 	public void transCancelarFacturaInactivar(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
 		this.facturaCabeceraGestor.cancelarFacturaInactivar(facturaCabeceraDTO);
+	}
+	
+	/**
+	 * Metodo para obtener el valor de venta por mes y tipo
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param tipoDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public BigDecimal findObtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerComprasVentas(codigoCompania, fechaInicio, fechaFin, tipoDocumento, pagada);
+	}
+	
+	/**
+	 * Obtener numero de facturas por filtros
+	 * @param codigoCompania
+	 * @param tipoDocumento
+	 * @param pagada
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long findObtenerNumeroFacturasComprasVentas(Integer codigoCompania, String tipoDocumento, Boolean pagada) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerNumeroFacturasComprasVentas(codigoCompania, tipoDocumento, pagada);
 	}
 }

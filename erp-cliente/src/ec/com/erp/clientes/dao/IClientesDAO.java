@@ -1,5 +1,6 @@
 package ec.com.erp.clientes.dao;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
@@ -29,4 +30,14 @@ public interface IClientesDAO {
 	 * @throws ERPException
 	 */
 	void guardarActualizarClientes(ClienteDTO clienteDTO) throws ERPException;	
+	
+	/**
+	 * Metood para obtener cantidad de clientes todos o por fecha
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	Long obtenerClientesTodosOFecha(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin) throws ERPException;
 }

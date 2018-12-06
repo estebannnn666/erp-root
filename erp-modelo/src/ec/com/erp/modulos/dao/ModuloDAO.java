@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -77,7 +78,8 @@ public class ModuloDAO implements IModuloDAO {
 
 			//restricciones
 			if(StringUtils.isNotEmpty(nombreModulo)){
-				criteria.add(Restrictions.eq("root.nombreModulo", nombreModulo));
+				nombreModulo = nombreModulo.toUpperCase();
+				criteria.add(Restrictions.like("root.nombreModulo", nombreModulo, MatchMode.ANYWHERE));
 			}
 			
 			//proyecciones entidad negociacion proveedor

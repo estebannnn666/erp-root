@@ -3,6 +3,7 @@
  */
 package ec.com.erp.pedidos.dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -11,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -61,15 +63,19 @@ public class PedidoDAO implements IPedidoDAO {
 	}	
 
 	/**
-	 *  M\u00e9todo para obtener lista de pedidos
+	 * M\u00e9todo para obtener lista de pedidos por filtros
 	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param nombreCliente
+	 * @param fechaInicio
+	 * @param fechaFin
 	 * @param estadoPedido
 	 * @return
 	 * @throws ERPException
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania, String estadoPedido) throws ERPException{
+	public Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania, String numeroDocumento, String nombreCliente, Timestamp fechaInicio, Timestamp fechaFin, String estadoPedido) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -94,6 +100,16 @@ public class PedidoDAO implements IPedidoDAO {
 			criteria.add(Restrictions.eq("estadoPedidoDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			criteria.add(Restrictions.eq("detallePedidoDTOCols.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			
+			if(fechaInicio != null && fechaFin != null){
+				criteria.add(Restrictions.between("root.fechaPedido", fechaInicio, fechaFin));
+			}
+			if(numeroDocumento != null && numeroDocumento !=""){
+				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", numeroDocumento), Restrictions.eq("empresaDTO.numeroRuc", numeroDocumento)));
+			}
+			if(nombreCliente != null && nombreCliente !=""){
+				nombreCliente = nombreCliente.toUpperCase();
+				criteria.add(Restrictions.or(Restrictions.like("personaDTO.nombreCompleto", nombreCliente, MatchMode.ANYWHERE), Restrictions.like("empresaDTO.razonSocial", nombreCliente, MatchMode.ANYWHERE)));
+			}
 			if(estadoPedido != null && estadoPedido.trim() != "") {
 				criteria.add(Restrictions.eq("estadoPedidoDTO.codigoValorEstadoPedido", estadoPedido));
 			}

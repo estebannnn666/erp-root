@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -256,5 +257,42 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			throw new ERPException("Error al procesar plantilla xsl") ;
 		}
 		return html;
+	}
+	
+	/**
+	 * Metodo para obtener el valor de venta por mes y tipo
+	 * @param codigoCompania
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @param tipoDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public BigDecimal obtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException{
+		return this.facturaCabeceraDAO.obtenerComprasVentas(codigoCompania, fechaInicio, fechaFin, tipoDocumento, pagada);
+	}
+	
+	/**
+	 * Obtener numero de facturas por filtros
+	 * @param codigoCompania
+	 * @param tipoDocumento
+	 * @param pagada
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, String tipoDocumento, Boolean pagada) throws ERPException{
+		// Fecha inferior
+		Calendar fechaInferior = Calendar.getInstance();
+		fechaInferior.set(Calendar.DATE, 1);
+		fechaInferior.set(Calendar.HOUR_OF_DAY, 0);
+		fechaInferior.set(Calendar.MINUTE, 0);
+		fechaInferior.set(Calendar.SECOND, 0);
+		fechaInferior.set(Calendar.MILLISECOND, 0);
+		fechaInferior.set(Calendar.MONTH,0);
+		// Fecha superior
+		Calendar fechaSuperior = Calendar.getInstance();
+		return this.facturaCabeceraDAO.obtenerNumeroFacturasComprasVentas(codigoCompania, new Timestamp(fechaInferior.getTime().getTime()), new Timestamp(fechaSuperior.getTime().getTime()), tipoDocumento, pagada); 
 	}
 }

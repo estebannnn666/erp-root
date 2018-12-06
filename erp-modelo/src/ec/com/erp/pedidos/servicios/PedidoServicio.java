@@ -1,5 +1,6 @@
 package ec.com.erp.pedidos.servicios;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
@@ -19,15 +20,19 @@ public class PedidoServicio implements IPedidoServicio{
 	}
 
 	/**
-	 *  M\u00e9todo para obtener lista de pedidos
+	 * M\u00e9todo para obtener lista de pedidos por filtros
 	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @param nombreCliente
+	 * @param fechaInicio
+	 * @param fechaFin
 	 * @param estadoPedido
 	 * @return
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<PedidoDTO> findObtenerPedidosRegistrados(Integer codigoCompania, String estadoPedido) throws ERPException{
-		return this.pedidoGestor.obtenerPedidosRegistrados(codigoCompania, estadoPedido);
+	public Collection<PedidoDTO> findObtenerPedidosRegistrados(Integer codigoCompania, String numeroDocumento, String nombreCliente, Timestamp fechaInicio, Timestamp fechaFin, String estadoPedido) throws ERPException{
+		return this.pedidoGestor.obtenerPedidosRegistrados(codigoCompania, numeroDocumento, nombreCliente, fechaInicio, fechaFin, estadoPedido);
 	}
 
 	/**
