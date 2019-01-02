@@ -17,6 +17,7 @@ public class ERPConstantes {
 	public final static String PLANTILLA_XSL_REPORTE_KARDEX = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.kardex");
 	public final static String PLANTILLA_XSL_REPORTE_EXISTENCIA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.existencia");
 	public final static String PLANTILLA_XSL_IMPRIMIR_GUIA_DESPACHO = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.guia.despacho");
+	public final static String PLANTILLA_XSL_IMPRIMIR_FACTURA_VENTA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.factura.venta");
 	
 	/************ Generales ************************/
 	public static final String ESTADO_ACTIVO_NUMERICO = ERPMessages.getString("ec.com.erp.general.estado.numerico.activo");

@@ -74,4 +74,12 @@ public interface IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, String tipoDocumento, Boolean pagada) throws ERPException;
+	
+	/**
+	 * Devuelve html para la impresion de factura de venta
+	 * @param facturaCabeceraDTO
+	 * @return
+	 * @throws ERPException
+	 */
+	String obtenerXMLImprimirFacturaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
 }

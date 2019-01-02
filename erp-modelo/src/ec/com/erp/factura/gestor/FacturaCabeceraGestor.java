@@ -295,4 +295,64 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		Calendar fechaSuperior = Calendar.getInstance();
 		return this.facturaCabeceraDAO.obtenerNumeroFacturasComprasVentas(codigoCompania, new Timestamp(fechaInferior.getTime().getTime()), new Timestamp(fechaSuperior.getTime().getTime()), tipoDocumento, pagada); 
 	}
+	
+	/**
+	 * Devuelve html para la impresion de factura de venta
+	 * @param facturaCabeceraDTO
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public String obtenerXMLImprimirFacturaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
+		StringBuilder contenidoXml = new StringBuilder();
+		String html = "";
+		String urlTipoReporte = "";
+		try{
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
+			formatoDecimales.setMinimumFractionDigits(2);
+
+			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_IMPRIMIR_FACTURA_VENTA;
+			
+			contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+			contenidoXml.append("<factura>");
+
+			contenidoXml.append("<codigoFactura>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getCodigoReferenciaFactura())).append("</codigoFactura>");
+			contenidoXml.append("<numeroFactura>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getNumeroDocumento())).append("</numeroFactura>");
+			contenidoXml.append("<fechaVenta>").append(StringEscapeUtils.escapeXml(""+formatoFecha.format(facturaCabeceraDTO.getFechaDocumento()))).append("</fechaVenta>");
+			contenidoXml.append("<documentoCliente>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getRucDocumento())).append("</documentoCliente>");
+			contenidoXml.append("<nombreCliente>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getNombreClienteProveedor())).append("</nombreCliente>");
+			contenidoXml.append("<direccion>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getDireccion())).append("</direccion>");
+			contenidoXml.append("<telefono>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getTelefono())).append("</telefono>");
+			contenidoXml.append("<total>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalCuenta().doubleValue()))).append("</total>");
+			int cont = 1;
+			//detalle reposicion
+			contenidoXml.append("<detallesFactura>");
+			for(FacturaDetalleDTO facturaDetalleDTO : facturaCabeceraDTO.getFacturaDetalleDTOCols()){
+				contenidoXml.append("<detalle>");
+				contenidoXml.append("<nroDetalle>").append(StringEscapeUtils.escapeXml(""+cont)).append("</nroDetalle>");
+				contenidoXml.append("<cantidad>").append(StringEscapeUtils.escapeXml(""+facturaDetalleDTO.getCantidad())).append("</cantidad>");
+				contenidoXml.append("<descripcion>").append(StringEscapeUtils.escapeXml(facturaDetalleDTO.getDescripcion())).append("</descripcion>");
+				contenidoXml.append("<valorUnitario>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaDetalleDTO.getValorUnidad().doubleValue()))).append("</valorUnitario>");
+				contenidoXml.append("<subTotal>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaDetalleDTO.getSubTotal().doubleValue()))).append("</subTotal>");
+				contenidoXml.append("</detalle>");
+				cont++;
+			}
+			contenidoXml.append("</detallesFactura>");
+			
+			
+			contenidoXml.append("</factura>");
+			String contenidoXSL=null;
+			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);
+			Document docXML = TransformerUtil.stringToXML(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			HashMap<String , String> parametros = new HashMap<String, String>();
+			result = TransformerUtil.transformar(docXML, docXSL, parametros);
+			html = TransformerUtil.xmlToString(result);
+		} catch (Exception en) {
+			throw new ERPException("Error al procesar plantilla xsl") ;
+		}
+		return html;
+	}
 }

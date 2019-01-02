@@ -101,4 +101,15 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	public Long findObtenerNumeroFacturasComprasVentas(Integer codigoCompania, String tipoDocumento, Boolean pagada) throws ERPException{
 		return this.facturaCabeceraGestor.obtenerNumeroFacturasComprasVentas(codigoCompania, tipoDocumento, pagada);
 	}
+	
+	/**
+	 * Devuelve html para la impresion de factura de venta
+	 * @param facturaCabeceraDTO
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public String finObtenerXMLImprimirFacturaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerXMLImprimirFacturaVenta(facturaCabeceraDTO);
+	}
 }
