@@ -28,6 +28,15 @@ public class ArticuloServicio implements IArticuloServicio{
 	}
 	
 	/**
+	 * M\u00e9todo para obtener articulo por id
+	 * @return 
+	 * @throws ERPException
+	 */
+	public ArticuloDTO findObtenerListaArticuloById(Integer codigoCompania, Integer codigoArticulo) throws ERPException{
+		return this.articuloGestor.obtenerListaArticuloById(codigoCompania, codigoArticulo);
+	}
+	
+	/**
 	 * Metodo para guardar y actualizar articulos
 	 * @param articuloDTO
 	 * @throws ERPException

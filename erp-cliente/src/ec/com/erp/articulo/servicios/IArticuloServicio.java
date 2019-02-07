@@ -15,6 +15,13 @@ public interface IArticuloServicio {
 	Collection<ArticuloDTO> findObtenerListaArticulos(Integer codigoCompania, String codigoBarras, String nombreArticulo) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener articulo por id
+	 * @return 
+	 * @throws ERPException
+	 */
+	ArticuloDTO findObtenerListaArticuloById(Integer codigoCompania, Integer codigoArticulo) throws ERPException;
+	
+	/**
 	 * Metodo para guardar y actualizar articulos
 	 * @param articuloDTO
 	 * @throws ERPException

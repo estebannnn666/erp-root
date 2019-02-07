@@ -40,6 +40,16 @@ public class ArticuloGestor implements IArticuloGestor{
 	}
 	
 	/**
+	 * M\u00e9todo para obtener articulo por id
+	 * @return 
+	 * @throws ERPException
+	 */
+	public ArticuloDTO obtenerListaArticuloById(Integer codigoCompania, Integer codigoArticulo) throws ERPException{
+		return this.articuloDAO.obtenerListaArticuloById(codigoCompania, codigoArticulo);
+	}
+	
+	
+	/**
 	 * Metodo para guardar y actualizar articulos
 	 * @param articuloDTO
 	 * @throws ERPException

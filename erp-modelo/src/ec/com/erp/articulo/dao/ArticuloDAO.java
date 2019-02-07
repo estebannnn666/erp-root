@@ -117,6 +117,50 @@ public class ArticuloDAO implements IArticuloDAO {
 	}
 	
 	/**
+	 * M\u00e9todo para obtener articulo por id
+	 * @return 
+	 * @throws ERPException
+	 */
+	public ArticuloDTO obtenerListaArticuloById(Integer codigoCompania, Integer codigoArticulo) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(ArticuloDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.id.codigoArticulo", codigoArticulo));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			
+
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoArticulo"), "id_codigoArticulo");
+			projectionList.add(Projections.property("root.codigoBarras"), "codigoBarras");
+			projectionList.add(Projections.property("root.nombreArticulo"), "nombreArticulo");
+			projectionList.add(Projections.property("root.peso"), "peso");
+			projectionList.add(Projections.property("root.precio"), "precio");
+			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloDTO.class));
+			ArticuloDTO resultado = (ArticuloDTO) criteria.uniqueResult();
+			return resultado;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+		} 
+	}
+	
+	/**
 	 * Metodo para guardar y actualizar articulos
 	 * @param articuloDTO
 	 * @throws ERPException

@@ -21,6 +21,13 @@ public interface IArticuloDAO {
 	Collection<ArticuloDTO> obtenerListaArticulos(Integer codigoCompania, String codigoBarras, String nombreArticulo) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener articulo por id
+	 * @return 
+	 * @throws ERPException
+	 */
+	ArticuloDTO obtenerListaArticuloById(Integer codigoCompania, Integer codigoArticulo) throws ERPException;
+	
+	/**
 	 * Metodo para guardar y actualizar articulos
 	 * @param articuloDTO
 	 * @throws ERPException
