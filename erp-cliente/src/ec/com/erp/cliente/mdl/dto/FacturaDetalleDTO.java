@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import ec.com.erp.cliente.mdl.dto.id.FacturaDetalleID;
 
@@ -78,6 +79,9 @@ public class FacturaDetalleDTO implements Serializable{
 	
 	@Column(name="FECHAMODIFICACION")
 	private Date fechaModificacion;
+	
+	@Transient
+	private String codigoBarras;
 	
 	/**
 	 * Referencia al entidad factura
@@ -209,5 +213,13 @@ public class FacturaDetalleDTO implements Serializable{
 
 	public void setArticuloDTO(ArticuloDTO articuloDTO) {
 		this.articuloDTO = articuloDTO;
+	}
+
+	public String getCodigoBarras() {
+		return codigoBarras;
+	}
+
+	public void setCodigoBarras(String codigoBarras) {
+		this.codigoBarras = codigoBarras;
 	}
 }
