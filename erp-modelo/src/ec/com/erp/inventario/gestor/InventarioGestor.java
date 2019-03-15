@@ -107,7 +107,8 @@ public class InventarioGestor implements IInventarioGestor{
 			ArticuloDTO articuloDTO = articulosDTOCols.iterator().next();
 			articuloDTO.setCantidadStock(inventarioDTO.getCantidadExistencia());
 			articuloDTO.setPrecio(inventarioDTO.getValorUnidadExistencia());
-			this.articuloGestor.transGuardarActualizarArticulo(articuloDTO);
+			articuloDTO.setArticuloImpuestoDTOCols(null);
+			this.articuloGestor.guardarActualizarArticulo(articuloDTO, null);
 		}
 	}
 	

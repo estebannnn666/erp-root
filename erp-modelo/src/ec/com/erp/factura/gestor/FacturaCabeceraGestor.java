@@ -94,14 +94,17 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			
 			// Guardamos los detalle de la factura 
 			for (FacturaDetalleDTO facturaDetalleDTO : facturaDetalleDTOCols) {
-				facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-				facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
-				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)){
-					if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
-						this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+				if(facturaDetalleDTO.getCodigoArticulo() != null){
+					facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+					facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
+					facturaDetalleDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());
+					if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)){
+						if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
+							this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+						}
 					}
+					this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
 				}
-				this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
 			}
 		} catch (ERPException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;

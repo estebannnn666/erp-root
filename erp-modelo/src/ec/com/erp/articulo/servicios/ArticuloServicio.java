@@ -5,6 +5,7 @@ import java.util.Collection;
 import ec.com.erp.articulo.gestor.IArticuloGestor;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
+import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
 
 public class ArticuloServicio implements IArticuloServicio{
 	
@@ -39,9 +40,10 @@ public class ArticuloServicio implements IArticuloServicio{
 	/**
 	 * Metodo para guardar y actualizar articulos
 	 * @param articuloDTO
+	 * @param articuloImpuestoDTOCols
 	 * @throws ERPException
 	 */
-	public void transGuardarActualizarArticulo(ArticuloDTO articuloDTO) throws ERPException{
-		this.articuloGestor.transGuardarActualizarArticulo(articuloDTO);
+	public void transGuardarActualizarArticulo(ArticuloDTO articuloDTO, Collection<ArticuloImpuestoDTO> articuloImpuestoDTOCols) throws ERPException{
+		this.articuloGestor.guardarActualizarArticulo(articuloDTO, articuloImpuestoDTOCols);
 	}
 }

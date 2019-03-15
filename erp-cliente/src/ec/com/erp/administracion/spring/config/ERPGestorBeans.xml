@@ -156,4 +156,9 @@
         <property name="inventarioDAO"><ref bean="erpInventarioDAO"/></property>
         <property name="articuloGestor"><ref bean="erpArticuloGestor"/></property>
     </bean>
+    
+    <!-- Inyeccion bean  ImpuestoGestor -->
+    <bean id="erpImpuestoGestor" class="ec.com.erp.impuesto.gestor.ImpuestoGestor">
+        <property name="impuestoDAO"><ref bean="erpImpuestoDAO"/></property>
+    </bean>
 </beans>

@@ -30,4 +30,6 @@
 	<entity class="ec.com.erp.cliente.mdl.dto.ModuloPerfilDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.InventarioDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.ProveedorDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ImpuestoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO"></entity>
 </entity-mappings>

@@ -10,6 +10,7 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -18,6 +19,7 @@ import org.hibernate.criterion.Restrictions;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
+import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
 import ec.com.erp.cliente.mdl.dto.id.ArticuloID;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.utilitario.dao.commons.hibernate.transformers.MultiLevelResultTransformer;
@@ -74,6 +76,8 @@ public class ArticuloDAO implements IArticuloDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(ArticuloDTO.class, "root");
+			criteria.createAlias("root.articuloImpuestoDTOCols", "articuloImpuestoDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("articuloImpuestoDTOCols.impuestoDTO", "impuestoDTO", CriteriaSpecification.LEFT_JOIN);
 
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
@@ -102,6 +106,24 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
+			// Proyecciones entidad articulo impuesto
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoCompania"), "articuloImpuestoDTOCols_id_codigoCompania");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoImpuesto"), "articuloImpuestoDTOCols_id_codigoImpuesto");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoArticulo"), "articuloImpuestoDTOCols_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.estado"), "articuloImpuestoDTOCols_estado");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.usuarioRegistro"), "articuloImpuestoDTOCols_usuarioRegistro");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.fechaRegistro"), "articuloImpuestoDTOCols_fechaRegistro");
+			
+			// Proyecciones entidad impuesto
+			projectionList.add(Projections.property("impuestoDTO.id.codigoCompania"), "articuloImpuestoDTOCols_impuestoDTO_id_codigoCompania");
+			projectionList.add(Projections.property("impuestoDTO.id.codigoImpuesto"), "articuloImpuestoDTOCols_impuestoDTO_id_codigoImpuesto");
+			projectionList.add(Projections.property("impuestoDTO.nombreImpuesto"), "impuestoDTO_nombreImpuesto");
+			projectionList.add(Projections.property("impuestoDTO.descripcion"), "impuestoDTO_descripcion");
+			projectionList.add(Projections.property("impuestoDTO.valorImpuesto"), "impuestoDTO_valorImpuesto");
+			projectionList.add(Projections.property("impuestoDTO.estado"), "impuestoDTO_estado");
+			projectionList.add(Projections.property("impuestoDTO.usuarioRegistro"), "impuestoDTO_usuarioRegistro");
+			projectionList.add(Projections.property("impuestoDTO.fechaRegistro"), "impuestoDTO_fechaRegistro");
+			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloDTO.class));
 			Collection<ArticuloDTO> articuloDTOCols = new  ArrayList<ArticuloDTO>();
@@ -128,6 +150,8 @@ public class ArticuloDAO implements IArticuloDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(ArticuloDTO.class, "root");
+			criteria.createAlias("root.articuloImpuestoDTOCols", "articuloImpuestoDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("articuloImpuestoDTOCols.impuestoDTO", "impuestoDTO", CriteriaSpecification.LEFT_JOIN);
 
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
@@ -148,6 +172,24 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
+			// Proyecciones entidad articulo impuesto
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoCompania"), "articuloImpuestoDTOCols_id_codigoCompania");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoImpuesto"), "articuloImpuestoDTOCols_id_codigoImpuesto");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoArticulo"), "articuloImpuestoDTOCols_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.estado"), "articuloImpuestoDTOCols_estado");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.usuarioRegistro"), "articuloImpuestoDTOCols_usuarioRegistro");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.fechaRegistro"), "articuloImpuestoDTOCols_fechaRegistro");
+			
+			// Proyecciones entidad impuesto
+			projectionList.add(Projections.property("impuestoDTO.id.codigoCompania"), "articuloImpuestoDTOCols_impuestoDTO_id_codigoCompania");
+			projectionList.add(Projections.property("impuestoDTO.id.codigoImpuesto"), "articuloImpuestoDTOCols_impuestoDTO_id_codigoImpuesto");
+			projectionList.add(Projections.property("impuestoDTO.nombreImpuesto"), "impuestoDTO_nombreImpuesto");
+			projectionList.add(Projections.property("impuestoDTO.descripcion"), "impuestoDTO_descripcion");
+			projectionList.add(Projections.property("impuestoDTO.valorImpuesto"), "impuestoDTO_valorImpuesto");
+			projectionList.add(Projections.property("impuestoDTO.estado"), "impuestoDTO_estado");
+			projectionList.add(Projections.property("impuestoDTO.usuarioRegistro"), "impuestoDTO_usuarioRegistro");
+			projectionList.add(Projections.property("impuestoDTO.fechaRegistro"), "impuestoDTO_fechaRegistro");
+						
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloDTO.class));
 			ArticuloDTO resultado = (ArticuloDTO) criteria.uniqueResult();
@@ -165,7 +207,7 @@ public class ArticuloDAO implements IArticuloDAO {
 	 * @param articuloDTO
 	 * @throws ERPException
 	 */
-	public void transGuardarActualizarArticulo(ArticuloDTO articuloDTO) throws ERPException{
+	public void guardarActualizarArticulo(ArticuloDTO articuloDTO) throws ERPException{
 		try{
 			if (articuloDTO.getId().getCodigoCompania() == null || articuloDTO.getUsuarioRegistro() == null) {
 				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
@@ -192,5 +234,79 @@ public class ArticuloDAO implements IArticuloDAO {
 			throw new ERPException("Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
 		} 
 	}
+	
+	/**
+	 * M\u00e9todo para obtener lista de impuestos por articulo
+	 * @return 
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<ArticuloImpuestoDTO> obtenerListaArticuloImpuesto(Integer codigoCompania, Integer codigoArticulo) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
 
+			//joins
+			Criteria criteria  = session.createCriteria(ArticuloImpuestoDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.id.codigoArticulo", codigoArticulo));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			
+
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			// Proyecciones entidad articulo impuesto
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoImpuesto"), "id_codigoImpuesto");
+			projectionList.add(Projections.property("root.id.codigoArticulo"), "id_codigoArticulo");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloImpuestoDTO.class));
+			Collection<ArticuloImpuestoDTO> articuloImpuestoDTOCols = new  ArrayList<ArticuloImpuestoDTO>();
+			articuloImpuestoDTOCols =  criteria.list();
+
+			return articuloImpuestoDTOCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * Metodo para guardar y actualizar articulo impuesto
+	 * @param articuloImpuestoDTO
+	 * @throws ERPException
+	 */
+	public void guardarActualizarArticuloImpuesto(ArticuloImpuestoDTO articuloImpuestoDTO) throws ERPException{
+		try{
+			if (articuloImpuestoDTO.getId().getCodigoCompania() == null || articuloImpuestoDTO.getUsuarioRegistro() == null) {
+				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+			}	
+			
+			sessionFactory.getCurrentSession().clear();
+			if(articuloImpuestoDTO.getFechaRegistro() ==  null){
+				articuloImpuestoDTO.setFechaRegistro(new Date());
+				articuloImpuestoDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
+				sessionFactory.getCurrentSession().save(articuloImpuestoDTO);
+			}else{
+				articuloImpuestoDTO.setFechaModificacion(new Date());
+				articuloImpuestoDTO.setUsuarioModificacion(articuloImpuestoDTO.getUsuarioRegistro());
+				sessionFactory.getCurrentSession().update(articuloImpuestoDTO);
+			}
+			sessionFactory.getCurrentSession().flush();
+		} catch (ERPException e) {
+			throw new ERPException("Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
+		} catch (Exception e) {
+			throw new ERPException("Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
+		} 
+	}
+	
 }

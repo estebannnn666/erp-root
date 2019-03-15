@@ -31,4 +31,5 @@ public class ERPFactoryConstantes {
 	public final static String MODULOS_SERVICE = "erpModuloServicio";
 	public final static String INVENTARIOS_SERVICE = "erpInventarioServicio";
 	public final static String PROVEEDOR_SERVICE = "erpProveedorServicio";
+	public final static String IMPUESTOS_SERVICE = "erpImpuestoServicio";
 }

@@ -85,6 +85,18 @@ public class FacturaCabeceraDTO implements Serializable{
 	/**
 	 * Especifica el total de la compra
 	 */
+	@Column(name = "TOTALSINIMPUESTOS")
+	private BigDecimal totalSinImpuestos ;
+	
+	/**
+	 * Especifica el total de la compra
+	 */
+	@Column(name = "TOTALIMPUESTOS")
+	private BigDecimal totalImpuestos ;
+	
+	/**
+	 * Especifica el total de la compra
+	 */
 	@Column(name = "TOTALCUENTA")
 	private BigDecimal totalCuenta ;
 	
@@ -285,5 +297,21 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setCodigoReferenciaFactura(String codigoReferenciaFactura) {
 		this.codigoReferenciaFactura = codigoReferenciaFactura;
+	}
+
+	public BigDecimal getTotalSinImpuestos() {
+		return totalSinImpuestos;
+	}
+
+	public void setTotalSinImpuestos(BigDecimal totalSinImpuestos) {
+		this.totalSinImpuestos = totalSinImpuestos;
+	}
+
+	public BigDecimal getTotalImpuestos() {
+		return totalImpuestos;
+	}
+
+	public void setTotalImpuestos(BigDecimal totalImpuestos) {
+		this.totalImpuestos = totalImpuestos;
 	}
 }

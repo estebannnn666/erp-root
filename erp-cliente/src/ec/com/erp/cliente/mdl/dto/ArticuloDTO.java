@@ -2,14 +2,22 @@ package ec.com.erp.cliente.mdl.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.hibernate.annotations.CollectionTypeInfo;
 
 import ec.com.erp.cliente.mdl.dto.id.ArticuloID;
+import ec.com.erp.utilitario.commons.constantes.CollectionType;
 
 /**
  * 
@@ -71,6 +79,16 @@ public class ArticuloDTO implements Serializable{
 	
 	@Column(name="FECHAMODIFICACION")
 	private Date fechaModificacion;
+	
+	@Transient
+	private Boolean tieneImpuesto;
+	
+	/**
+	 * Referencia a detalle de la factura
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "articuloDTO")
+	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
+	private Collection<ArticuloImpuestoDTO> articuloImpuestoDTOCols;
 	
 	public ArticuloID getId() {
 		return id;
@@ -159,4 +177,27 @@ public class ArticuloDTO implements Serializable{
 	public void setFechaModificacion(Date fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
+
+	public Collection<ArticuloImpuestoDTO> getArticuloImpuestoDTOCols() {
+		return articuloImpuestoDTOCols;
+	}
+
+	public void setArticuloImpuestoDTOCols(Collection<ArticuloImpuestoDTO> articuloImpuestoDTOCols) {
+		this.articuloImpuestoDTOCols = articuloImpuestoDTOCols;
+	}
+
+	public Boolean getTieneImpuesto() {
+		if(CollectionUtils.isEmpty(this.articuloImpuestoDTOCols)){
+			tieneImpuesto = Boolean.FALSE;
+		}else{
+			tieneImpuesto = Boolean.TRUE;
+		}
+		return tieneImpuesto;
+	}
+
+	public void setTieneImpuesto(Boolean tieneImpuesto) {
+		this.tieneImpuesto = tieneImpuesto;
+	}
+	
+	
 }

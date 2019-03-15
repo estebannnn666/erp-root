@@ -287,9 +287,9 @@ public class InventarioDAO implements IInventarioDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el inventario."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
+			throw new ERPException("Ocurrio un error al guardar o actualizar el inventario."+e.getMessage());
 		} 
 	}
 	

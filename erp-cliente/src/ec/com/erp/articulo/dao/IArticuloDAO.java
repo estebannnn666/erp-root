@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
+import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
 
 
 /**
@@ -32,6 +33,20 @@ public interface IArticuloDAO {
 	 * @param articuloDTO
 	 * @throws ERPException
 	 */
-	void transGuardarActualizarArticulo(ArticuloDTO articuloDTO) throws ERPException;
+	void guardarActualizarArticulo(ArticuloDTO articuloDTO) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener lista de impuestos por articulo
+	 * @return 
+	 * @throws ERPException
+	 */
+	Collection<ArticuloImpuestoDTO> obtenerListaArticuloImpuesto(Integer codigoCompania, Integer codigoArticulo) throws ERPException;
+	
+	/**
+	 * Metodo para guardar y actualizar articulo impuesto
+	 * @param articuloImpuestoDTO
+	 * @throws ERPException
+	 */
+	void guardarActualizarArticuloImpuesto(ArticuloImpuestoDTO articuloImpuestoDTO) throws ERPException;
 	
 }
