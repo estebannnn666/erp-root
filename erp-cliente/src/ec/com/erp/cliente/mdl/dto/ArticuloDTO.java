@@ -13,8 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.CollectionTypeInfo;
+import org.springframework.util.CollectionUtils;
 
 import ec.com.erp.cliente.mdl.dto.id.ArticuloID;
 import ec.com.erp.utilitario.commons.constantes.CollectionType;

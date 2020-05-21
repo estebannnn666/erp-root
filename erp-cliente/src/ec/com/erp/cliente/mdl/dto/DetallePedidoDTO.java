@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import ec.com.erp.cliente.mdl.dto.id.DetallePedidoID;
 
@@ -63,6 +64,9 @@ public class DetallePedidoDTO implements Serializable{
 	
 	@Column(name="FECHAMODIFICACION")
 	private Date fechaModificacion;
+	
+	@Transient
+	private String nombreArticulo;
 	
 	/**
 	 * Referencia al entidad Pedido
@@ -170,5 +174,13 @@ public class DetallePedidoDTO implements Serializable{
 
 	public void setArticuloDTO(ArticuloDTO articuloDTO) {
 		this.articuloDTO = articuloDTO;
+	}
+
+	public String getNombreArticulo() {
+		return nombreArticulo;
+	}
+
+	public void setNombreArticulo(String nombreArticulo) {
+		this.nombreArticulo = nombreArticulo;
 	}
 }

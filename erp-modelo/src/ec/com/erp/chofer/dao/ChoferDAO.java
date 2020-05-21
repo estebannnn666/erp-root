@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -89,13 +91,13 @@ public class ChoferDAO implements IChoferDAO {
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 
-			if(numeroDocumento != null && numeroDocumento.trim() != "") {
+			if(StringUtils.isNotBlank(numeroDocumento)) {
 				criteria.add(Restrictions.eq("personaDTO.numeroDocumento", numeroDocumento));
 			}
 			
-			if(nombreChofer != null && nombreChofer.trim() != null) {
+			if(StringUtils.isNotBlank(nombreChofer)) {
 				nombreChofer = nombreChofer.toUpperCase();
-				criteria.add(Restrictions.eq("personaDTO.nombreCompleto", nombreChofer));
+				criteria.add(Restrictions.like("personaDTO.nombreCompleto", nombreChofer, MatchMode.ANYWHERE));
 			}
 			
 			// Proyecciones entidad chofer 
