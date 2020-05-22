@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -92,17 +94,21 @@ public class VehiculoDAO implements IVehiculoDAO {
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("choferDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("vehiculoChoferDTOCols.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 
-			if(placa != null && placa.trim() != "") {
+			if(StringUtils.isNotBlank(placa)) {
+				placa = placa.toUpperCase();
 				criteria.add(Restrictions.eq("root.placa", placa));
 			}
 			
-			if(documentoTransportista != null && documentoTransportista.trim() != "") {
-				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", documentoTransportista), Restrictions.eq("empresaDTO.numeroRuc", documentoTransportista)));
+			if(StringUtils.isNotBlank(documentoTransportista)) {
+				criteria.add(Restrictions.or(Restrictions.eq("personaDTOTrans.numeroDocumento", documentoTransportista), Restrictions.eq("empresaDTOTrans.numeroRuc", documentoTransportista)));
 			}
 			
-			if(nombreTransportista != null && nombreTransportista.trim() != "") {
-				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.nombreCompleto", nombreTransportista), Restrictions.eq("empresaDTO.razonSocial", nombreTransportista)));
+			if(StringUtils.isNotBlank(nombreTransportista)) {
+				nombreTransportista = nombreTransportista.toUpperCase();
+				criteria.add(Restrictions.or(Restrictions.like("personaDTOTrans.nombreCompleto", nombreTransportista, MatchMode.ANYWHERE), Restrictions.like("empresaDTOTrans.razonSocial", nombreTransportista, MatchMode.ANYWHERE)));
 			}
 			
 			// Proyecciones entidad chofer 

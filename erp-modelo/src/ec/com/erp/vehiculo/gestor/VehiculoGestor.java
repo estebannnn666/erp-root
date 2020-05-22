@@ -54,6 +54,18 @@ public class VehiculoGestor implements IVehiculoGestor{
 		try {
 			// Obtenemos la coleccion de choferes asignados al vehiculo
 			Collection<VehiculoChoferDTO> vehiculoChoferDTOCols = vehiculoDTO.getVehiculoChoferDTOCols();
+			if(vehiculoDTO.getId().getCodigoVehiculo() != null) {
+				Collection<VehiculoChoferDTO> vehiculoChoferDTOSaveCols = this.vehiculoChoferGestor.obtenerListaChoferesByVehiculo(vehiculoDTO.getId().getCodigoCompania(), vehiculoDTO.getPlaca());
+				vehiculoChoferDTOSaveCols.stream().forEach(vehiculoChofer ->{
+					VehiculoChoferDTO objectSearch = vehiculoChoferDTOCols.stream()
+							.filter(predicate -> predicate.getId().getCodigoVehiculoChofer().intValue() == vehiculoChofer.getId().getCodigoVehiculoChofer())
+							.findFirst().orElse(null);
+					if(objectSearch == null) {
+						vehiculoChofer.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+						this.vehiculoChoferGestor.guardarActualizarVehiculoChofer(vehiculoChofer);
+					}
+				});
+			}
 			
 			//Creamos o actualizamos el cliente
 			vehiculoDTO.setPlaca(vehiculoDTO.getPlaca().toUpperCase());
