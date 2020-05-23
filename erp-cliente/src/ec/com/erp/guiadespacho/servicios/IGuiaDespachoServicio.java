@@ -62,4 +62,16 @@ public interface IGuiaDespachoServicio {
 	 * @throws ERPException
 	 */
 	String finObtenerXMLImprimirGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException;
+	
+	/**
+	 * Method for update status order and delete order for dispatch
+	 * @param guiaDespachoPedidoDTO
+	 */
+	void transEliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
+	
+	/**
+	 * Metodo para eliminar articulos extras del despacho
+	 * @param guiaDespachoExtrasDTO
+	 */	
+	void transEliminarPedidosExtras(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO);
 }

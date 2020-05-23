@@ -115,16 +115,18 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 				Collection<EstadoPedidoDTO> estadoPedidoActualCol = this.estadoPedidoDAO.obtenerEstadoPedido(guiaDespachoDTO.getId().getCodigoCompania(), guiaDespachoPedidoDTO.getCodigoPedido());
 				EstadoPedidoDTO estadoPedidoDTOActual = estadoPedidoActualCol.iterator().next();
 				estadoPedidoDTOActual.setFechaFin(new Date());
+				if(estadoPedidoDTOActual.getCodigoValorEstadoPedido().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_REGISTRADO)) {
 				this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTOActual);
-				EstadoPedidoDTO estadoPedidoDTONuevo = new EstadoPedidoDTO();
-				estadoPedidoDTONuevo.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
-				estadoPedidoDTONuevo.getId().setCodigoPedido(guiaDespachoPedidoDTO.getCodigoPedido());
-				estadoPedidoDTONuevo.setCodigoTipoEstadoPedido(ERPConstantes.CODIGO_CATALOGO_TIPOS_ESTADO_PEDIDO);
-				estadoPedidoDTONuevo.setCodigoValorEstadoPedido(ERPConstantes.CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_PENDIENTE);
-				estadoPedidoDTONuevo.setFechaInicio(new Date());
-				estadoPedidoDTONuevo.setFechaFin(null);
-				estadoPedidoDTONuevo.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
-				this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTONuevo);
+					EstadoPedidoDTO estadoPedidoDTONuevo = new EstadoPedidoDTO();
+					estadoPedidoDTONuevo.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
+					estadoPedidoDTONuevo.getId().setCodigoPedido(guiaDespachoPedidoDTO.getCodigoPedido());
+					estadoPedidoDTONuevo.setCodigoTipoEstadoPedido(ERPConstantes.CODIGO_CATALOGO_TIPOS_ESTADO_PEDIDO);
+					estadoPedidoDTONuevo.setCodigoValorEstadoPedido(ERPConstantes.CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_PENDIENTE);
+					estadoPedidoDTONuevo.setFechaInicio(new Date());
+					estadoPedidoDTONuevo.setFechaFin(null);
+					estadoPedidoDTONuevo.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
+					this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTONuevo);
+				}
 				
 			}	
 			
@@ -149,7 +151,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			throw new ERPException("Error, ", e.getMessage());
 		} 
 	}
-
+	
 	/**
 	 * Devuelve html para la impresion de la guia de despacho
 	 * @param guiaDespachoDTO
@@ -226,5 +228,38 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			throw new ERPException("Error al procesar plantilla xsl") ;
 		}
 		return html;
+	}
+	
+	/**
+	 * Method for update status order and delete order for dispatch
+	 * @param guiaDespachoPedidoDTO
+	 */
+	@Override
+	public void eliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO) {
+		guiaDespachoPedidoDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+		this.guiaDespachoPedidoGestor.crearActualizarGuiaDespachoPedidos(guiaDespachoPedidoDTO);
+		Collection<EstadoPedidoDTO> estadoPedidoActualCol = this.estadoPedidoDAO.obtenerEstadoPedido(guiaDespachoPedidoDTO.getId().getCodigoCompania(), guiaDespachoPedidoDTO.getCodigoPedido());
+		EstadoPedidoDTO estadoPedidoDTOActual = estadoPedidoActualCol.iterator().next();
+		estadoPedidoDTOActual.setFechaFin(new Date());
+		this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTOActual);
+		EstadoPedidoDTO estadoPedidoDTONuevo = new EstadoPedidoDTO();
+		estadoPedidoDTONuevo.getId().setCodigoCompania(guiaDespachoPedidoDTO.getId().getCodigoCompania());
+		estadoPedidoDTONuevo.getId().setCodigoPedido(guiaDespachoPedidoDTO.getCodigoPedido());
+		estadoPedidoDTONuevo.setCodigoTipoEstadoPedido(ERPConstantes.CODIGO_CATALOGO_TIPOS_ESTADO_PEDIDO);
+		estadoPedidoDTONuevo.setCodigoValorEstadoPedido(ERPConstantes.CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_REGISTRADO);
+		estadoPedidoDTONuevo.setFechaInicio(new Date());
+		estadoPedidoDTONuevo.setFechaFin(null);
+		estadoPedidoDTONuevo.setUsuarioRegistro(guiaDespachoPedidoDTO.getUsuarioRegistro());
+		this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTONuevo);
+	}
+	
+	/**
+	 * Metodo para eliminar articulos extras del despacho
+	 * @param guiaDespachoExtrasDTO
+	 */	
+	@Override
+	public void eliminarPedidosExtras(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO) {
+		guiaDespachoExtrasDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+		this.guiaDespachoExtrasGestor.crearActualizarExtrasGuiaDespacho(guiaDespachoExtrasDTO);
 	}
 }

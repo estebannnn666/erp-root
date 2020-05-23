@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 
 
 /**
@@ -42,5 +44,17 @@ public interface IGuiaDespachoGestor {
 	 * @throws ERPException
 	 */
 	String procesarXMLImprimirGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException;
+	
+	/**
+	 * Method para eliminar pedidos asignados al despacho
+	 * @param guiaDespachoPedidoDTO
+	 */
+	void eliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
+	
+	/**
+	 * Metodo para eliminar articulos extras del despacho
+	 * @param guiaDespachoExtrasDTO
+	 */
+	void eliminarPedidosExtras(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO);
 	
 }

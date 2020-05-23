@@ -79,6 +79,7 @@ public class GuiaDespachoPedidoDAO implements IGuiaDespachoPedidoDAO {
 			Criteria criteria  = session.createCriteria(GuiaDespachoPedidoDTO.class, "root");
 			criteria.createAlias("root.guiaDespachoDTO", "guiaDespachoDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.pedidoDTO", "pedidoDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("pedidoDTO.estadoPedidoDTOCols", "estadoPedidoDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("pedidoDTO.clienteDTO", "clienteDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("clienteDTO.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("clienteDTO.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
@@ -88,6 +89,11 @@ public class GuiaDespachoPedidoDAO implements IGuiaDespachoPedidoDAO {
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("guiaDespachoDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("pedidoDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("estadoPedidoDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.isNull("estadoPedidoDTO.fechaFin"));
+			criteria.add(Restrictions.eq("clienteDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 
 			if(numeroGuia != null) {
 				criteria.add(Restrictions.eq("guiaDespachoDTO.numeroGuiaDespacho", numeroGuia));
@@ -115,6 +121,13 @@ public class GuiaDespachoPedidoDAO implements IGuiaDespachoPedidoDAO {
 			projectionList.add(Projections.property("pedidoDTO.estado"), "pedidoDTO_estado");
 			projectionList.add(Projections.property("pedidoDTO.usuarioRegistro"), "pedidoDTO_usuarioRegistro");
 			projectionList.add(Projections.property("pedidoDTO.fechaRegistro"), "pedidoDTO_fechaRegistro");
+			
+			// Proyecciones entidad estado pedido
+			projectionList.add(Projections.property("estadoPedidoDTO.id.codigoCompania"), "pedidoDTO_estadoPedidoDTO_id_codigoCompania");
+			projectionList.add(Projections.property("estadoPedidoDTO.id.codigoEstadoPedido"), "pedidoDTO_estadoPedidoDTO_id_codigoEstadoPedido");
+			projectionList.add(Projections.property("estadoPedidoDTO.id.codigoPedido"), "pedidoDTO_estadoPedidoDTO_id_codigoPedido");
+			projectionList.add(Projections.property("estadoPedidoDTO.codigoValorEstadoPedido"), "pedidoDTO_estadoPedidoDTO_codigoValorEstadoPedido");
+			projectionList.add(Projections.property("estadoPedidoDTO.codigoTipoEstadoPedido"), "pedidoDTO_estadoPedidoDTO_codigoTipoEstadoPedido");
 			
 			// Proyecciones entidad clientes 
 			projectionList.add(Projections.property("clienteDTO.id.codigoCompania"), "pedidoDTO_clienteDTO_id_codigoCompania");

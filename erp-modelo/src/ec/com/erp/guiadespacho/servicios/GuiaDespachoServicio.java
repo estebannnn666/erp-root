@@ -104,4 +104,22 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	public String finObtenerXMLImprimirGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException{
 		return this.guiaDespachoGestor.procesarXMLImprimirGuiaDespacho(guiaDespachoDTO);
 	}
+	
+	/**
+	 * Method for update status order and delete order for dispatch
+	 * @param guiaDespachoPedidoDTO
+	 */
+	@Override
+	public void transEliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO) {
+		this.guiaDespachoGestor.eliminarPedidoDespacho(guiaDespachoPedidoDTO);
+	}
+	
+	/**
+	 * Metodo para eliminar articulos extras del despacho
+	 * @param guiaDespachoExtrasDTO
+	 */	
+	@Override
+	public void transEliminarPedidosExtras(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO) {
+		this.guiaDespachoGestor.eliminarPedidosExtras(guiaDespachoExtrasDTO);
+	}
 }
