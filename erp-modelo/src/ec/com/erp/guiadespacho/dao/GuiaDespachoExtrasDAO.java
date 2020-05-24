@@ -92,6 +92,7 @@ public class GuiaDespachoExtrasDAO implements IGuiaDespachoExtrasDAO {
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoGuiaDespachoExtra"), "id_codigoGuiaDespachoExtra");
 			projectionList.add(Projections.property("root.codigoGuiaDespacho"), "codigoGuiaDespacho");
+			projectionList.add(Projections.property("root.codigoArticulo"), "codigoArticulo");
 			projectionList.add(Projections.property("root.descripcionProducto"), "descripcionProducto");
 			projectionList.add(Projections.property("root.cantidad"), "cantidad");
 			projectionList.add(Projections.property("root.observacion"), "observacion");

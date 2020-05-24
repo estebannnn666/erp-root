@@ -127,6 +127,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.direccion"), "direccion");
 			projectionList.add(Projections.property("root.telefono"), "telefono");
 			projectionList.add(Projections.property("root.pagado"), "pagado");
+			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
+			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
 			projectionList.add(Projections.property("root.totalCuenta"), "totalCuenta");
 			projectionList.add(Projections.property("root.codigoTipoDocumento"), "codigoTipoDocumento");
 			projectionList.add(Projections.property("root.codigoValorTipoDocumento"), "codigoValorTipoDocumento");

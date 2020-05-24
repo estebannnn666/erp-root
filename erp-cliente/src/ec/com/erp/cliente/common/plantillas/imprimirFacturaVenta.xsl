@@ -109,7 +109,7 @@
 														</xsl:for-each>
 														<tr>
 															<td colspan="4" align="right" style="width:15.0cm; height:0.4cm; padding-right:4px; padding-top:4px;"><pre style="font-size: 12px !important;">SUBTOTAL:</pre></td>															
-															<td align="right" style="width:5.0cm; height:0.4cm; padding-right: 3px; padding-top:4px;"><xsl:value-of select="factura/total"/></td>								
+															<td align="right" style="width:5.0cm; height:0.4cm; padding-right: 3px; padding-top:4px;"><xsl:value-of select="factura/subtotal"/></td>								
 														</tr>
 														<tr>
 															<td colspan="4" align="right" style="width:15.0cm; height:0.4cm; padding-right:4px; padding-top:4px;"><pre style="font-size: 12px !important;">IVA   %:</pre></td>															

@@ -34,6 +34,12 @@ public class GuiaDespachoExtrasDTO implements Serializable{
 	private Long codigoGuiaDespacho ;
 	
 	/**
+	 * Especifica el codigo de articulo relacionado
+	 */
+	@Column(name="CODIGOARTICULO")
+	private Integer codigoArticulo;
+	
+	/**
 	 * Especifica la descripcion del producto extra 
 	 */
 	@Column(name = "DESCRIPCIONPRODUCTO")
@@ -93,6 +99,14 @@ public class GuiaDespachoExtrasDTO implements Serializable{
 
 	public void setCodigoGuiaDespacho(Long codigoGuiaDespacho) {
 		this.codigoGuiaDespacho = codigoGuiaDespacho;
+	}
+
+	public Integer getCodigoArticulo() {
+		return codigoArticulo;
+	}
+
+	public void setCodigoArticulo(Integer codigoArticulo) {
+		this.codigoArticulo = codigoArticulo;
 	}
 
 	public String getDescripcionProducto() {

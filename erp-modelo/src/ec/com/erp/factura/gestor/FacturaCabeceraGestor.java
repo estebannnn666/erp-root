@@ -327,6 +327,8 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			contenidoXml.append("<nombreCliente>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getNombreClienteProveedor())).append("</nombreCliente>");
 			contenidoXml.append("<direccion>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getDireccion())).append("</direccion>");
 			contenidoXml.append("<telefono>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getTelefono())).append("</telefono>");
+			contenidoXml.append("<subtotal>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalSinImpuestos() == null ? 0 : facturaCabeceraDTO.getTotalSinImpuestos().doubleValue()))).append("</subtotal>");
+			contenidoXml.append("<iva>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalImpuestos() == null ? 0 : facturaCabeceraDTO.getTotalImpuestos().doubleValue()))).append("</iva>");
 			contenidoXml.append("<total>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalCuenta().doubleValue()))).append("</total>");
 			int cont = 1;
 			//detalle reposicion
