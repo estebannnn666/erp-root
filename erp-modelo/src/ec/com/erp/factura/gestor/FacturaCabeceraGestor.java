@@ -21,8 +21,10 @@ import ec.com.erp.cliente.common.resources.ERPMessages;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
+import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
+import ec.com.erp.transaccion.gestor.ITransaccionGestor;
 import ec.com.erp.utilitario.commons.util.TransformerUtil;
 
 /**
@@ -34,6 +36,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	private IFacturaCabeceraDAO facturaCabeceraDAO;
 	private IFacturaDetalleGestor facturaDetalleGestor;
 	private IInventarioGestor inventarioGestor;
+	private ITransaccionGestor transaccionGestor;
 	
 	
 	public IFacturaCabeceraDAO getFacturaCabeceraDAO() {
@@ -58,6 +61,14 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 
 	public void setInventarioGestor(IInventarioGestor inventarioGestor) {
 		this.inventarioGestor = inventarioGestor;
+	}
+
+	public ITransaccionGestor getTransaccionGestor() {
+		return transaccionGestor;
+	}
+
+	public void setTransaccionGestor(ITransaccionGestor transaccionGestor) {
+		this.transaccionGestor = transaccionGestor;
 	}
 
 	/**
@@ -106,11 +117,27 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 					this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
 				}
 			}
+			
+			// Guardar tipo de transaccion
+			if(facturaCabeceraDTO.getPagado()) {
+				TransaccionDTO transaccionDTO = new TransaccionDTO();
+				transaccionDTO.getId().setCodigoCompania(facturaCabeceraDTO.getId().getCodigoCompania());
+				transaccionDTO.setValorTransaccion(facturaCabeceraDTO.getTotalCuenta());
+				transaccionDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());
+				transaccionDTO.setFechaTransaccion(facturaCabeceraDTO.getFechaDocumento());
+				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
+					transaccionDTO.setCodigoValorTransaccion(ERPConstantes.CODIGO_CATALOGO_VALOR_TRANSACCION_INGRESO);
+					transaccionDTO.setConcepto("PAGO DE CLIENTE FACTURA NRO"+facturaCabeceraDTO.getNumeroDocumento());
+				}else {
+					transaccionDTO.setCodigoValorTransaccion(ERPConstantes.CODIGO_CATALOGO_VALOR_TRANSACCION_GASTO);
+					transaccionDTO.setConcepto("PAGO A PROVEEDOR FACTURA NRO"+facturaCabeceraDTO.getNumeroDocumento());
+				}
+				this.transaccionGestor.guardarTransaccion(transaccionDTO);
+			}
+			
 		} catch (ERPException e) {
-			facturaCabeceraDTO.getId().setCodigoFactura(null);
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		} catch (Exception e) {
-			facturaCabeceraDTO.getId().setCodigoFactura(null);
 			throw new ERPException("Error, {0}",e.getMessage());
 		} 
 	}

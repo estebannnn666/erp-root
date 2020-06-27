@@ -161,4 +161,11 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
+    
+    <!-- Inyeccion bean  transaccion -->
+    <bean id="erpTransaccionDAO" class="ec.com.erp.transaccion.dao.TransaccionDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
 </beans>	

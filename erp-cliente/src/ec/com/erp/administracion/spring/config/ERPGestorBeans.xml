@@ -139,6 +139,7 @@
 		<property name="facturaCabeceraDAO"><ref bean="erpFacturaCabeceraDAO"/></property>
 		<property name="facturaDetalleGestor"><ref bean="erpFacturaDetalleGestor"/></property>
 		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
+		<property name="transaccionGestor"><ref bean="erpTransaccionGestor"/></property>
 	</bean>
 	
 	<!-- Gestor facturaDetalle -->
@@ -161,4 +162,10 @@
     <bean id="erpImpuestoGestor" class="ec.com.erp.impuesto.gestor.ImpuestoGestor">
         <property name="impuestoDAO"><ref bean="erpImpuestoDAO"/></property>
     </bean>
+    
+    <!-- Inyeccion bean  TransaccionGestor -->
+    <bean id="erpTransaccionGestor" class="ec.com.erp.transaccion.gestor.TransaccionGestor">
+        <property name="transaccionDAO"><ref bean="erpTransaccionDAO"/></property>
+    </bean>
+    
 </beans>

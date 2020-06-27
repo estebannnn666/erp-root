@@ -36,6 +36,7 @@ public class ERPFactory {
 	public static final EstadoPedidoFactory estadopedido = new EstadoPedidoFactory(APP_CTX);
 	public static final ProveedorFactory proveedor = new ProveedorFactory(APP_CTX);
 	public static final ImpuestoFactory impuesto = new ImpuestoFactory(APP_CTX);
+	public static final TransaccionFactory transaccion = new TransaccionFactory(APP_CTX);
 	
 	private static ApplicationContext activateFactory(){
 		try{

@@ -38,6 +38,8 @@ public class ERPConstantes {
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_CHOFER_AYUDANTE = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.chofer.ayudante");
 	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.ventas");
 	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.compras");
+	public static final String CODIGO_CATALOGO_VALOR_TRANSACCION_INGRESO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.transaccion.ingreso");
+	public static final String CODIGO_CATALOGO_VALOR_TRANSACCION_GASTO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.transaccion.gasto");
 	
 	/************ CODIGOS CATALAGOS TIPOS *****************/
 	public static final Integer CODIGO_CATALOGO_TIPOS_CONTACTOS = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.contacto");
@@ -48,6 +50,7 @@ public class ERPConstantes {
 	public static final Integer CODIGO_CATALOGO_TIPOS_CHOFERES = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.chofer");
 	public static final Integer CODIGO_CATALOGO_TIPOS_VEHICULOS = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.vehiculos");
 	public static final Integer CODIGO_CATALOGO_TIPOS_DOCUMENTOS = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.documentos.cuentas");
+	public static final Integer CODIGO_CATALOGO_TIPOS_TRANSACCION = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.transaccion");
 	
 	/*********** PERFILES ********/
 	public static final BigDecimal CODIGO_PERFIL_ADMINISTRADOR = ERPMessages.getBigDecimal("ec.com.erp.codigo.secuencial.pefil.administrador");

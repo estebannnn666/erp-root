@@ -118,4 +118,10 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
     <bean id="erpImpuestoServicio" class="ec.com.erp.impuesto.servicios.ImpuestoServicio">
         <property name="impuestoGestor"><ref bean="erpImpuestoGestor"/></property>
     </bean>
+    
+    <!-- Servicio transaccion -->
+    <bean id="erpTransaccionServicio" class="ec.com.erp.transaccion.servicios.TransaccionServicio">
+        <property name="transaccionGestor"><ref bean="erpTransaccionGestor"/></property>
+    </bean>
+    
 </beans>
