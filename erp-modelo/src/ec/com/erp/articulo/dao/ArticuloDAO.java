@@ -100,6 +100,7 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.codigoBarras"), "codigoBarras");
 			projectionList.add(Projections.property("root.nombreArticulo"), "nombreArticulo");
 			projectionList.add(Projections.property("root.peso"), "peso");
+			projectionList.add(Projections.property("root.costo"), "costo");
 			projectionList.add(Projections.property("root.precio"), "precio");
 			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
 			projectionList.add(Projections.property("root.estado"), "estado");
@@ -166,6 +167,7 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.codigoBarras"), "codigoBarras");
 			projectionList.add(Projections.property("root.nombreArticulo"), "nombreArticulo");
 			projectionList.add(Projections.property("root.peso"), "peso");
+			projectionList.add(Projections.property("root.costo"), "costo");
 			projectionList.add(Projections.property("root.precio"), "precio");
 			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
 			projectionList.add(Projections.property("root.estado"), "estado");

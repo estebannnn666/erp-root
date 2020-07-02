@@ -24,6 +24,8 @@ public class FacturaCabeceraID implements Serializable{
 	public static final String NOMBRE_SECUENCIA = "SCVNSECFACTURACABECERA";
 	public static final String NOMBRE_SECUENCIA_VENTA = "SCVNSECFACTURAVENTAS";
 	public static final String NOMBRE_SECUENCIA_COMPRA = "SCVNSECFACTURACOMPRAS";
+	public static final String NOMBRE_SECUENCIA_COMPROVANTE_VENTA = "SCVNSECNUMEROFACTURA";
+	
 
 	public Integer getCodigoCompania() {
 		return codigoCompania;

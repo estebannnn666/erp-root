@@ -57,6 +57,12 @@ public class ArticuloDTO implements Serializable{
 	private BigDecimal precio;
 	
 	/**
+	 * Especifica el precio del articulo
+	 */
+	@Column(name="COSTO")
+	private BigDecimal costo;
+	
+	/**
 	 * Especifica la cantidad disponible
 	 */
 	@Column(name="CANTIDADSTOCK")
@@ -120,6 +126,14 @@ public class ArticuloDTO implements Serializable{
 
 	public void setPeso(BigDecimal peso) {
 		this.peso = peso;
+	}
+	
+	public BigDecimal getCosto() {
+		return costo;
+	}
+
+	public void setCosto(BigDecimal costo) {
+		this.costo = costo;
 	}
 
 	public BigDecimal getPrecio() {
