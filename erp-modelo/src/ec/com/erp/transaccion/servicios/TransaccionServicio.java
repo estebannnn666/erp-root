@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.mdl.dto.PagosFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
 import ec.com.erp.transaccion.gestor.ITransaccionGestor;
 
@@ -48,6 +49,26 @@ public class TransaccionServicio implements ITransaccionServicio {
 	@Override
 	public void transGuardarTransaccion(TransaccionDTO transaccionDTO) throws ERPException{
 		this.transaccionGestor.guardarTransaccion(transaccionDTO);
+	}
+	
+	/**
+	 * M\u00e9todo para obtener lista de pagos por factura
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @return Collection<PagosFacturaDTO>
+	 * @throws ERPException
+	 */
+	public Collection<PagosFacturaDTO> findObtenerListaPagosFactura(Integer codigoCompania, Long codigoFactura) throws ERPException{
+		return this.transaccionGestor.obtenerListaPagosFactura(codigoCompania, codigoFactura);
+	}
+	
+	/**
+	 * M\u00e9todo para guardar pagos por factura
+	 * @param transaccionDTO
+	 * @throws ERPException
+	 */
+	public void transGuardarPago(String tipoFactura, PagosFacturaDTO pagosFacturaDTO) throws ERPException{
+		this.transaccionGestor.guardarPago(tipoFactura, pagosFacturaDTO);
 	}
 
 }

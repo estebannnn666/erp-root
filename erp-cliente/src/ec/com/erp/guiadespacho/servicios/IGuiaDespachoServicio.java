@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 
@@ -49,6 +50,15 @@ public interface IGuiaDespachoServicio {
 	Collection<GuiaDespachoExtrasDTO> findObtenerListaGuiaDespachoExtrasByNumeroGuia(Integer codigoCompania, String numeroGuia) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener lista de detalle de la guia de despacho
+	 * @param codigoCompania
+	 * @param numeroGuia
+	 * @return Collection<GuiaDespachoDetalleDTO>
+	 * @throws ERPException
+	 */
+	Collection<GuiaDespachoDetalleDTO> findObtenerListaGuiaDespachoDetalleByNumeroGuia(Integer codigoCompania, String numeroGuia) throws ERPException;
+	
+	/**
 	 * M\u00e9todo para guardar y actualizar guia despacho
 	 * @param guiaDespachoDTO
 	 * @throws ERPException
@@ -67,7 +77,7 @@ public interface IGuiaDespachoServicio {
 	 * Method for update status order and delete order for dispatch
 	 * @param guiaDespachoPedidoDTO
 	 */
-	void transEliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
+	void transEliminarPedidoDespacho(String numeroGuia, GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
 	
 	/**
 	 * Metodo para eliminar articulos extras del despacho

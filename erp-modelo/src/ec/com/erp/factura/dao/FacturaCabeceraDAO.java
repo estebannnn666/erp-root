@@ -192,6 +192,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 				facturaCabeceraDTO.getId().setCodigoFactura(Long.parseLong(""+secuencialFactura));
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
 					Integer secuencialFacturaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_VENTA);
+					this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_COMPROVANTE_VENTA);
 					facturaCabeceraDTO.setCodigoReferenciaFactura("FAC-"+secuencialFacturaVentas);
 				}
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS)) {

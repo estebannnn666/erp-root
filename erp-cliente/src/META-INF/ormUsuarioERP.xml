@@ -33,4 +33,6 @@
 	<entity class="ec.com.erp.cliente.mdl.dto.ImpuestoDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.TransaccionDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.PagosFacturaDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO"></entity>
 </entity-mappings>

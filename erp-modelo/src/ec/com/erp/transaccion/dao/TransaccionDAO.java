@@ -20,7 +20,9 @@ import org.hibernate.criterion.Restrictions;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.mdl.dto.PagosFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
+import ec.com.erp.cliente.mdl.dto.id.PagosFacturaID;
 import ec.com.erp.cliente.mdl.dto.id.TransaccionID;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.utilitario.dao.commons.hibernate.transformers.MultiLevelResultTransformer;
@@ -156,6 +158,83 @@ public class TransaccionDAO implements ITransaccionDAO {
 			throw new ERPException("Ocurrio un error al guardar la transacci\\u00F3n."+e.getMessage());
 		} catch (Exception e) {
 			throw new ERPException("Ocurrio un error al guardar la transacci\\\\u00F3n."+e.getMessage());
+		} 
+	}
+
+	/**
+	 * M\u00e9todo para obtener lista de pagos por factura
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @return Collection<PagosFacturaDTO>
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<PagosFacturaDTO> obtenerListaPagosFactura(Integer codigoCompania, Long codigoFactura)	throws ERPException {
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(PagosFacturaDTO.class, "root");
+			
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("root.codigoFactura", codigoFactura));
+			
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoPago"), "id_codigoPago");			
+			projectionList.add(Projections.property("root.codigoFactura"), "codigoFactura");			
+			projectionList.add(Projections.property("root.valorPago"), "valorPago");			
+			projectionList.add(Projections.property("root.descripcion"), "descripcion");			
+			projectionList.add(Projections.property("root.fechaPago"), "fechaPago");			
+			projectionList.add(Projections.property("root.estado"), "estado");			
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+						
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(PagosFacturaDTO.class));
+			criteria.addOrder(Order.desc("root.id.codigoPago"));
+			Collection<PagosFacturaDTO> pagosDTOCols = new ArrayList<>();
+			pagosDTOCols = criteria.list();
+
+			return pagosDTOCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de pagos.").initCause(e);
+		} 
+	}
+
+	/**
+	 * M\u00e9todo para guardar pagos por factura
+	 * @param transaccionDTO
+	 * @throws ERPException
+	 */
+	@Override
+	public void guardarPago(PagosFacturaDTO pagosFacturaDTO) throws ERPException {
+		try{
+			if (pagosFacturaDTO.getId().getCodigoCompania() == null || pagosFacturaDTO.getUsuarioRegistro() == null) {
+				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+			}	
+			
+			sessionFactory.getCurrentSession().clear();
+			if(pagosFacturaDTO.getId().getCodigoPago() ==  null){
+				Integer secuencialTransaccion = this.secuenciaDAO.obtenerSecuencialTabla(PagosFacturaID.NOMBRE_SECUENCIA);
+				pagosFacturaDTO.getId().setCodigoPago(Long.parseLong(""+secuencialTransaccion));
+				pagosFacturaDTO.setFechaRegistro(new Date());
+				pagosFacturaDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
+				sessionFactory.getCurrentSession().save(pagosFacturaDTO);
+			}
+			sessionFactory.getCurrentSession().flush();
+		} catch (ERPException e) {
+			throw new ERPException("Ocurrio un error al guardar el pago."+e.getMessage());
+		} catch (Exception e) {
+			throw new ERPException("Ocurrio un error al guardar el pago."+e.getMessage());
 		} 
 	}	
 }

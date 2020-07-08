@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -203,6 +204,7 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("articuloDTO.estado"), "detallePedidoDTOCols_articuloDTO_estado");
 			
 			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.desc("root.id.codigoPedido"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(PedidoDTO.class));
 			Collection<PedidoDTO> pedidoDTOCols = new ArrayList<PedidoDTO>();
 			pedidoDTOCols =  criteria.list();

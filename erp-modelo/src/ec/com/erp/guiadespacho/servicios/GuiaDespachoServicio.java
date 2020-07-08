@@ -5,8 +5,10 @@ import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
+import ec.com.erp.guiadespacho.gestor.IGuiaDespachoDetalleGestor;
 import ec.com.erp.guiadespacho.gestor.IGuiaDespachoExtrasGestor;
 import ec.com.erp.guiadespacho.gestor.IGuiaDespachoGestor;
 import ec.com.erp.guiadespacho.gestor.IGuiaDespachoPedidoGestor;
@@ -16,6 +18,7 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	private IGuiaDespachoGestor guiaDespachoGestor;
 	private IGuiaDespachoPedidoGestor guiaDespachoPedidoGestor;
 	private IGuiaDespachoExtrasGestor guiaDespachoExtrasGestor;
+	private IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor;
 
 	public IGuiaDespachoGestor getGuiaDespachoGestor() {
 		return guiaDespachoGestor;
@@ -39,6 +42,14 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 
 	public void setGuiaDespachoExtrasGestor(IGuiaDespachoExtrasGestor guiaDespachoExtrasGestor) {
 		this.guiaDespachoExtrasGestor = guiaDespachoExtrasGestor;
+	}
+	
+	public IGuiaDespachoDetalleGestor getGuiaDespachoDetalleGestor() {
+		return guiaDespachoDetalleGestor;
+	}
+
+	public void setGuiaDespachoDetalleGestor(IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor) {
+		this.guiaDespachoDetalleGestor = guiaDespachoDetalleGestor;
 	}
 
 	/**
@@ -68,6 +79,18 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	@Override
 	public Collection<GuiaDespachoExtrasDTO> findObtenerListaGuiaDespachoExtrasByNumeroGuia(Integer codigoCompania, String numeroGuia) throws ERPException{
 		return this.guiaDespachoExtrasGestor.obtenerListaGuiaDespachoExtrasByNumeroGuia(codigoCompania, numeroGuia);
+	}
+	
+	/**
+	 * M\u00e9todo para obtener lista de detalle de guia de despacho
+	 * @param codigoCompania
+	 * @param numeroGuia
+	 * @return Collection<GuiaDespachoExtrasDTO>
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<GuiaDespachoDetalleDTO> findObtenerListaGuiaDespachoDetalleByNumeroGuia(Integer codigoCompania, String numeroGuia) throws ERPException{
+		return this.guiaDespachoDetalleGestor.obtenerListaGuiaDespachoDetalleByNumeroGuia(codigoCompania, numeroGuia);
 	}
 	
 	/**
@@ -110,8 +133,8 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	 * @param guiaDespachoPedidoDTO
 	 */
 	@Override
-	public void transEliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO) {
-		this.guiaDespachoGestor.eliminarPedidoDespacho(guiaDespachoPedidoDTO);
+	public void transEliminarPedidoDespacho(String numeroGuia, GuiaDespachoPedidoDTO guiaDespachoPedidoDTO) {
+		this.guiaDespachoGestor.eliminarPedidoDespacho(numeroGuia, guiaDespachoPedidoDTO);
 	}
 	
 	/**

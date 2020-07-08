@@ -52,6 +52,7 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
 		<property name="guiaDespachoGestor"><ref bean="erpGuiaDespachoGestor"/></property>
 		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoPedidoGestor"/></property>
 		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
+		<property name="guiaDespachoDetalleGestor"><ref bean="erpGuiaDespachoDetalleGestor"/></property>
 	</bean>
 	
 	<!-- Servicio compania -->

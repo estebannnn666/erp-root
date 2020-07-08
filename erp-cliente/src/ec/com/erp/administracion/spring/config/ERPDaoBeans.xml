@@ -80,6 +80,12 @@
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
+    <!-- Inyeccion bean  GuiaDespachoDetalleDAO -->
+    <bean id="erpGuiaDespachoDetalleDAO" class="ec.com.erp.guiadespacho.dao.GuiaDespachoDetalleDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
     <!-- Inyeccion bean  CompaniaDAO -->
     <bean id="erpCompaniaDAO" class="ec.com.erp.compania.dao.CompaniaDAO">
         <property name="sessionFactory" ref="sessionFactory"/>

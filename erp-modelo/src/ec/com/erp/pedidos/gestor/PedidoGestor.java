@@ -4,13 +4,13 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.collections.CollectionUtils;
-
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.DetallePedidoDTO;
 import ec.com.erp.cliente.mdl.dto.EstadoPedidoDTO;
+import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.PedidoDTO;
+import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 import ec.com.erp.pedidos.dao.IDetallePedidoDAO;
 import ec.com.erp.pedidos.dao.IEstadoPedidoDAO;
 import ec.com.erp.pedidos.dao.IPedidoDAO;
@@ -20,6 +20,7 @@ public class PedidoGestor implements IPedidoGestor{
 	private IPedidoDAO pedidoDAO;
 	private IDetallePedidoDAO detallePedidoDAO;
 	private IEstadoPedidoDAO estadoPedidoDAO;
+	private IFacturaCabeceraGestor facturaCabeceraGestor;
 	
 	public IPedidoDAO getPedidoDAO() {
 		return pedidoDAO;
@@ -43,6 +44,14 @@ public class PedidoGestor implements IPedidoGestor{
 
 	public void setEstadoPedidoDAO(IEstadoPedidoDAO estadoPedidoDAO) {
 		this.estadoPedidoDAO = estadoPedidoDAO;
+	}
+
+	public IFacturaCabeceraGestor getFacturaCabeceraGestor() {
+		return facturaCabeceraGestor;
+	}
+
+	public void setFacturaCabeceraGestor(IFacturaCabeceraGestor facturaCabeceraGestor) {
+		this.facturaCabeceraGestor = facturaCabeceraGestor;
 	}
 
 	/**
@@ -82,11 +91,11 @@ public class PedidoGestor implements IPedidoGestor{
 			}
 		}
 		EstadoPedidoDTO estadoPedidoDTO = null;
-		if(CollectionUtils.isEmpty(pedidoDTO.getEstadoPedidoDTOCols())) {
+		if(pedidoDTO.getEstadoPedidoDTO() == null) {
 			estadoPedidoDTO = new EstadoPedidoDTO();
 		}
 		else {
-			estadoPedidoDTO = pedidoDTO.getEstadoPedidoDTOCols().iterator().next();
+			estadoPedidoDTO = pedidoDTO.getEstadoPedidoDTO();
 		}
 		estadoPedidoDTO.getId().setCodigoCompania(codigoCompania);
 		estadoPedidoDTO.getId().setCodigoPedido(pedidoDTO.getId().getCodigoPedido());
@@ -96,6 +105,12 @@ public class PedidoGestor implements IPedidoGestor{
 		estadoPedidoDTO.setFechaFin(null);
 		estadoPedidoDTO.setUsuarioRegistro(pedidoDTO.getUsuarioRegistro());
 		this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTO);
+		
+		// Crear y guardar factura
+		FacturaCabeceraDTO facturaCabeceraDTO = new FacturaCabeceraDTO();
+		facturaCabeceraDTO.setCodigoValorTipoDocumento(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
+		facturaCabeceraDTO.setNumeroDocumento(pedidoDTO.getClienteDTO().getPersonaDTO() == null ? pedidoDTO.getClienteDTO().getEmpresaDTO().getNumeroRuc() : pedidoDTO.getClienteDTO().getPersonaDTO().getNumeroDocumento());
+		this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
 	}
 	
 	

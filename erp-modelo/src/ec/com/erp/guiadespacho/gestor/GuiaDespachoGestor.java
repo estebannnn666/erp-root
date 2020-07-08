@@ -19,6 +19,7 @@ import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.EstadoPedidoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 import ec.com.erp.guiadespacho.dao.IGuiaDespachoDAO;
@@ -34,6 +35,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	private IGuiaDespachoDAO guiaDespachoDAO;
 	private IGuiaDespachoExtrasGestor guiaDespachoExtrasGestor;
 	private IGuiaDespachoPedidoGestor guiaDespachoPedidoGestor;
+	private IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor;
 	private IEstadoPedidoDAO estadoPedidoDAO;
 	
 	public IGuiaDespachoDAO getGuiaDespachoDAO() {
@@ -67,6 +69,14 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	public void setEstadoPedidoDAO(IEstadoPedidoDAO estadoPedidoDAO) {
 		this.estadoPedidoDAO = estadoPedidoDAO;
 	}
+	
+	public IGuiaDespachoDetalleGestor getGuiaDespachoDetalleGestor() {
+		return guiaDespachoDetalleGestor;
+	}
+
+	public void setGuiaDespachoDetalleGestor(IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor) {
+		this.guiaDespachoDetalleGestor = guiaDespachoDetalleGestor;
+	}
 
 	/**
 	 * M\u00e9todo para obtener lista de despachos
@@ -97,6 +107,8 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 		try{
 			// Obtener la lista de despachos extras
 			Collection<GuiaDespachoExtrasDTO> guiaDespachoExtrasDTOCols = guiaDespachoDTO.getGuiaDespachoExtrasDTOCols();
+			// Obtener la lista de detalles
+			Collection<GuiaDespachoDetalleDTO> guiaDespachoDetalleDTOCols = guiaDespachoDTO.getGuiaDespachoDetalleDTOCols();
 			// Obtener la lista de despachos extras
 			Collection<GuiaDespachoPedidoDTO> guiaDespachoPedidoDTOCols = guiaDespachoDTO.getGuiaDespachoPedidoDTOCols();
 			
@@ -145,6 +157,23 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 					this.guiaDespachoExtrasGestor.crearActualizarExtrasGuiaDespacho(guiaDespachoExtrasDTO);
 				}
 			}
+			
+			// Guardar detalle de guia despacho
+			for(GuiaDespachoDetalleDTO guiaDespachoDetalleDTO : guiaDespachoDetalleDTOCols) {
+				if(guiaDespachoDetalleDTO.getDescripcionProducto() != null && guiaDespachoDetalleDTO.getDescripcionProducto().trim() != "" && guiaDespachoDetalleDTO.getCantidad() != null) {
+					guiaDespachoDetalleDTO.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
+					guiaDespachoDetalleDTO.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
+					guiaDespachoDetalleDTO.setCodigoGuiaDespacho(guiaDespachoDTO.getId().getCodigoGuiaDespacho());
+					if(guiaDespachoDetalleDTO.getDescripcionProducto() != null) {
+						guiaDespachoDetalleDTO.setDescripcionProducto(guiaDespachoDetalleDTO.getDescripcionProducto().toUpperCase());
+					}
+					if(guiaDespachoDetalleDTO.getObservacion() != null) {
+						guiaDespachoDetalleDTO.setObservacion(guiaDespachoDetalleDTO.getObservacion().toUpperCase());
+					}
+					this.guiaDespachoDetalleGestor.crearActualizarDetalleGuiaDespacho(guiaDespachoDetalleDTO);
+				}
+			}
+			
 		} catch (ERPException e) {
 			throw new ERPException("Error, ", e.getMessage());
 		} catch (Exception e) {
@@ -185,13 +214,13 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			int cont = 1;
 			//detalle reposicion
 			contenidoXml.append("<listaDestinos>");
-			for(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO : guiaDespachoDTO.getGuiaDespachoPedidoDTOCols()){
+			for(GuiaDespachoDetalleDTO guiaDespachoDetalleDTO : guiaDespachoDTO.getGuiaDespachoDetalleDTOCols()){
+				String observacion = guiaDespachoDetalleDTO.getObservacion() == null ? "" : guiaDespachoDetalleDTO.getObservacion();
 				contenidoXml.append("<destino>");
 				contenidoXml.append("<nroDestino>").append(StringEscapeUtils.escapeXml(""+cont)).append("</nroDestino>");
-				contenidoXml.append("<nombreCliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO() == null ? guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getEmpresaDTO().getRazonSocial()  : guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getNombreCompleto())).append("</nombreCliente>");
-				contenidoXml.append("<direccionCliente>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO() == null ? guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getEmpresaDTO().getContactoEmpresaDTO().getDireccionPrincipal() : guiaDespachoPedidoDTO.getPedidoDTO().getClienteDTO().getPersonaDTO().getContactoPersonaDTO().getDireccionPrincipal())).append("</direccionCliente>");
-				contenidoXml.append("<cantidadPedida>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(guiaDespachoPedidoDTO.getPedidoDTO().getTotalCompra().doubleValue()))).append("</cantidadPedida>");
-				contenidoXml.append("<observacion>").append(StringEscapeUtils.escapeXml(guiaDespachoPedidoDTO.getObservacion())).append("</observacion>");
+				contenidoXml.append("<descripcionProducto>").append(StringEscapeUtils.escapeXml(guiaDespachoDetalleDTO.getDescripcionProducto())).append("</descripcionProducto>");
+				contenidoXml.append("<cantidadPedida>").append(StringEscapeUtils.escapeXml(""+guiaDespachoDetalleDTO.getCantidad())).append("</cantidadPedida>");
+				contenidoXml.append("<observacion>").append(StringEscapeUtils.escapeXml(observacion)).append("</observacion>");
 				contenidoXml.append("</destino>");
 				cont++;
 			}
@@ -203,11 +232,12 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 				contenidoXml.append("<listaExtras>");
 				for(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO : guiaDespachoDTO.getGuiaDespachoExtrasDTOCols()){
 					if(StringUtils.isNotEmpty(guiaDespachoExtrasDTO.getDescripcionProducto()) && guiaDespachoExtrasDTO.getCantidad() != null){
+						String observacion = guiaDespachoExtrasDTO.getObservacion() == null ? "" : guiaDespachoExtrasDTO.getObservacion();
 						contenidoXml.append("<extra>");
 						contenidoXml.append("<nroExtra>").append(StringEscapeUtils.escapeXml(""+contExtras)).append("</nroExtra>");
 						contenidoXml.append("<descripcionProducto>").append(StringEscapeUtils.escapeXml(guiaDespachoExtrasDTO.getDescripcionProducto())).append("</descripcionProducto>");
 						contenidoXml.append("<cantidad>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getCantidad())).append("</cantidad>");
-						contenidoXml.append("<observacionExtra>").append(StringEscapeUtils.escapeXml(""+guiaDespachoExtrasDTO.getObservacion() == null ? "" : guiaDespachoExtrasDTO.getObservacion())).append("</observacionExtra>");
+						contenidoXml.append("<observacionExtra>").append(StringEscapeUtils.escapeXml(observacion)).append("</observacionExtra>");
 						contenidoXml.append("</extra>");
 						contExtras++;
 					}
@@ -235,7 +265,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	 * @param guiaDespachoPedidoDTO
 	 */
 	@Override
-	public void eliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO) {
+	public void eliminarPedidoDespacho(String numeroGuia, GuiaDespachoPedidoDTO guiaDespachoPedidoDTO) {
 		guiaDespachoPedidoDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
 		this.guiaDespachoPedidoGestor.crearActualizarGuiaDespachoPedidos(guiaDespachoPedidoDTO);
 		Collection<EstadoPedidoDTO> estadoPedidoActualCol = this.estadoPedidoDAO.obtenerEstadoPedido(guiaDespachoPedidoDTO.getId().getCodigoCompania(), guiaDespachoPedidoDTO.getCodigoPedido());
@@ -251,6 +281,29 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 		estadoPedidoDTONuevo.setFechaFin(null);
 		estadoPedidoDTONuevo.setUsuarioRegistro(guiaDespachoPedidoDTO.getUsuarioRegistro());
 		this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTONuevo);
+		
+		Collection<GuiaDespachoDetalleDTO> detallePedidosCosl = this.guiaDespachoDetalleGestor.obtenerListaGuiaDespachoDetalleByNumeroGuia(guiaDespachoPedidoDTO.getId().getCodigoCompania(), numeroGuia);
+		guiaDespachoPedidoDTO.getPedidoDTO().getDetallePedidoDTOCols().stream().forEach(detalle ->{
+			GuiaDespachoDetalleDTO detalleGuia = detallePedidosCosl.stream()
+	        		.filter(guiaDetalle -> guiaDetalle.getCodigoArticulo().intValue() == detalle.getCodigoArticulo().intValue())
+	        		.findFirst().orElse(null);
+			if(detalleGuia != null) {
+				detallePedidosCosl.stream().forEach(guiaDesp -> {
+					if(guiaDesp.getCodigoArticulo().intValue() == detalle.getCodigoArticulo().intValue()) {
+						guiaDesp.setCantidad(guiaDesp.getCantidad()-detalle.getCantidad());
+					}
+				});
+			}
+		});
+		
+		detallePedidosCosl.stream().forEach(detallePedido -> {
+			detallePedido.setUsuarioModificacion(guiaDespachoPedidoDTO.getUsuarioRegistro());
+			detallePedido.setFechaModificacion(new Date());
+			if(detallePedido.getCantidad().intValue() == 0) {
+				detallePedido.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+			}
+			this.guiaDespachoDetalleGestor.crearActualizarDetalleGuiaDespacho(detallePedido);
+		});
 	}
 	
 	/**

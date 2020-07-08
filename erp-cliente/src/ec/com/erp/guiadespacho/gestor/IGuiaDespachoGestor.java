@@ -49,7 +49,7 @@ public interface IGuiaDespachoGestor {
 	 * Method para eliminar pedidos asignados al despacho
 	 * @param guiaDespachoPedidoDTO
 	 */
-	void eliminarPedidoDespacho(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
+	void eliminarPedidoDespacho(String numeroGuia, GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
 	
 	/**
 	 * Metodo para eliminar articulos extras del despacho

@@ -78,11 +78,17 @@
 		<property name="guiaDespachoExtrasDAO"><ref bean="erpGuiaDespachoExtrasDAO"/></property>
 	</bean>
 	
+	<!-- Gestor guiaDespachoExtras -->
+	<bean id="erpGuiaDespachoDetalleGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoDetalleGestor">
+		<property name="guiaDespachoDetalleDAO"><ref bean="erpGuiaDespachoDetalleDAO"/></property>
+	</bean>
+	
 	<!-- Gestor guiaDespacho -->
 	<bean id="erpGuiaDespachoGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoGestor">
 		<property name="guiaDespachoDAO"><ref bean="erpGuiaDespachoDAO"/></property>
 		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoPedidoGestor"/></property>
 		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
+		<property name="guiaDespachoDetalleGestor"><ref bean="erpGuiaDespachoDetalleGestor"/></property>
 		<property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>
 	</bean>
 	
@@ -116,6 +122,7 @@
         <property name="pedidoDAO"><ref bean="erpPedidoDAO"/></property>
         <property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>
         <property name="detallePedidoDAO"><ref bean="erpDetallePedidoDAO"/></property>
+        <property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
     </bean>
     
     <!-- Inyeccion bean  perfilesGestor -->
