@@ -6,11 +6,17 @@ import java.util.Date;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.EstadoPedidoDTO;
+import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
+import ec.com.erp.cliente.mdl.dto.PedidoDTO;
+import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 import ec.com.erp.pedidos.dao.IEstadoPedidoDAO;
+import ec.com.erp.pedidos.dao.IPedidoDAO;
 
 public class EstadoPedidoGestor implements IEstadoPedidoGestor{
 
 	private IEstadoPedidoDAO estadoPedidoDAO;
+	private IFacturaCabeceraGestor facturaCabeceraGestor;
+	private IPedidoDAO pedidoDAO;
 	
 	public IEstadoPedidoDAO getEstadoPedidoDAO() {
 		return estadoPedidoDAO;
@@ -18,6 +24,22 @@ public class EstadoPedidoGestor implements IEstadoPedidoGestor{
 
 	public void setEstadoPedidoDAO(IEstadoPedidoDAO estadoPedidoDAO) {
 		this.estadoPedidoDAO = estadoPedidoDAO;
+	}
+	
+	public IFacturaCabeceraGestor getFacturaCabeceraGestor() {
+		return facturaCabeceraGestor;
+	}
+
+	public void setFacturaCabeceraGestor(IFacturaCabeceraGestor facturaCabeceraGestor) {
+		this.facturaCabeceraGestor = facturaCabeceraGestor;
+	}
+
+	public IPedidoDAO getPedidoDAO() {
+		return pedidoDAO;
+	}
+
+	public void setPedidoDAO(IPedidoDAO pedidoDAO) {
+		this.pedidoDAO = pedidoDAO;
 	}
 
 	/**
@@ -68,6 +90,15 @@ public class EstadoPedidoGestor implements IEstadoPedidoGestor{
 			estadoPedidoDTONuevo.setFechaFin(null);
 			estadoPedidoDTONuevo.setUsuarioRegistro(userId);
 			this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTONuevo);
+			if(valorEstado.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_ENTREGADO)) {
+				PedidoDTO pedidoDTO = this.pedidoDAO.obtenerPedidoPorCodigo(codigoCompania, codigoPedido);
+				pedidoDTO.setFechaEntrega(new Date());
+				this.pedidoDAO.crearActualizarPedido(pedidoDTO);
+			}
+			if(valorEstado.equals(ERPConstantes.CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_CANCELADO)) {
+				FacturaCabeceraDTO facturaCabeceraDTO = this.facturaCabeceraGestor.obtenerFacturaPedido(codigoCompania, codigoPedido);
+				this.facturaCabeceraGestor.cancelarFacturaInactivar(facturaCabeceraDTO);
+			}
 		} catch (Exception e) {
 			throw new ERPException(e.getMessage());
 		}

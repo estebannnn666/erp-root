@@ -90,6 +90,18 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	}
 	
 	/**
+	 * M\u00e9todo para obtener la factura del pedido
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public FacturaCabeceraDTO obtenerFacturaPedido(Integer codigoCompania, Long codigoPedido) throws ERPException{
+		return this.facturaCabeceraDAO.obtenerFacturaPedido(codigoCompania, codigoPedido);
+	}
+	
+	/**
 	 * M\u00e9todo para guardar y actualizar factura cabecera
 	 * @param facturaCabeceraDTO
 	 * @throws ERPException

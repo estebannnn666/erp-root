@@ -3,6 +3,7 @@
  */
 package ec.com.erp.transaccion.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -207,6 +208,44 @@ public class TransaccionDAO implements ITransaccionDAO {
 			throw e;
 		} catch (Exception e) {
 			throw (ERPException)new ERPException("Error al obtener lista de pagos.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para obtener total pagos
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public BigDecimal obtenerTotalPagos(Integer codigoCompania, Long codigoFactura) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(PagosFacturaDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.codigoFactura", codigoFactura));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+						
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.sum("root.valorPago"));
+			criteria.setProjection(projectionList);
+			BigDecimal resultado = (BigDecimal)criteria.uniqueResult();
+			if(resultado == null){
+				resultado = BigDecimal.ZERO;
+			}
+			return resultado;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener ultimo movimiento registrado para el item ingresado.").initCause(e);
 		} 
 	}
 

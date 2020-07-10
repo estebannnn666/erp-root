@@ -31,6 +31,15 @@ public interface IFacturaCabeceraGestor {
 	Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin, String docClienteProveedor, String nombClienteProveedor, Boolean pagado, String tipoDocumento) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener la factura del pedido
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @return
+	 * @throws ERPException
+	 */
+	FacturaCabeceraDTO obtenerFacturaPedido(Integer codigoCompania, Long codigoPedido) throws ERPException;
+	
+	/**
 	 * M\u00e9todo para guardar y actualizar factura cabecera
 	 * @param facturaCabeceraDTO
 	 * @throws ERPException

@@ -124,6 +124,8 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("root.fechaPedido"), "fechaPedido");
 			projectionList.add(Projections.property("root.fechaEntrega"), "fechaEntrega");
 			projectionList.add(Projections.property("root.totalCompra"), "totalCompra");
+			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
+			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
@@ -218,6 +220,54 @@ public class PedidoDAO implements IPedidoDAO {
 		} 
 	}
 
+	
+	/**
+	 * M\u00e9todo para obtener pedido por codigo
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public PedidoDTO obtenerPedidoPorCodigo(Integer codigoCompania, Long codigoPedido) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(PedidoDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.id.codigoPedido", codigoPedido));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO)); 
+			
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoPedido"), "id_codigoPedido");
+			projectionList.add(Projections.property("root.numeroPedido"), "numeroPedido");
+			projectionList.add(Projections.property("root.codigoCliente"), "codigoCliente");
+			projectionList.add(Projections.property("root.fechaPedido"), "fechaPedido");
+			projectionList.add(Projections.property("root.fechaEntrega"), "fechaEntrega");
+			projectionList.add(Projections.property("root.totalCompra"), "totalCompra");
+			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
+			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(PedidoDTO.class));
+
+			return (PedidoDTO)criteria.uniqueResult();
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de pedidos.").initCause(e);
+		} 
+	}
 	/**
 	 * M\u00e9todo para crear o actualizar personas
 	 * @param personaDTO

@@ -61,6 +61,18 @@ public class PedidoDTO implements Serializable{
 	/**
 	 * Especifica el total de la compra
 	 */
+	@Column(name = "TOTALSINIMPUESTOS")
+	private BigDecimal totalSinImpuestos ;
+	
+	/**
+	 * Especifica el total de la compra
+	 */
+	@Column(name = "TOTALIMPUESTOS")
+	private BigDecimal totalImpuestos ;
+	
+	/**
+	 * Especifica el total de la compra
+	 */
 	@Column(name = "TOTALCOMPRA")
 	private BigDecimal totalCompra ;
 	
@@ -252,5 +264,21 @@ public class PedidoDTO implements Serializable{
 
 	public void setSeleccionado(Boolean seleccionado) {
 		this.seleccionado = seleccionado;
+	}
+
+	public BigDecimal getTotalSinImpuestos() {
+		return totalSinImpuestos;
+	}
+
+	public void setTotalSinImpuestos(BigDecimal totalSinImpuestos) {
+		this.totalSinImpuestos = totalSinImpuestos;
+	}
+
+	public BigDecimal getTotalImpuestos() {
+		return totalImpuestos;
+	}
+
+	public void setTotalImpuestos(BigDecimal totalImpuestos) {
+		this.totalImpuestos = totalImpuestos;
 	}
 }

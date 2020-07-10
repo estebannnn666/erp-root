@@ -3,13 +3,16 @@
  */
 package ec.com.erp.transaccion.gestor;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.PagosFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
+import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
 import ec.com.erp.transaccion.dao.ITransaccionDAO;
 
 /**
@@ -19,6 +22,7 @@ import ec.com.erp.transaccion.dao.ITransaccionDAO;
 public class TransaccionGestor implements ITransaccionGestor {
 
 	private ITransaccionDAO transaccionDAO;
+	private IFacturaCabeceraDAO facturaCabeceraDAO;
 	
 	
 	public ITransaccionDAO getTransaccionDAO() {
@@ -29,6 +33,13 @@ public class TransaccionGestor implements ITransaccionGestor {
 		this.transaccionDAO = transaccionDAO;
 	}
 
+	public IFacturaCabeceraDAO getFacturaCabeceraDAO() {
+		return facturaCabeceraDAO;
+	}
+
+	public void setFacturaCabeceraDAO(IFacturaCabeceraDAO facturaCabeceraDAO) {
+		this.facturaCabeceraDAO = facturaCabeceraDAO;
+	}
 
 	/**
 	 * M\u00e9todo para obtener lista de transaccciones
@@ -95,7 +106,13 @@ public class TransaccionGestor implements ITransaccionGestor {
 			transaccionDTO.setUsuarioRegistro(pagosFacturaDTO.getUsuarioRegistro());
 			transaccionDTO.setCodigoTipoTransaccion(ERPConstantes.CODIGO_CATALOGO_TIPOS_TRANSACCION);
 			this.transaccionDAO.guardarTransaccion(transaccionDTO);
-						
+			BigDecimal totalPagos = this.transaccionDAO.obtenerTotalPagos(pagosFacturaDTO.getId().getCodigoCompania(), pagosFacturaDTO.getCodigoFactura());
+			FacturaCabeceraDTO facturaCabeceraDTO = this.facturaCabeceraDAO.obtenerFacturaPorCodigo(pagosFacturaDTO.getId().getCodigoCompania(), pagosFacturaDTO.getCodigoFactura());
+			if(totalPagos.doubleValue() >= facturaCabeceraDTO.getTotalCuenta().doubleValue()) {
+				facturaCabeceraDTO.setPagado(Boolean.TRUE);
+				facturaCabeceraDTO.setUsuarioRegistro(pagosFacturaDTO.getUsuarioRegistro());
+				this.facturaCabeceraDAO.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
+			}
 		} catch (ERPException e) {
 			pagosFacturaDTO.getId().setCodigoPago(null);
 			throw new ERPException("Error, {0}",e.getMessage()) ;

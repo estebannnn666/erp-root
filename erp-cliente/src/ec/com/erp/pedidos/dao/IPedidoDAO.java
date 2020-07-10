@@ -28,6 +28,15 @@ public interface IPedidoDAO {
 	Collection<PedidoDTO> obtenerPedidosRegistrados(Integer codigoCompania, String numeroDocumento, String nombreCliente, Timestamp fechaInicio, Timestamp fechaFin, String estadoPedido) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener pedido por codigo
+	 * @param codigoCompania
+	 * @param codigoPedido
+	 * @return
+	 * @throws ERPException
+	 */
+	PedidoDTO obtenerPedidoPorCodigo(Integer codigoCompania, Long codigoPedido) throws ERPException;
+	
+	/**
 	 * M\u00e9todo para crear o actualizar personas
 	 * @param personaDTO
 	 * @throws ERPException

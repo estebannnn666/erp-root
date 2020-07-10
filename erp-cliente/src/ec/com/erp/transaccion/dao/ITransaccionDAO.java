@@ -1,5 +1,6 @@
 package ec.com.erp.transaccion.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 
@@ -42,6 +43,15 @@ public interface ITransaccionDAO {
 	 * @throws ERPException
 	 */
 	Collection<PagosFacturaDTO> obtenerListaPagosFactura(Integer codigoCompania, Long codigoFactura) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener total pagos
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @return
+	 * @throws ERPException
+	 */
+	BigDecimal obtenerTotalPagos(Integer codigoCompania, Long codigoFactura) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para guardar pagos por factura

@@ -34,6 +34,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	private FacturaCabeceraID id = new FacturaCabeceraID();
 	
 	/**
+	 * Especifica el codigo de pedido si la factura fue generada desde un pedido
+	 */
+	@Column(name="CODIGOPEDIDO")
+	private Long codigoPedido;
+	
+	/**
 	 * Especifica el numero de factura o numero de documento de debito
 	 */
 	@Column(name = "NUMERODOCUMENTO")
@@ -138,6 +144,13 @@ public class FacturaCabeceraDTO implements Serializable{
 	private Collection<FacturaDetalleDTO> facturaDetalleDTOCols;
 	
 	/**
+	 * Referencia a detalle de pagos
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "facturaCabeceraDTO")
+	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
+	private Collection<PagosFacturaDTO> pagosFacturaDTOCols;
+	
+	/**
 	 * Referencia CatalogoValorDTO tipo de documento
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -146,6 +159,16 @@ public class FacturaCabeceraDTO implements Serializable{
 		@JoinColumn(name = "CODIGOTIPODOCUMENTO", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
 	})
 	private CatalogoValorDTO tipoDocumentoCatalogoValorDTO;
+	
+	/**
+	 * Referencia al entidad Pedido
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOPEDIDO", referencedColumnName = "CODIGOPEDIDO", insertable = false, updatable = false)
+	})
+	private PedidoDTO pedidoDTO;
 	
 	public FacturaCabeceraID getId() {
 		return id;
@@ -313,5 +336,29 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setTotalImpuestos(BigDecimal totalImpuestos) {
 		this.totalImpuestos = totalImpuestos;
+	}
+
+	public Long getCodigoPedido() {
+		return codigoPedido;
+	}
+
+	public void setCodigoPedido(Long codigoPedido) {
+		this.codigoPedido = codigoPedido;
+	}
+
+	public PedidoDTO getPedidoDTO() {
+		return pedidoDTO;
+	}
+
+	public void setPedidoDTO(PedidoDTO pedidoDTO) {
+		this.pedidoDTO = pedidoDTO;
+	}
+
+	public Collection<PagosFacturaDTO> getPagosFacturaDTOCols() {
+		return pagosFacturaDTOCols;
+	}
+
+	public void setPagosFacturaDTOCols(Collection<PagosFacturaDTO> pagosFacturaDTOCols) {
+		this.pagosFacturaDTOCols = pagosFacturaDTOCols;
 	}
 }
