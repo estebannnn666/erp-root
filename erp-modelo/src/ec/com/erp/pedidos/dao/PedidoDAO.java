@@ -123,7 +123,10 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("root.codigoCliente"), "codigoCliente");
 			projectionList.add(Projections.property("root.fechaPedido"), "fechaPedido");
 			projectionList.add(Projections.property("root.fechaEntrega"), "fechaEntrega");
+			projectionList.add(Projections.property("root.subTotal"), "subTotal");
+			projectionList.add(Projections.property("root.totalIva"), "totalIva");
 			projectionList.add(Projections.property("root.totalCompra"), "totalCompra");
+			projectionList.add(Projections.property("root.descuento"), "descuento");
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
 			projectionList.add(Projections.property("root.estado"), "estado");
@@ -250,8 +253,11 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("root.codigoCliente"), "codigoCliente");
 			projectionList.add(Projections.property("root.fechaPedido"), "fechaPedido");
 			projectionList.add(Projections.property("root.fechaEntrega"), "fechaEntrega");
+			projectionList.add(Projections.property("root.subTotal"), "subTotal");
+			projectionList.add(Projections.property("root.totalIva"), "totalIva");
 			projectionList.add(Projections.property("root.totalCompra"), "totalCompra");
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
+			projectionList.add(Projections.property("root.descuento"), "descuento");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");

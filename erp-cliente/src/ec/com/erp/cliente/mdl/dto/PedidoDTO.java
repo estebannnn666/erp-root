@@ -77,6 +77,23 @@ public class PedidoDTO implements Serializable{
 	private BigDecimal totalCompra ;
 	
 	/**
+	 * Especifica el descuento del pedido
+	 */
+	@Column(name = "DESCUENTO")
+	private BigDecimal descuento ;
+	/**
+	 * Especifica el total de IVA
+	 */
+	@Column(name = "TOTALIVA")
+	private BigDecimal totalIva ;
+	
+	/**
+	 * Especifica el sub total del pedido
+	 */
+	@Column(name = "SUBTOTAL")
+	private BigDecimal subTotal ;
+	
+	/**
 	 * Especifica el total de la compra
 	 */
 	@Column(name = "FACTURACREADA")
@@ -280,5 +297,29 @@ public class PedidoDTO implements Serializable{
 
 	public void setTotalImpuestos(BigDecimal totalImpuestos) {
 		this.totalImpuestos = totalImpuestos;
+	}
+
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
+	}
+
+	public BigDecimal getTotalIva() {
+		return totalIva;
+	}
+
+	public void setTotalIva(BigDecimal totalIva) {
+		this.totalIva = totalIva;
+	}
+
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
 	}
 }

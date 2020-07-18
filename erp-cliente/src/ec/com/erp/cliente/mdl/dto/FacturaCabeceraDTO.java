@@ -89,6 +89,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	private Boolean pagado ;
 	
 	/**
+	 * Especifica el descuento de la factura
+	 */
+	@Column(name = "DESCUENTO")
+	private BigDecimal descuento ;
+	
+	/**
 	 * Especifica el total de la compra
 	 */
 	@Column(name = "TOTALSINIMPUESTOS")
@@ -99,6 +105,18 @@ public class FacturaCabeceraDTO implements Serializable{
 	 */
 	@Column(name = "TOTALIMPUESTOS")
 	private BigDecimal totalImpuestos ;
+	
+	/**
+	 * Especifica el total de IVA
+	 */
+	@Column(name = "TOTALIVA")
+	private BigDecimal totalIva ;
+	
+	/**
+	 * Especifica el sub total del pedido
+	 */
+	@Column(name = "SUBTOTAL")
+	private BigDecimal subTotal ;
 	
 	/**
 	 * Especifica el total de la compra
@@ -360,5 +378,29 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setPagosFacturaDTOCols(Collection<PagosFacturaDTO> pagosFacturaDTOCols) {
 		this.pagosFacturaDTOCols = pagosFacturaDTOCols;
+	}
+
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
+	}
+
+	public BigDecimal getTotalIva() {
+		return totalIva;
+	}
+
+	public void setTotalIva(BigDecimal totalIva) {
+		this.totalIva = totalIva;
+	}
+
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
 	}
 }
