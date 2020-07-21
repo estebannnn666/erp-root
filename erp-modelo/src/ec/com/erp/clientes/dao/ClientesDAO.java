@@ -12,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -179,6 +180,7 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("contactoEmpresaDTO.fechaRegistro"), "empresaDTO_contactoEmpresaDTO_fechaRegistro");
 			
 			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.desc("root.id.codigoCliente"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ClienteDTO.class));
 			Collection<ClienteDTO> clienteDTOCols = new  ArrayList<ClienteDTO>();
 			clienteDTOCols =  criteria.list();

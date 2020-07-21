@@ -35,4 +35,5 @@
 	<entity class="ec.com.erp.cliente.mdl.dto.TransaccionDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.PagosFacturaDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO"></entity>
 </entity-mappings>

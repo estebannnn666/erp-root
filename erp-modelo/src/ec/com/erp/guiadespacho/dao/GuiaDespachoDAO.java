@@ -11,6 +11,7 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -121,6 +122,7 @@ public class GuiaDespachoDAO implements IGuiaDespachoDAO {
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
 			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.desc("root.id.codigoGuiaDespacho"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(GuiaDespachoDTO.class));
 			Collection<GuiaDespachoDTO> guiaDespachoDTOCols = new  ArrayList<GuiaDespachoDTO>();
 			guiaDespachoDTOCols =  criteria.list();

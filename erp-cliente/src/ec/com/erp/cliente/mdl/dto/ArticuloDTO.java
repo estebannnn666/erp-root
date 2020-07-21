@@ -96,6 +96,13 @@ public class ArticuloDTO implements Serializable{
 	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
 	private Collection<ArticuloImpuestoDTO> articuloImpuestoDTOCols;
 	
+	/**
+	 * Referencia a articulo unidad de manejo
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "articuloDTO")
+	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
+	private Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTOCols;
+	
 	public ArticuloID getId() {
 		return id;
 	}
@@ -212,6 +219,12 @@ public class ArticuloDTO implements Serializable{
 	public void setTieneImpuesto(Boolean tieneImpuesto) {
 		this.tieneImpuesto = tieneImpuesto;
 	}
-	
-	
+
+	public Collection<ArticuloUnidadManejoDTO> getArticuloUnidadManejoDTOCols() {
+		return articuloUnidadManejoDTOCols;
+	}
+
+	public void setArticuloUnidadManejoDTOCols(Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTOCols) {
+		this.articuloUnidadManejoDTOCols = articuloUnidadManejoDTOCols;
+	}
 }

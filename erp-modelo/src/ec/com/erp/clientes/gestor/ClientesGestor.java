@@ -157,6 +157,7 @@ public class ClientesGestor implements IClientesGestor{
 			
 			//Creamos o actualizamos el cliente
 			clienteDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			clienteDTO.setCodigoTipoCliente(ERPConstantes.CODIGO_CATALOGO_TIPOS_CLIENTES);
 			clienteDTO.setUsuarioRegistro(clienteDTO.getUserId());
 			clienteDTO.setUserId(clienteDTO.getUserId());
 			clienteDTO.setEmpresaDTO(null);

@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -171,6 +172,7 @@ public class ChoferDAO implements IChoferDAO {
 			projectionList.add(Projections.property("empresaDTOTrans.razonSocial"), "transportistaDTO_empresaDTO_razonSocial");
 			
 			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.desc("root.id.codigoChofer"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ChoferDTO.class));
 			Collection<ChoferDTO> choferDTOCols = new  ArrayList<ChoferDTO>();
 			choferDTOCols =  criteria.list();

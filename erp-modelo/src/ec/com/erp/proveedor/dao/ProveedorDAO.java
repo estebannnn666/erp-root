@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -175,6 +176,7 @@ public class ProveedorDAO implements IProveedorDAO {
 			projectionList.add(Projections.property("contactoEmpresaDTO.fechaRegistro"), "empresaDTO_contactoEmpresaDTO_fechaRegistro");
 			
 			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.desc("root.id.codigoProveedor"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ProveedorDTO.class));
 			Collection<ProveedorDTO> proveedoresDTOCols = new  ArrayList<ProveedorDTO>();
 			proveedoresDTOCols =  criteria.list();
