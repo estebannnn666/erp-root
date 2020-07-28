@@ -17,6 +17,7 @@
 	<!-- Gestor articulos -->
 	<bean id="erpArticuloGestor" class="ec.com.erp.articulo.gestor.ArticuloGestor">
 		<property name="articuloDAO"><ref bean="erpArticuloDAO"/></property>
+		<property name="unidadManejoDAO"><ref bean="erpUnidadManejoDAO"/></property>
 		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
 	</bean>
 	
@@ -178,4 +179,15 @@
         <property name="facturaCabeceraDAO"><ref bean="erpFacturaCabeceraDAO"/></property>
     </bean>
     
+    <!-- Inyeccion bean  UnidadManejoGestor -->
+    <bean id="erpUnidadManejoGestor" class="ec.com.erp.unidadmanejo.gestor.UnidadManejoGestor">
+        <property name="unidadManejoDAO"><ref bean="erpUnidadManejoDAO"/></property>
+    </bean>
+    
+    <!-- Gestor vendedor -->
+	<bean id="erpVendedorGestor" class="ec.com.erp.vendedor.gestor.VendedorGestor">
+		<property name="vendedorDAO"><ref bean="erpVendedorDAO"/></property>
+		<property name="personaGestor"><ref bean="erpPersonaGestor"/></property>
+		<property name="contactoGestor"><ref bean="erpContactoGestor"/></property>
+	</bean>
 </beans>

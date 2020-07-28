@@ -122,6 +122,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoFactura"), "id_codigoFactura");
 			projectionList.add(Projections.property("root.codigoReferenciaFactura"), "codigoReferenciaFactura");
+			projectionList.add(Projections.property("root.codigoPedido"), "codigoPedido");
+			projectionList.add(Projections.property("root.codigoVendedor"), "codigoVendedor");
 			projectionList.add(Projections.property("root.numeroDocumento"), "numeroDocumento");
 			projectionList.add(Projections.property("root.fechaDocumento"), "fechaDocumento");
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
@@ -217,6 +219,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoFactura"), "id_codigoFactura");
 			projectionList.add(Projections.property("root.codigoReferenciaFactura"), "codigoReferenciaFactura");
+			projectionList.add(Projections.property("root.codigoPedido"), "codigoPedido");
+			projectionList.add(Projections.property("root.codigoVendedor"), "codigoVendedor");
 			projectionList.add(Projections.property("root.numeroDocumento"), "numeroDocumento");
 			projectionList.add(Projections.property("root.fechaDocumento"), "fechaDocumento");
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
@@ -276,6 +280,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoFactura"), "id_codigoFactura");
 			projectionList.add(Projections.property("root.codigoReferenciaFactura"), "codigoReferenciaFactura");
+			projectionList.add(Projections.property("root.codigoPedido"), "codigoPedido");
+			projectionList.add(Projections.property("root.codigoVendedor"), "codigoVendedor");
 			projectionList.add(Projections.property("root.numeroDocumento"), "numeroDocumento");
 			projectionList.add(Projections.property("root.fechaDocumento"), "fechaDocumento");
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");

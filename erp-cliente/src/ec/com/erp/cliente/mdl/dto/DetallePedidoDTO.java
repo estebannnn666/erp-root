@@ -36,6 +36,12 @@ public class DetallePedidoDTO implements Serializable{
 	private Integer codigoArticulo ;
 	
 	/**
+	 * Especifica la unidad de manejo
+	 */
+	@Column(name = "CODIGOARTICULOUNIDADMANEJO")
+	private Integer codigoArticuloUnidadManejo ;
+	
+	/**
 	 * Especifica la cantidad pedida
 	 */
 	@Column(name = "CANTIDAD")
@@ -87,6 +93,17 @@ public class DetallePedidoDTO implements Serializable{
 		@JoinColumn(name = "CODIGOARTICULO", referencedColumnName = "CODIGOARTICULO", insertable = false, updatable = false)
 	})
 	private ArticuloDTO articuloDTO;
+	
+	/**
+	 * Referencia al entidad Articulo
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOARTICULOUNIDADMANEJO", referencedColumnName = "CODIGOARTICULOUNIDADMANEJO", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOARTICULO", referencedColumnName = "CODIGOARTICULO", insertable = false, updatable = false)
+	})
+	private ArticuloUnidadManejoDTO articuloUnidadManejoDTO;
 
 	public DetallePedidoID getId() {
 		return id;
@@ -182,5 +199,21 @@ public class DetallePedidoDTO implements Serializable{
 
 	public void setNombreArticulo(String nombreArticulo) {
 		this.nombreArticulo = nombreArticulo;
+	}
+
+	public Integer getCodigoArticuloUnidadManejo() {
+		return codigoArticuloUnidadManejo;
+	}
+
+	public void setCodigoArticuloUnidadManejo(Integer codigoArticuloUnidadManejo) {
+		this.codigoArticuloUnidadManejo = codigoArticuloUnidadManejo;
+	}
+
+	public ArticuloUnidadManejoDTO getArticuloUnidadManejoDTO() {
+		return articuloUnidadManejoDTO;
+	}
+
+	public void setArticuloUnidadManejoDTO(ArticuloUnidadManejoDTO articuloUnidadManejoDTO) {
+		this.articuloUnidadManejoDTO = articuloUnidadManejoDTO;
 	}
 }

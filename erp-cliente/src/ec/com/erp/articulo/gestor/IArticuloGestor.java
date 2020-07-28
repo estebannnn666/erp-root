@@ -5,6 +5,7 @@ import java.util.Collection;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
 import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
+import ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO;
 
 public interface IArticuloGestor {
 	
@@ -28,5 +29,5 @@ public interface IArticuloGestor {
 	 * @param articuloImpuestoDTONewCols
 	 * @throws ERPException
 	 */
-	void guardarActualizarArticulo(ArticuloDTO articuloDTO, Collection<ArticuloImpuestoDTO> articuloImpuestoDTONewCols) throws ERPException;
+	void guardarActualizarArticulo(ArticuloDTO articuloDTO, Collection<ArticuloImpuestoDTO> articuloImpuestoDTONewCols, Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTONewCols) throws ERPException;
 }

@@ -125,4 +125,13 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
         <property name="transaccionGestor"><ref bean="erpTransaccionGestor"/></property>
     </bean>
     
+    <!-- Servicio unidad manejo -->
+    <bean id="erpUnidadManejoServicio" class="ec.com.erp.unidadmanejo.servicios.UnidadManejoServicio">
+        <property name="unidadManejoGestor"><ref bean="erpUnidadManejoGestor"/></property>
+    </bean>
+    
+    <!-- Servicio vendedores -->
+	<bean id="erpVendedorServicio" class="ec.com.erp.vendedor.servicios.VendedorServicio">
+		<property name="vendedorGestor"><ref bean="erpVendedorGestor"/></property>
+	</bean>
 </beans>

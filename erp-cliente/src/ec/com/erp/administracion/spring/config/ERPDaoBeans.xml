@@ -174,4 +174,15 @@
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
+    <!-- Inyeccion bean  unidada de manejo -->
+    <bean id="erpUnidadManejoDAO" class="ec.com.erp.unidadmanejo.dao.UnidadManejoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  VendedorDAO -->
+    <bean id="erpVendedorDAO" class="ec.com.erp.vendedor.dao.VendedorDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
 </beans>	

@@ -40,6 +40,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	private Long codigoPedido;
 	
 	/**
+	 * Especifica el codigo de vendedor
+	 */
+	@Column(name="CODIGOVENDEDOR")
+	private Long codigoVendedor;
+	
+	/**
 	 * Especifica el numero de factura o numero de documento de debito
 	 */
 	@Column(name = "NUMERODOCUMENTO")
@@ -187,6 +193,16 @@ public class FacturaCabeceraDTO implements Serializable{
 		@JoinColumn(name = "CODIGOPEDIDO", referencedColumnName = "CODIGOPEDIDO", insertable = false, updatable = false)
 	})
 	private PedidoDTO pedidoDTO;
+	
+	/**
+	 * Referencia al entidad Vendedor
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOVENDEDOR", referencedColumnName = "CODIGOVENDEDOR", insertable = false, updatable = false)
+	})
+	private VendedorDTO vendedorDTO;
 	
 	public FacturaCabeceraID getId() {
 		return id;
@@ -402,5 +418,21 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setSubTotal(BigDecimal subTotal) {
 		this.subTotal = subTotal;
+	}
+
+	public Long getCodigoVendedor() {
+		return codigoVendedor;
+	}
+
+	public void setCodigoVendedor(Long codigoVendedor) {
+		this.codigoVendedor = codigoVendedor;
+	}
+
+	public VendedorDTO getVendedorDTO() {
+		return vendedorDTO;
+	}
+
+	public void setVendedorDTO(VendedorDTO vendedorDTO) {
+		this.vendedorDTO = vendedorDTO;
 	}
 }

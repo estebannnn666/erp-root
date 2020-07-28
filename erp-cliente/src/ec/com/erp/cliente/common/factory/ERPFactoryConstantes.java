@@ -33,4 +33,5 @@ public class ERPFactoryConstantes {
 	public final static String PROVEEDOR_SERVICE = "erpProveedorServicio";
 	public final static String IMPUESTOS_SERVICE = "erpImpuestoServicio";
 	public final static String TRANSACCION_SERVICE = "erpTransaccionServicio";
+	public final static String VENDEDOR_SERVICE = "erpVendedorServicio";
 }

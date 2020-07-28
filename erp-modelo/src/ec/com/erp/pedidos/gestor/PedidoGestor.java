@@ -96,6 +96,8 @@ public class PedidoGestor implements IPedidoGestor{
 					facturaDetalleDTO.getId().setCodigoCompania(codigoCompania);
 					facturaDetalleDTO.setArticuloDTO(detallePedidoDTO.getArticuloDTO());
 					facturaDetalleDTO.setCodigoArticulo(detallePedidoDTO.getCodigoArticulo());
+					facturaDetalleDTO.setArticuloUnidadManejoDTO(detallePedidoDTO.getArticuloUnidadManejoDTO());
+					facturaDetalleDTO.setCodigoArticuloUnidadManejo(detallePedidoDTO.getCodigoArticuloUnidadManejo());
 					facturaDetalleDTO.setDescripcion(detallePedidoDTO.getArticuloDTO().getNombreArticulo());
 					facturaDetalleDTO.setCodigoBarras(detallePedidoDTO.getArticuloDTO().getCodigoBarras());
 					facturaDetalleDTO.setCantidad(detallePedidoDTO.getCantidad());

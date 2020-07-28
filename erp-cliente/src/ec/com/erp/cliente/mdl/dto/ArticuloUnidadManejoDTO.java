@@ -55,14 +55,15 @@ public class ArticuloUnidadManejoDTO implements Serializable{
 	private Date fechaModificacion;
 	
 	/**
-	 * Referencia al entidad impuesto
+	 * Referencia CatalogoValorDTO tipo de contacto
 	 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
-		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
-		@JoinColumn(name = "CODIGOIMPUESTO", referencedColumnName = "CODIGOIMPUESTO", insertable = false, updatable = false)
+		@JoinColumn(name = "CODIGOVALORUNIDADMANEJO", referencedColumnName = "CODIGOCATALOGOVALOR", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOTIPOUNIDADMANEJO", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
 	})
-	private ImpuestoDTO impuestoDTO;
+	private CatalogoValorDTO tipoUnidadManejoCatalogoValorDTO;
+	
 	
 	/**
 	 * Referencia al entidad articulo
@@ -122,12 +123,12 @@ public class ArticuloUnidadManejoDTO implements Serializable{
 		this.fechaModificacion = fechaModificacion;
 	}
 
-	public ImpuestoDTO getImpuestoDTO() {
-		return impuestoDTO;
+	public CatalogoValorDTO getTipoUnidadManejoCatalogoValorDTO() {
+		return tipoUnidadManejoCatalogoValorDTO;
 	}
 
-	public void setImpuestoDTO(ImpuestoDTO impuestoDTO) {
-		this.impuestoDTO = impuestoDTO;
+	public void setTipoUnidadManejoCatalogoValorDTO(CatalogoValorDTO tipoUnidadManejoCatalogoValorDTO) {
+		this.tipoUnidadManejoCatalogoValorDTO = tipoUnidadManejoCatalogoValorDTO;
 	}
 
 	public ArticuloDTO getArticuloDTO() {

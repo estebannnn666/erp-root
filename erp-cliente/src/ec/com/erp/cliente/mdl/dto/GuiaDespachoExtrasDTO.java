@@ -40,6 +40,12 @@ public class GuiaDespachoExtrasDTO implements Serializable{
 	private Integer codigoArticulo;
 	
 	/**
+	 * Especifica la unidad de manejo
+	 */
+	@Column(name = "CODIGOARTICULOUNIDADMANEJO")
+	private Integer codigoArticuloUnidadManejo ;
+	
+	/**
 	 * Especifica la descripcion del producto extra 
 	 */
 	@Column(name = "DESCRIPCIONPRODUCTO")
@@ -84,6 +90,17 @@ public class GuiaDespachoExtrasDTO implements Serializable{
 		@JoinColumn(name = "CODIGOGUIADESPACHO", referencedColumnName = "CODIGOGUIADESPACHO", insertable = false, updatable = false)
 	})
 	private GuiaDespachoDTO guiaDespachoDTO;
+	
+	/**
+	 * Referencia al entidad Articulo
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOARTICULOUNIDADMANEJO", referencedColumnName = "CODIGOARTICULOUNIDADMANEJO", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOARTICULO", referencedColumnName = "CODIGOARTICULO", insertable = false, updatable = false)
+	})
+	private ArticuloUnidadManejoDTO articuloUnidadManejoDTO;
 
 	public GuiaDespachoExtrasID getId() {
 		return id;
@@ -179,5 +196,21 @@ public class GuiaDespachoExtrasDTO implements Serializable{
 
 	public void setGuiaDespachoDTO(GuiaDespachoDTO guiaDespachoDTO) {
 		this.guiaDespachoDTO = guiaDespachoDTO;
+	}
+
+	public Integer getCodigoArticuloUnidadManejo() {
+		return codigoArticuloUnidadManejo;
+	}
+
+	public void setCodigoArticuloUnidadManejo(Integer codigoArticuloUnidadManejo) {
+		this.codigoArticuloUnidadManejo = codigoArticuloUnidadManejo;
+	}
+
+	public ArticuloUnidadManejoDTO getArticuloUnidadManejoDTO() {
+		return articuloUnidadManejoDTO;
+	}
+
+	public void setArticuloUnidadManejoDTO(ArticuloUnidadManejoDTO articuloUnidadManejoDTO) {
+		this.articuloUnidadManejoDTO = articuloUnidadManejoDTO;
 	}
 }

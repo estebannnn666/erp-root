@@ -1,6 +1,5 @@
 package ec.com.erp.articulo.gestor;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -10,12 +9,14 @@ import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
 import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
-import ec.com.erp.cliente.mdl.dto.InventarioDTO;
+import ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
+import ec.com.erp.unidadmanejo.dao.IUnidadManejoDAO;
 
 public class ArticuloGestor implements IArticuloGestor{
 
 	private IArticuloDAO articuloDAO;
+	private IUnidadManejoDAO unidadManejoDAO;
 	private IInventarioGestor inventarioGestor;
 	
 	public IArticuloDAO getArticuloDAO() {
@@ -26,6 +27,14 @@ public class ArticuloGestor implements IArticuloGestor{
 		this.articuloDAO = articuloDAO;
 	}
 	
+	public IUnidadManejoDAO getUnidadManejoDAO() {
+		return unidadManejoDAO;
+	}
+
+	public void setUnidadManejoDAO(IUnidadManejoDAO unidadManejoDAO) {
+		this.unidadManejoDAO = unidadManejoDAO;
+	}
+
 	public IInventarioGestor getInventarioGestor() {
 		return inventarioGestor;
 	}
@@ -59,33 +68,17 @@ public class ArticuloGestor implements IArticuloGestor{
 	 * @param articuloImpuestoDTONewCols
 	 * @throws ERPException
 	 */
-	public void guardarActualizarArticulo(ArticuloDTO articuloDTO, Collection<ArticuloImpuestoDTO> articuloImpuestoDTONewCols) throws ERPException{
-		Boolean afectarInvetario = Boolean.FALSE;
-		if(articuloDTO.getId().getCodigoArticulo() ==  null){
-			afectarInvetario = Boolean.TRUE;
-		}
+	public void guardarActualizarArticulo(ArticuloDTO articuloDTO, Collection<ArticuloImpuestoDTO> articuloImpuestoDTONewCols, Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTONewCols) throws ERPException{
 		// Actualizar o crear articulo
 		this.articuloDAO.guardarActualizarArticulo(articuloDTO);
 		// Guardar o eliminar impuestos del articulo
 		if(CollectionUtils.isNotEmpty(articuloImpuestoDTONewCols)){
 			this.guardarActualizarArticuloImpuesto(articuloDTO.getId().getCodigoCompania(), articuloDTO.getId().getCodigoArticulo(), articuloImpuestoDTONewCols);
 		}
-		//Afectar inventario al crear un articulo
-		if(afectarInvetario) {
-			InventarioDTO inventarioDTO = new InventarioDTO();
-			inventarioDTO.getId().setCodigoCompania(articuloDTO.getId().getCodigoCompania());
-			inventarioDTO.setCantidadEntrada(articuloDTO.getCantidadStock());
-			inventarioDTO.setValorUnidadEntrada(articuloDTO.getPrecio());
-			inventarioDTO.setValorTotalEntrada(BigDecimal.valueOf(Double.valueOf(""+articuloDTO.getCantidadStock())).multiply(articuloDTO.getPrecio()));
-			
-			inventarioDTO.setCantidadExistencia(inventarioDTO.getCantidadEntrada());
-			inventarioDTO.setValorUnidadExistencia(inventarioDTO.getValorUnidadEntrada());
-			inventarioDTO.setValorTotalExistencia(inventarioDTO.getValorTotalEntrada());
-			inventarioDTO.setArticuloDTO(articuloDTO);
-			inventarioDTO.setCodigoArticulo(articuloDTO.getId().getCodigoArticulo());
-			inventarioDTO.setDetalleMoviento("INVENTARIO INICIAL");
-			inventarioDTO.setUsuarioRegistro(articuloDTO.getUsuarioRegistro());
-			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
+		
+		// Guardar o eliminar articulo unidad de manejo
+		if(CollectionUtils.isNotEmpty(articuloImpuestoDTONewCols)){
+			this.guardarActualizarArticuloUnidadManejo(articuloDTO.getId().getCodigoCompania(), articuloDTO.getId().getCodigoArticulo(), articuloUnidadManejoDTONewCols);
 		}
 	}
 	
@@ -119,7 +112,7 @@ public class ArticuloGestor implements IArticuloGestor{
 		for(ArticuloImpuestoDTO articuloImpuestoNewDTO:articuloImpuestoDTONewCols){
 			esNuevo = Boolean.TRUE;
 			for(ArticuloImpuestoDTO articuloImpuestoAntDTO : articuloImpuestoDTOAntCols){
-				if(articuloImpuestoAntDTO.getId().getCodigoImpuesto().equals(articuloImpuestoNewDTO.getId().getCodigoImpuesto())){
+				if(articuloImpuestoNewDTO.getId().getCodigoImpuesto() != null && articuloImpuestoAntDTO.getId().getCodigoImpuesto().equals(articuloImpuestoNewDTO.getId().getCodigoImpuesto())){
 					esNuevo = Boolean.FALSE;
 					break;
 				}
@@ -127,6 +120,48 @@ public class ArticuloGestor implements IArticuloGestor{
 			if(esNuevo){
 				articuloImpuestoNewDTO.getId().setCodigoArticulo(codigoArticulo);
 				this.articuloDAO.guardarActualizarArticuloImpuesto(articuloImpuestoNewDTO);
+			}
+		}
+	}
+	
+	/**
+	 * Metodo para guardar y actualizar articulo impuesto
+	 * @param articuloImpuestoDTO
+	 * @throws ERPException
+	 */
+	public void guardarActualizarArticuloUnidadManejo(Integer codigoCompania, Integer codigoArticulo, Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTONewCols) throws ERPException{
+		
+		// Obtener impuestos agregados para verificar 
+		Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTOAntCols = this.unidadManejoDAO.obtenerListaArticulosUnidadManejo(codigoCompania, codigoArticulo);
+		/// Eliminar elementos 
+		Boolean eliminar = Boolean.TRUE;
+		for(ArticuloUnidadManejoDTO articuloUnidadManejoAntDTO: articuloUnidadManejoDTOAntCols){
+			eliminar = Boolean.TRUE;
+			for(ArticuloUnidadManejoDTO articuloImpuestoNewDTO : articuloUnidadManejoDTONewCols){
+				if(articuloUnidadManejoAntDTO.getId().getCodigoArticuloUnidadManejo().intValue() == articuloImpuestoNewDTO.getId().getCodigoArticuloUnidadManejo().intValue()){
+					eliminar = Boolean.FALSE;
+					break;
+				}
+			}
+			if(eliminar){
+				articuloUnidadManejoAntDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+				this.unidadManejoDAO.guardarActualizarUnidadManejo(articuloUnidadManejoAntDTO);
+			}
+		}
+		
+		// Guardar o actualizar elementos
+		Boolean esNuevo = Boolean.TRUE;
+		for(ArticuloUnidadManejoDTO articuloUnidadManejoNewDTO:articuloUnidadManejoDTONewCols){
+			esNuevo = Boolean.TRUE;
+			for(ArticuloUnidadManejoDTO articuloUnidadManejoAntDTO : articuloUnidadManejoDTOAntCols){
+				if(articuloUnidadManejoNewDTO.getId().getCodigoArticuloUnidadManejo() != null && articuloUnidadManejoAntDTO.getId().getCodigoArticuloUnidadManejo().intValue() == articuloUnidadManejoNewDTO.getId().getCodigoArticuloUnidadManejo().intValue()){
+					esNuevo = Boolean.FALSE;
+					break;
+				}
+			}
+			if(esNuevo){
+				articuloUnidadManejoNewDTO.getId().setCodigoArticulo(codigoArticulo);
+				this.unidadManejoDAO.guardarActualizarUnidadManejo(articuloUnidadManejoNewDTO);
 			}
 		}
 	}

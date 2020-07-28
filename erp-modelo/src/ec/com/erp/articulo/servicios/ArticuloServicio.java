@@ -6,6 +6,7 @@ import ec.com.erp.articulo.gestor.IArticuloGestor;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
 import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
+import ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO;
 
 public class ArticuloServicio implements IArticuloServicio{
 	
@@ -43,7 +44,7 @@ public class ArticuloServicio implements IArticuloServicio{
 	 * @param articuloImpuestoDTOCols
 	 * @throws ERPException
 	 */
-	public void transGuardarActualizarArticulo(ArticuloDTO articuloDTO, Collection<ArticuloImpuestoDTO> articuloImpuestoDTOCols) throws ERPException{
-		this.articuloGestor.guardarActualizarArticulo(articuloDTO, articuloImpuestoDTOCols);
+	public void transGuardarActualizarArticulo(ArticuloDTO articuloDTO, Collection<ArticuloImpuestoDTO> articuloImpuestoDTOCols, Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTONewCols) throws ERPException{
+		this.articuloGestor.guardarActualizarArticulo(articuloDTO, articuloImpuestoDTOCols, articuloUnidadManejoDTONewCols);
 	}
 }

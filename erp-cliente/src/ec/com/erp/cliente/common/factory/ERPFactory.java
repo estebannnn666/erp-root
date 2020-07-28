@@ -37,6 +37,7 @@ public class ERPFactory {
 	public static final ProveedorFactory proveedor = new ProveedorFactory(APP_CTX);
 	public static final ImpuestoFactory impuesto = new ImpuestoFactory(APP_CTX);
 	public static final TransaccionFactory transaccion = new TransaccionFactory(APP_CTX);
+	public static final VendedorFactory vendedor = new VendedorFactory(APP_CTX);
 	
 	private static ApplicationContext activateFactory(){
 		try{
