@@ -37,6 +37,7 @@ public class ERPConstantes {
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_CHOFER_PRINCIPAL = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.chofer.principal");
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_CHOFER_AYUDANTE = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.chofer.ayudante");
 	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.ventas");
+	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.notaventa");
 	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.compras");
 	public static final String CODIGO_CATALOGO_VALOR_TRANSACCION_INGRESO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.transaccion.ingreso");
 	public static final String CODIGO_CATALOGO_VALOR_TRANSACCION_GASTO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.transaccion.gasto");

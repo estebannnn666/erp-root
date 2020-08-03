@@ -99,6 +99,7 @@ public class PedidoGestor implements IPedidoGestor{
 					facturaDetalleDTO.setArticuloUnidadManejoDTO(detallePedidoDTO.getArticuloUnidadManejoDTO());
 					facturaDetalleDTO.setCodigoArticuloUnidadManejo(detallePedidoDTO.getCodigoArticuloUnidadManejo());
 					facturaDetalleDTO.setDescripcion(detallePedidoDTO.getArticuloDTO().getNombreArticulo());
+					facturaDetalleDTO.setDescripcion(detallePedidoDTO.getArticuloDTO().getNombreArticulo()+" "+detallePedidoDTO.getArticuloUnidadManejoDTO().getCodigoValorUnidadManejo()+"x"+detallePedidoDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo());
 					facturaDetalleDTO.setCodigoBarras(detallePedidoDTO.getArticuloDTO().getCodigoBarras());
 					facturaDetalleDTO.setCantidad(detallePedidoDTO.getCantidad());
 					facturaDetalleDTO.setValorUnidad(detallePedidoDTO.getArticuloDTO().getPrecio());
@@ -127,6 +128,7 @@ public class PedidoGestor implements IPedidoGestor{
 			// Crear y guardar factura
 			FacturaCabeceraDTO facturaCabeceraDTO = new FacturaCabeceraDTO();
 			facturaCabeceraDTO.getId().setCodigoCompania(codigoCompania);
+			facturaCabeceraDTO.setCodigoVendedor(pedidoDTO.getCodigoVendedor());
 			facturaCabeceraDTO.setCodigoValorTipoDocumento(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
 			facturaCabeceraDTO.setRucDocumento(pedidoDTO.getClienteDTO().getPersonaDTO() == null ? pedidoDTO.getClienteDTO().getEmpresaDTO().getNumeroRuc() : pedidoDTO.getClienteDTO().getPersonaDTO().getNumeroDocumento());
 			facturaCabeceraDTO.setNombreClienteProveedor(pedidoDTO.getClienteDTO().getPersonaDTO() == null ? pedidoDTO.getClienteDTO().getEmpresaDTO().getRazonSocial() : pedidoDTO.getClienteDTO().getPersonaDTO().getNombreCompleto());

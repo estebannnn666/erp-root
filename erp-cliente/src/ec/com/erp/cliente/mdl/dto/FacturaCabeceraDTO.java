@@ -14,6 +14,7 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionTypeInfo;
 
@@ -129,6 +130,9 @@ public class FacturaCabeceraDTO implements Serializable{
 	 */
 	@Column(name = "TOTALCUENTA")
 	private BigDecimal totalCuenta ;
+	
+	@Transient
+	private BigDecimal totalPagos ;
 	
 	/**
 	 * Especifica el tipo de documento venta y compra
@@ -434,5 +438,13 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setVendedorDTO(VendedorDTO vendedorDTO) {
 		this.vendedorDTO = vendedorDTO;
+	}
+
+	public BigDecimal getTotalPagos() {
+		return totalPagos;
+	}
+
+	public void setTotalPagos(BigDecimal totalPagos) {
+		this.totalPagos = totalPagos;
 	}
 }

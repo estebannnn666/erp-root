@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -79,7 +80,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, String tipoDocumento) throws ERPException{
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -88,8 +89,11 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
 			criteria.createAlias("root.facturaDetalleDTOCols", "facturaDetalleDTOCols", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.pagosFacturaDTOCols", "pagosFacturaDTOCols", CriteriaSpecification.LEFT_JOIN);
-			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.tipoDocumentoCatalogoValorDTO", "tipoDocumentoCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("facturaDetalleDTOCols.articuloUnidadManejoDTO", "articuloUnidadManejoDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
+			
 			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
@@ -112,9 +116,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			if(pagado != null){
 				criteria.add(Restrictions.eq("root.pagado", pagado));
 			}
-			if(tipoDocumento != null && tipoDocumento !=""){
-				tipoDocumento = tipoDocumento.toUpperCase();
-				criteria.add(Restrictions.eq("root.codigoValorTipoDocumento", tipoDocumento));
+			if(CollectionUtils.isNotEmpty(tiposDocumentos)){
+				criteria.add(Restrictions.in("root.codigoValorTipoDocumento", tiposDocumentos));
 			}
 
 			//proyecciones entidad negociacion proveedor
@@ -147,6 +150,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoCompania"), "facturaDetalleDTOCols_id_codigoCompania");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoDetalleFactura"), "facturaDetalleDTOCols_id_codigoDetalleFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoArticulo"), "facturaDetalleDTOCols_codigoArticulo");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoArticuloUnidadManejo"), "facturaDetalleDTOCols_codigoArticuloUnidadManejo");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.cantidad"), "facturaDetalleDTOCols_cantidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoFactura"), "facturaDetalleDTOCols_codigoFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.descripcion"), "facturaDetalleDTOCols_descripcion");
@@ -173,11 +177,27 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "facturaDetalleDTOCols_articuloDTO_nombreArticulo");
 			projectionList.add(Projections.property("articuloDTO.peso"), "facturaDetalleDTOCols_articuloDTO_peso");
 			projectionList.add(Projections.property("articuloDTO.precio"), "facturaDetalleDTOCols_articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.porcentajeComision"), "facturaDetalleDTOCols_articuloDTO_porcentajeComision");
 			projectionList.add(Projections.property("articuloDTO.cantidadStock"), "facturaDetalleDTOCols_articuloDTO_cantidadStock");
 			projectionList.add(Projections.property("articuloDTO.estado"), "facturaDetalleDTOCols_articuloDTO_estado");
 			
 			// Proyecciobes entidad catalogo valor
 			projectionList.add(Projections.property("tipoDocumentoCatalogoValorDTO.nombreCatalogoValor"), "tipoDocumentoCatalogoValorDTO_nombreCatalogoValor");
+			
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoCompania"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_id_codigoCompania");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoArticulo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoArticuloUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_id_codigoArticuloUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.valorUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_valorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.codigoValorUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_codigoValorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.codigoTipoUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_codigoTipoUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.esPorDefecto"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_esPorDefecto");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.estado"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_estado");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.usuarioRegistro"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_usuarioRegistro");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.fechaRegistro"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_fechaRegistro");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
+			
 			criteria.setProjection(projectionList);
 			criteria.addOrder(Order.desc("root.id.codigoFactura"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(FacturaCabeceraDTO.class));
@@ -269,6 +289,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
 			criteria.createAlias("root.facturaDetalleDTOCols", "facturaDetalleDTOCols", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("facturaDetalleDTOCols.articuloUnidadManejoDTO", "articuloUnidadManejoDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
@@ -305,6 +327,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoCompania"), "facturaDetalleDTOCols_id_codigoCompania");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoDetalleFactura"), "facturaDetalleDTOCols_id_codigoDetalleFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoArticulo"), "facturaDetalleDTOCols_codigoArticulo");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoArticuloUnidadManejo"), "facturaDetalleDTOCols_codigoArticuloUnidadManejo");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.cantidad"), "facturaDetalleDTOCols_cantidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoFactura"), "facturaDetalleDTOCols_codigoFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.descripcion"), "facturaDetalleDTOCols_descripcion");
@@ -320,8 +343,23 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "facturaDetalleDTOCols_articuloDTO_nombreArticulo");
 			projectionList.add(Projections.property("articuloDTO.peso"), "facturaDetalleDTOCols_articuloDTO_peso");
 			projectionList.add(Projections.property("articuloDTO.precio"), "facturaDetalleDTOCols_articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.porcentajeComision"), "facturaDetalleDTOCols_articuloDTO_porcentajeComision");
 			projectionList.add(Projections.property("articuloDTO.cantidadStock"), "facturaDetalleDTOCols_articuloDTO_cantidadStock");
 			projectionList.add(Projections.property("articuloDTO.estado"), "facturaDetalleDTOCols_articuloDTO_estado");
+			
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoCompania"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_id_codigoCompania");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoArticulo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoArticuloUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_id_codigoArticuloUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.valorUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_valorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.codigoValorUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_codigoValorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.codigoTipoUnidadManejo"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_codigoTipoUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.esPorDefecto"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_esPorDefecto");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.estado"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_estado");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.usuarioRegistro"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_usuarioRegistro");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.fechaRegistro"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_fechaRegistro");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "facturaDetalleDTOCols_articuloUnidadManejoDTO_tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(FacturaCabeceraDTO.class));
@@ -353,9 +391,11 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 				facturaCabeceraDTO.getId().setCodigoFactura(Long.parseLong(""+secuencialFactura));
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
 					Integer secuencialFacturaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_VENTA);
-					Integer numeroDocumento = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_COMPROVANTE_VENTA);
-					facturaCabeceraDTO.setNumeroDocumento(this.numeroFactura("001-001"+numeroDocumento));
 					facturaCabeceraDTO.setCodigoReferenciaFactura("FAC-"+secuencialFacturaVentas);
+				}
+				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)) {
+					Integer secuencialNotaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_NOTA_VENTA);
+					facturaCabeceraDTO.setCodigoReferenciaFactura("NOT-"+secuencialNotaVentas);
 				}
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS)) {
 					Integer secuencialFacturaCompras = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_COMPRA);
@@ -472,14 +512,5 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 		} catch (Exception e) {
 			throw (ERPException)new ERPException("Error al obtener lista de facturas.").initCause(e);
 		} 
-	}
-	
-	private  String numeroFactura(String numeroSecuencia) {
-		String cadena = "000000000";
-		int totalCadena = cadena.length();
-		int numeroCaracteres = numeroSecuencia.length();
-		int carRemplazar = totalCadena - numeroCaracteres;
-		String res = cadena.substring(0, carRemplazar);
-		return res+""+numeroSecuencia;
 	}
 }

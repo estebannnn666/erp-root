@@ -1,6 +1,7 @@
 package ec.com.erp.cliente.mdl.dto;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,9 +11,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CollectionTypeInfo;
+
 import ec.com.erp.cliente.mdl.dto.id.VendedorID;
+import ec.com.erp.utilitario.commons.constantes.CollectionType;
 
 /**
  * 
@@ -60,6 +65,13 @@ public class VendedorDTO implements Serializable{
 		@JoinColumn(name = "CODIGOPERSONA", referencedColumnName = "CODIGOPERSONA", insertable = false, updatable = false)
 	})
 	private PersonaDTO personaDTO;
+	
+	/**
+	 * Referencia a detalle de pagos
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "vendedorDTO")
+	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
+	private Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols;
 	
 	public VendedorID getId() {
 		return id;
@@ -123,5 +135,13 @@ public class VendedorDTO implements Serializable{
 
 	public void setPersonaDTO(PersonaDTO personaDTO) {
 		this.personaDTO = personaDTO;
+	}
+
+	public Collection<FacturaCabeceraDTO> getFacturaCabeceraDTOCols() {
+		return facturaCabeceraDTOCols;
+	}
+
+	public void setFacturaCabeceraDTOCols(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) {
+		this.facturaCabeceraDTOCols = facturaCabeceraDTOCols;
 	}
 }

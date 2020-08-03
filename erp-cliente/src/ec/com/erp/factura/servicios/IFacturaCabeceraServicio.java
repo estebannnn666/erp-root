@@ -29,7 +29,7 @@ public interface IFacturaCabeceraServicio {
 	 * @return Collection<FacturaCabeceraDTO>
 	 * @throws ERPException
 	 */
-	Collection<FacturaCabeceraDTO> findObtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, String tipoDocumento) throws ERPException;
+	Collection<FacturaCabeceraDTO> findObtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para guardar y actualizar factura cabecera

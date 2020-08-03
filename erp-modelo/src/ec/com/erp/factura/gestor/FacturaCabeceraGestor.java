@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jdom.Document;
 
@@ -85,8 +86,17 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, String tipoDocumento) throws ERPException{
-		return this.facturaCabeceraDAO.obtenerListaFacturas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tipoDocumento);
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException{
+		Collection<FacturaCabeceraDTO> listaFacturas = this.facturaCabeceraDAO.obtenerListaFacturas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tiposDocumentos);
+		listaFacturas.stream().forEach(factura ->{
+			if(CollectionUtils.isEmpty(factura.getPagosFacturaDTOCols())){
+				factura.setTotalPagos(BigDecimal.ZERO);
+			}else {
+				Double totalPago = factura.getPagosFacturaDTOCols().stream().filter(pago -> pago.getValorPago() != null).mapToDouble(pago-> pago.getValorPago().doubleValue()).sum();
+				factura.setTotalPagos(BigDecimal.valueOf(totalPago));
+			}
+		});
+		return listaFacturas;
 	}
 	
 	/**
@@ -121,7 +131,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 					facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 					facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
 					facturaDetalleDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());
-					if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)){
+					if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS) || facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)){
 						if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
 							this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
 						}
@@ -141,7 +151,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				transaccionDTO.setValorTransaccion(facturaCabeceraDTO.getTotalCuenta());
 				transaccionDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());
 				transaccionDTO.setFechaTransaccion(facturaCabeceraDTO.getFechaDocumento());
-				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
+				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS) || facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)) {
 					transaccionDTO.setCodigoValorTransaccion(ERPConstantes.CODIGO_CATALOGO_VALOR_TRANSACCION_INGRESO);
 					transaccionDTO.setConcepto("PAGO DE CLIENTE FACTURA NRO"+facturaCabeceraDTO.getNumeroDocumento());
 				}else {
@@ -177,7 +187,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 				facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
 				facturaDetalleDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
-				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)){
+				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS) || facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)){
 					this.reversarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
 				}else {
 					this.reversarInventarioCompra(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());

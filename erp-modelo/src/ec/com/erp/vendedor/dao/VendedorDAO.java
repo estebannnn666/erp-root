@@ -3,6 +3,7 @@
  */
 package ec.com.erp.vendedor.dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -19,6 +20,7 @@ import org.hibernate.criterion.Restrictions;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.VendedorDTO;
 import ec.com.erp.cliente.mdl.dto.id.VendedorID;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
@@ -79,8 +81,12 @@ public class VendedorDAO implements IVendedorDAO {
 
 			//joins 
 			Criteria criteria  = session.createCriteria(VendedorDTO.class, "root");
-			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
-			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.facturaCabeceraDTOCols", "facturaCabeceraDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("facturaCabeceraDTOCols.facturaDetalleDTOCols", "facturaDetalleDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.LEFT_JOIN);
+			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
@@ -152,6 +158,71 @@ public class VendedorDAO implements IVendedorDAO {
 		} 
 	}
 	
+	/**
+	 * Metodo para obtener lista de facturas por fecha y vendedor
+	 * @param codigoCompania
+	 * @param codigoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<FacturaCabeceraDTO> listaFacturasPorVendedorFechaVenta(Integer codigoCompania, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin){
+		
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins 
+			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
+			criteria.createAlias("root.facturaDetalleDTOCols", "facturaDetalleDTOCols", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.INNER_JOIN);
+			
+			
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("root.codigoVendedor", codigoVendedor));
+
+			if(fechaFacturaInicio != null && fechaFacturaFin != null){
+				criteria.add(Restrictions.between("root.fechaDocumento", fechaFacturaInicio, fechaFacturaFin));
+			}
+			
+			// Proyecciones facturas
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.numeroDocumento"), "numeroDocumento");
+			projectionList.add(Projections.property("root.fechaDocumento"), "fechaDocumento");
+			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
+			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
+			projectionList.add(Projections.property("root.totalCuenta"), "totalCuenta");
+			
+			// Proyecciones entidad detalle pedido
+			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoCompania"), "facturaDetalleDTOCols_id_codigoCompania");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoDetalleFactura"), "facturaDetalleDTOCols_id_codigoDetalleFactura");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoArticulo"), "facturaDetalleDTOCols_codigoArticulo");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.subTotal"), "facturaDetalleDTOCols_subTotal");
+			
+			projectionList.add(Projections.property("articuloDTO.id.codigoCompania"), "facturaDetalleDTOCols_articuloDTO_id_codigoCompania");
+			projectionList.add(Projections.property("articuloDTO.id.codigoArticulo"), "facturaDetalleDTOCols_articuloDTO_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloDTO.porcentajeComision"), "facturaDetalleDTOCols_articuloDTO_porcentajeComision");
+			
+			
+			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.desc("root.fechaDocumento"));
+			criteria.setResultTransformer(new MultiLevelResultTransformer(FacturaCabeceraDTO.class));
+			Collection<FacturaCabeceraDTO> facturasVendedor = new  ArrayList<>();
+			facturasVendedor =  criteria.list();
+
+			return facturasVendedor;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de vendedores.").initCause(e);
+		} 
+	}
 	
 	/**
 	 * M\u00e9todo para guardar y actualizar vendedor

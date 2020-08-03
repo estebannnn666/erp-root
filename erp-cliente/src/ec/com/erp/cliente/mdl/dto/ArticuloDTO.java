@@ -69,6 +69,12 @@ public class ArticuloDTO implements Serializable{
 	private Integer cantidadStock;
 	
 	/**
+	 * Especifica el porcentaje comision
+	 */
+	@Column(name="PORCENTAJECOMISION")
+	private BigDecimal porcentajeComision;
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -226,5 +232,13 @@ public class ArticuloDTO implements Serializable{
 
 	public void setArticuloUnidadManejoDTOCols(Collection<ArticuloUnidadManejoDTO> articuloUnidadManejoDTOCols) {
 		this.articuloUnidadManejoDTOCols = articuloUnidadManejoDTOCols;
+	}
+
+	public BigDecimal getPorcentajeComision() {
+		return porcentajeComision;
+	}
+
+	public void setPorcentajeComision(BigDecimal porcentajeComision) {
+		this.porcentajeComision = porcentajeComision;
 	}
 }

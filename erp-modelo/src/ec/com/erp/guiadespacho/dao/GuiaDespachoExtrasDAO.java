@@ -78,6 +78,12 @@ public class GuiaDespachoExtrasDAO implements IGuiaDespachoExtrasDAO {
 			//joins
 			Criteria criteria  = session.createCriteria(GuiaDespachoExtrasDTO.class, "root");
 			criteria.createAlias("root.guiaDespachoDTO", "guiaDespachoDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.articuloDTO", "articuloDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("articuloDTO.articuloUnidadManejoDTOCols", "articuloUnidadManejoDTOCols", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("articuloUnidadManejoDTOCols.tipoUnidadManejoCatalogoValorDTO", "unidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
+			
+			criteria.createAlias("root.articuloUnidadManejoDTO", "articuloUnidadManejoDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
@@ -93,12 +99,44 @@ public class GuiaDespachoExtrasDAO implements IGuiaDespachoExtrasDAO {
 			projectionList.add(Projections.property("root.id.codigoGuiaDespachoExtra"), "id_codigoGuiaDespachoExtra");
 			projectionList.add(Projections.property("root.codigoGuiaDespacho"), "codigoGuiaDespacho");
 			projectionList.add(Projections.property("root.codigoArticulo"), "codigoArticulo");
+			projectionList.add(Projections.property("root.codigoArticuloUnidadManejo"), "codigoArticuloUnidadManejo");
 			projectionList.add(Projections.property("root.descripcionProducto"), "descripcionProducto");
 			projectionList.add(Projections.property("root.cantidad"), "cantidad");
 			projectionList.add(Projections.property("root.observacion"), "observacion");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			// Proyecciones entidad articulo
+			projectionList.add(Projections.property("articuloDTO.id.codigoCompania"), "articuloDTO_id_codigoCompania");
+			projectionList.add(Projections.property("articuloDTO.id.codigoArticulo"), "articuloDTO_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloDTO.codigoBarras"), "articuloDTO_codigoBarras");
+			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "articuloDTO_nombreArticulo");
+			projectionList.add(Projections.property("articuloDTO.precio"), "articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.peso"), "articuloDTO_peso");
+						
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoCompania"), "articuloDTO_articuloUnidadManejoDTOCols_id_codigoCompania");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoArticulo"), "articuloDTO_articuloUnidadManejoDTOCols_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoArticuloUnidadManejo"), "articuloDTO_articuloUnidadManejoDTOCols_id_codigoArticuloUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.valorUnidadManejo"), "articuloDTO_articuloUnidadManejoDTOCols_valorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.esPorDefecto"), "articuloDTO_articuloUnidadManejoDTOCols_esPorDefecto");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "articuloDTO_articuloUnidadManejoDTOCols_tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
+			
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoCompania"), "articuloUnidadManejoDTO_id_codigoCompania");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoArticulo"), "articuloUnidadManejoDTO_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoArticuloUnidadManejo"), "articuloUnidadManejoDTO_id_codigoArticuloUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.valorUnidadManejo"), "articuloUnidadManejoDTO_valorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.codigoValorUnidadManejo"), "articuloUnidadManejoDTO_codigoValorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.codigoTipoUnidadManejo"), "articuloUnidadManejoDTO_codigoTipoUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.esPorDefecto"), "articuloUnidadManejoDTO_esPorDefecto");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.estado"), "articuloUnidadManejoDTO_estado");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.usuarioRegistro"), "articuloUnidadManejoDTO_usuarioRegistro");
+			projectionList.add(Projections.property("articuloUnidadManejoDTO.fechaRegistro"), "articuloUnidadManejoDTO_fechaRegistro");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "articuloUnidadManejoDTO_tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(GuiaDespachoExtrasDTO.class));

@@ -87,6 +87,7 @@ public class DetallePedidoDAO implements IDetallePedidoDAO {
 			projectionList.add(Projections.property("root.id.codigoDetallePedido"), "id_codigoDetallePedido");
 			projectionList.add(Projections.property("root.id.codigoPedido"), "id_codigoPedido");
 			projectionList.add(Projections.property("root.codigoArticulo"), "codigoArticulo");
+			projectionList.add(Projections.property("root.codigoArticuloUnidadManejo"), "codigoArticuloUnidadManejo");
 			projectionList.add(Projections.property("root.cantidad"), "cantidad");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
 			projectionList.add(Projections.property("root.estado"), "estado");

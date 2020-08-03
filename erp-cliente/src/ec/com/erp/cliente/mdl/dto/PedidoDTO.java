@@ -41,6 +41,12 @@ public class PedidoDTO implements Serializable{
 	private Long codigoCliente ;
 	
 	/**
+	 * Especifica el codigo de vendedor
+	 */
+	@Column(name="CODIGOVENDEDOR")
+	private Long codigoVendedor;
+	
+	/**
 	 * Especifica el numero del pedido
 	 */
 	@Column(name = "NUMEROPEDIDO")
@@ -126,6 +132,16 @@ public class PedidoDTO implements Serializable{
 		@JoinColumn(name = "CODIGOCLIENTE", referencedColumnName = "CODIGOCLIENTE", insertable = false, updatable = false)
 	})
 	private ClienteDTO clienteDTO;
+	
+	/**
+	 * Referencia al entidad Vendedor
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOVENDEDOR", referencedColumnName = "CODIGOVENDEDOR", insertable = false, updatable = false)
+	})
+	private VendedorDTO vendedorDTO;
 	
 	/**
 	 * Referencia a detalle del pedido
@@ -321,5 +337,21 @@ public class PedidoDTO implements Serializable{
 
 	public void setSubTotal(BigDecimal subTotal) {
 		this.subTotal = subTotal;
+	}
+
+	public Long getCodigoVendedor() {
+		return codigoVendedor;
+	}
+
+	public void setCodigoVendedor(Long codigoVendedor) {
+		this.codigoVendedor = codigoVendedor;
+	}
+
+	public VendedorDTO getVendedorDTO() {
+		return vendedorDTO;
+	}
+
+	public void setVendedorDTO(VendedorDTO vendedorDTO) {
+		this.vendedorDTO = vendedorDTO;
 	}
 }

@@ -90,6 +90,8 @@ public class FacturaDetalleDAO implements IFacturaDetalleDAO {
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
 			projectionList.add(Projections.property("root.id.codigoDetalleFactura"), "id_codigoDetalleFactura");
+			projectionList.add(Projections.property("root.codigoArticulo"), "codigoArticulo");
+			projectionList.add(Projections.property("root.codigoArticuloUnidadManejo"), "codigoArticuloUnidadManejo");
 			projectionList.add(Projections.property("root.cantidad"), "cantidad");
 			projectionList.add(Projections.property("root.codigoFactura"), "codigoFactura");
 			projectionList.add(Projections.property("root.descripcion"), "descripcion");

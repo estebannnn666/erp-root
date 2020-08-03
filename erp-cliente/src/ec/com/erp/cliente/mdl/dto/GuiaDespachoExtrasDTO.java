@@ -97,6 +97,16 @@ public class GuiaDespachoExtrasDTO implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOARTICULO", referencedColumnName = "CODIGOARTICULO", insertable = false, updatable = false)
+	})
+	private ArticuloDTO articuloDTO;
+	
+	/**
+	 * Referencia al entidad Articulo
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
 		@JoinColumn(name = "CODIGOARTICULOUNIDADMANEJO", referencedColumnName = "CODIGOARTICULOUNIDADMANEJO", insertable = false, updatable = false),
 		@JoinColumn(name = "CODIGOARTICULO", referencedColumnName = "CODIGOARTICULO", insertable = false, updatable = false)
 	})
@@ -212,5 +222,13 @@ public class GuiaDespachoExtrasDTO implements Serializable{
 
 	public void setArticuloUnidadManejoDTO(ArticuloUnidadManejoDTO articuloUnidadManejoDTO) {
 		this.articuloUnidadManejoDTO = articuloUnidadManejoDTO;
+	}
+
+	public ArticuloDTO getArticuloDTO() {
+		return articuloDTO;
+	}
+
+	public void setArticuloDTO(ArticuloDTO articuloDTO) {
+		this.articuloDTO = articuloDTO;
 	}
 }

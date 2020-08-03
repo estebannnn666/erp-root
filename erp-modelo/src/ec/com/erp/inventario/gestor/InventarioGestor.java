@@ -193,7 +193,7 @@ public class InventarioGestor implements IInventarioGestor{
 					contenidoXml.append("<numero>").append(StringEscapeUtils.escapeXml(""+cont)).append("</numero>");
 					contenidoXml.append("<fechaMovimiento>").append(StringEscapeUtils.escapeXml(StringEscapeUtils.escapeXml(""+formatoFecha.format(inventarioDTO.getFechaMovimiento())))).append("</fechaMovimiento>");
 					contenidoXml.append("<codigoBarras>").append(StringEscapeUtils.escapeXml(inventarioDTO.getArticuloDTO().getCodigoBarras())).append("</codigoBarras>");
-					contenidoXml.append("<nombreArticulo>").append(StringEscapeUtils.escapeXml(inventarioDTO.getArticuloDTO().getNombreArticulo())).append("</nombreArticulo>");
+					contenidoXml.append("<nombreArticulo>").append(StringEscapeUtils.escapeXml(inventarioDTO.getArticuloDTO().getNombreArticulo()+" "+inventarioDTO.getArticuloUnidadManejoDTO().getCodigoValorUnidadManejo()+"x"+inventarioDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo())).append("</nombreArticulo>");
 					contenidoXml.append("<detalleMovimiento>").append(StringEscapeUtils.escapeXml(inventarioDTO.getDetalleMoviento())).append("</detalleMovimiento>");
 					contenidoXml.append("<cantidadExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getCantidadExistencia() == null ? "-" : ""+inventarioDTO.getCantidadExistencia())).append("</cantidadExistencia>");
 					contenidoXml.append("<valorUnidadExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getValorUnidadExistencia() == null ? "-" : ""+formatoDecimales.format(inventarioDTO.getValorUnidadExistencia().doubleValue()))).append("</valorUnidadExistencia>");

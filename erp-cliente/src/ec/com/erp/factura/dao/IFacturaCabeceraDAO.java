@@ -28,7 +28,7 @@ public interface IFacturaCabeceraDAO {
 	 * @return Collection<FacturaCabeceraDTO>
 	 * @throws ERPException
 	 */
-	Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin, String docClienteProveedor, String nombClienteProveedor, Boolean pagado, String tipoDocumento) throws ERPException;
+	Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin, String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para obtener la factura del pedido

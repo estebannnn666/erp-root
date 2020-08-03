@@ -1,5 +1,6 @@
 package ec.com.erp.vendedor.gestor;
 
+import java.sql.Timestamp;
 import java.util.Collection;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -7,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ContactoDTO;
+import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.PersonaDTO;
 import ec.com.erp.cliente.mdl.dto.VendedorDTO;
 import ec.com.erp.contacto.gestor.IContactoGestor;
@@ -80,6 +82,19 @@ public class VendedorGestor implements IVendedorGestor{
 	@Override
 	public Collection<VendedorDTO> obtenerListaVendedores(Integer codigoCompania, String numeroDocumento, String nombreVendedor) throws ERPException{
 		return this.vendedorDAO.obtenerListaVendedores(codigoCompania, numeroDocumento, nombreVendedor);
+	}
+	
+	/**
+	 * Metodo para obtener lista de facturas por fecha y vendedor
+	 * @param codigoCompania
+	 * @param codigoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 */
+	@Override
+	public Collection<FacturaCabeceraDTO> listaFacturasPorVendedorFechaVenta(Integer codigoCompania, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin){
+		return this.vendedorDAO.listaFacturasPorVendedorFechaVenta(codigoCompania, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
 	}
 	
 	/**
