@@ -12,6 +12,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -93,7 +94,8 @@ public class ClientesDAO implements IClientesDAO {
 				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", numeroDocumento), Restrictions.eq("empresaDTO.numeroRuc", numeroDocumento)));
 			}
 			if(nombreCliente != null && nombreCliente.trim() != "") {
-				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.nombreCompleto", nombreCliente), Restrictions.eq("empresaDTO.razonSocial", nombreCliente)));
+				nombreCliente = nombreCliente.toUpperCase();
+				criteria.add(Restrictions.or(Restrictions.like("personaDTO.nombreCompleto", nombreCliente, MatchMode.ANYWHERE), Restrictions.like("empresaDTO.razonSocial", nombreCliente, MatchMode.ANYWHERE)));
 			}
 			// Proyecciones entidad clientes 
 			ProjectionList projectionList = Projections.projectionList();
