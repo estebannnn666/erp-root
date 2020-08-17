@@ -77,7 +77,7 @@ public class ArticuloGestor implements IArticuloGestor{
 		}
 		
 		// Guardar o eliminar articulo unidad de manejo
-		if(CollectionUtils.isNotEmpty(articuloImpuestoDTONewCols)){
+		if(CollectionUtils.isNotEmpty(articuloUnidadManejoDTONewCols)){
 			this.guardarActualizarArticuloUnidadManejo(articuloDTO.getId().getCodigoCompania(), articuloDTO.getId().getCodigoArticulo(), articuloUnidadManejoDTONewCols);
 		}
 	}
@@ -138,7 +138,7 @@ public class ArticuloGestor implements IArticuloGestor{
 		for(ArticuloUnidadManejoDTO articuloUnidadManejoAntDTO: articuloUnidadManejoDTOAntCols){
 			eliminar = Boolean.TRUE;
 			for(ArticuloUnidadManejoDTO articuloImpuestoNewDTO : articuloUnidadManejoDTONewCols){
-				if(articuloUnidadManejoAntDTO.getId().getCodigoArticuloUnidadManejo().intValue() == articuloImpuestoNewDTO.getId().getCodigoArticuloUnidadManejo().intValue()){
+				if(articuloImpuestoNewDTO.getId().getCodigoArticuloUnidadManejo() != null && articuloUnidadManejoAntDTO.getId().getCodigoArticuloUnidadManejo().intValue() == articuloImpuestoNewDTO.getId().getCodigoArticuloUnidadManejo().intValue()){
 					eliminar = Boolean.FALSE;
 					break;
 				}

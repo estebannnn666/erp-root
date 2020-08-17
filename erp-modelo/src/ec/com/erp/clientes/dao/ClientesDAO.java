@@ -82,6 +82,7 @@ public class ClientesDAO implements IClientesDAO {
 			Criteria criteria  = session.createCriteria(ClienteDTO.class, "root");
 //			criteria.createAlias("root.usuariosDTO", "usuariosDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.tipoCompraCatalogoValorDTO", "tipoCompraCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.empresaDTO", "empresaDTO", CriteriaSpecification.LEFT_JOIN);
@@ -106,6 +107,8 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("root.userId"), "userId");
 			projectionList.add(Projections.property("root.codigoValorTipoCliente"), "codigoValorTipoCliente");
 			projectionList.add(Projections.property("root.codigoTipoCliente"), "codigoTipoCliente");
+			projectionList.add(Projections.property("root.codigoValorTipoCompra"), "codigoValorTipoCompra");
+			projectionList.add(Projections.property("root.codigoTipoCompra"), "codigoTipoCompra");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
@@ -118,6 +121,7 @@ public class ClientesDAO implements IClientesDAO {
 //			projectionList.add(Projections.property("usuariosDTO.estado"), "usuariosDTO_estado");
 			// Proyecciones catalogos
 			projectionList.add(Projections.property("tipoClienteCatalogoValorDTO.nombreCatalogoValor"), "tipoClienteCatalogoValorDTO_nombreCatalogoValor");
+			projectionList.add(Projections.property("tipoCompraCatalogoValorDTO.nombreCatalogoValor"), "tipoCompraCatalogoValorDTO_nombreCatalogoValor");
 			
 			// Proyecciones entidad persona 
 			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "personaDTO_id_codigoCompania");

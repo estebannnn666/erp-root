@@ -57,6 +57,12 @@ public class ArticuloDTO implements Serializable{
 	private BigDecimal precio;
 	
 	/**
+	 * Especifica el precio minorista
+	 */
+	@Column(name="PRECIOMINORISTA")
+	private BigDecimal precioMinorista;
+	
+	/**
 	 * Especifica el precio del articulo
 	 */
 	@Column(name="COSTO")
@@ -240,5 +246,13 @@ public class ArticuloDTO implements Serializable{
 
 	public void setPorcentajeComision(BigDecimal porcentajeComision) {
 		this.porcentajeComision = porcentajeComision;
+	}
+
+	public BigDecimal getPrecioMinorista() {
+		return precioMinorista;
+	}
+
+	public void setPrecioMinorista(BigDecimal precioMinorista) {
+		this.precioMinorista = precioMinorista;
 	}
 }

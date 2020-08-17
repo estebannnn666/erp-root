@@ -89,6 +89,7 @@ public class PedidoDAO implements IPedidoDAO {
 			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.clienteDTO", "clienteDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("clienteDTO.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("clienteDTO.tipoCompraCatalogoValorDTO", "tipoCompraCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("clienteDTO.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("clienteDTO.empresaDTO", "empresaDTO", CriteriaSpecification.LEFT_JOIN);
@@ -144,12 +145,15 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("clienteDTO.userId"), "clienteDTO_userId");
 			projectionList.add(Projections.property("clienteDTO.codigoValorTipoCliente"), "clienteDTO_codigoValorTipoCliente");
 			projectionList.add(Projections.property("clienteDTO.codigoTipoCliente"), "clienteDTO_codigoTipoCliente");
+			projectionList.add(Projections.property("clienteDTO.codigoValorTipoCompra"), "clienteDTO_codigoValorTipoCompra");
+			projectionList.add(Projections.property("clienteDTO.codigoTipoCompra"), "clienteDTO_codigoTipoCompra");
 			projectionList.add(Projections.property("clienteDTO.estado"), "clienteDTO_estado");
 			projectionList.add(Projections.property("clienteDTO.usuarioRegistro"), "clienteDTO_usuarioRegistro");
 			projectionList.add(Projections.property("clienteDTO.fechaRegistro"), "clienteDTO_fechaRegistro");
 			
 			// Proyecciones catalogos
 			projectionList.add(Projections.property("tipoClienteCatalogoValorDTO.nombreCatalogoValor"), "clienteDTO_tipoClienteCatalogoValorDTO_nombreCatalogoValor");
+			projectionList.add(Projections.property("tipoCompraCatalogoValorDTO.nombreCatalogoValor"), "clienteDTO_tipoCompraCatalogoValorDTO_nombreCatalogoValor");
 			
 			// Proyecciones entidad persona 
 			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "clienteDTO_personaDTO_id_codigoCompania");
@@ -209,6 +213,7 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "detallePedidoDTOCols_articuloDTO_nombreArticulo");
 			projectionList.add(Projections.property("articuloDTO.peso"), "detallePedidoDTOCols_articuloDTO_peso");
 			projectionList.add(Projections.property("articuloDTO.precio"), "detallePedidoDTOCols_articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.precioMinorista"), "detallePedidoDTOCols_articuloDTO_precioMinorista");
 			projectionList.add(Projections.property("articuloDTO.porcentajeComision"), "detallePedidoDTOCols_articuloDTO_porcentajeComision");
 			projectionList.add(Projections.property("articuloDTO.cantidadStock"), "detallePedidoDTOCols_articuloDTO_cantidadStock");
 			projectionList.add(Projections.property("articuloDTO.estado"), "detallePedidoDTOCols_articuloDTO_estado");

@@ -113,6 +113,7 @@ public class GuiaDespachoExtrasDAO implements IGuiaDespachoExtrasDAO {
 			projectionList.add(Projections.property("articuloDTO.codigoBarras"), "articuloDTO_codigoBarras");
 			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "articuloDTO_nombreArticulo");
 			projectionList.add(Projections.property("articuloDTO.precio"), "articuloDTO_precio");
+			projectionList.add(Projections.property("articuloDTO.precioMinorista"), "articuloDTO_precioMinorista");
 			projectionList.add(Projections.property("articuloDTO.peso"), "articuloDTO_peso");
 						
 			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoCompania"), "articuloDTO_articuloUnidadManejoDTOCols_id_codigoCompania");

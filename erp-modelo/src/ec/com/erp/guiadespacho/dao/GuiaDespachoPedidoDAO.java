@@ -83,6 +83,7 @@ public class GuiaDespachoPedidoDAO implements IGuiaDespachoPedidoDAO {
 			criteria.createAlias("pedidoDTO.estadoPedidoDTOCols", "estadoPedidoDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("pedidoDTO.clienteDTO", "clienteDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("clienteDTO.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("clienteDTO.tipoCompraCatalogoValorDTO", "tipoCompraCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("clienteDTO.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("personaDTO.contactoDTOCols", "contactoPersonaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("clienteDTO.empresaDTO", "empresaDTO", CriteriaSpecification.LEFT_JOIN);
@@ -146,12 +147,15 @@ public class GuiaDespachoPedidoDAO implements IGuiaDespachoPedidoDAO {
 			projectionList.add(Projections.property("clienteDTO.userId"), "pedidoDTO_clienteDTO_userId");
 			projectionList.add(Projections.property("clienteDTO.codigoValorTipoCliente"), "pedidoDTO_clienteDTO_codigoValorTipoCliente");
 			projectionList.add(Projections.property("clienteDTO.codigoTipoCliente"), "pedidoDTO_clienteDTO_codigoTipoCliente");
+			projectionList.add(Projections.property("clienteDTO.codigoValorTipoCompra"), "pedidoDTO_clienteDTO_codigoValorTipoCompra");
+			projectionList.add(Projections.property("clienteDTO.codigoTipoCompra"), "pedidoDTO_clienteDTO_codigoTipoCompra");
 			projectionList.add(Projections.property("clienteDTO.estado"), "pedidoDTO_clienteDTO_estado");
 			projectionList.add(Projections.property("clienteDTO.usuarioRegistro"), "pedidoDTO_clienteDTO_usuarioRegistro");
 			projectionList.add(Projections.property("clienteDTO.fechaRegistro"), "pedidoDTO_clienteDTO_fechaRegistro");
 			
 			// Proyecciones catalogos
 			projectionList.add(Projections.property("tipoClienteCatalogoValorDTO.nombreCatalogoValor"), "pedidoDTO_clienteDTO_tipoClienteCatalogoValorDTO_nombreCatalogoValor");
+			projectionList.add(Projections.property("tipoCompraCatalogoValorDTO.nombreCatalogoValor"), "pedidoDTO_clienteDTO_tipoCompraCatalogoValorDTO_nombreCatalogoValor");
 			
 			// Proyecciones entidad persona 
 			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "pedidoDTO_clienteDTO_personaDTO_id_codigoCompania");

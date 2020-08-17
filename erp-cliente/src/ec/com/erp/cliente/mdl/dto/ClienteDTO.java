@@ -58,6 +58,18 @@ public class ClienteDTO implements Serializable{
 	private Integer codigoTipoCliente ;
 	
 	/**
+	 * Especifica el codigo valor del tipo de cliente
+	 */
+	@Column(name = "CODIGOVALORTIPOCOMPRA")
+	private String codigoValorTipoCompra ;
+	
+	/**
+	 * Especifica el codigo tipo de cliente
+	 */
+	@Column(name = "CODIGOTIPOCOMPRA")
+	private Integer codigoTipoCompra ;
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -84,6 +96,16 @@ public class ClienteDTO implements Serializable{
 		@JoinColumn(name = "CODIGOTIPOCLIENTE", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
 	})
 	private CatalogoValorDTO tipoClienteCatalogoValorDTO;
+	
+	/**
+	 * Referencia CatalogoValorDTO tipo de contacto
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOVALORTIPOCOMPRA", referencedColumnName = "CODIGOCATALOGOVALOR", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOTIPOCOMPRA", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
+	})
+	private CatalogoValorDTO tipoCompraCatalogoValorDTO;
 	
 	/**
 	 * Referencia CatalogoValorDTO tipo de contacto
@@ -232,5 +254,29 @@ public class ClienteDTO implements Serializable{
 
 	public void setUsuariosDTO(UsuariosDTO usuariosDTO) {
 		this.usuariosDTO = usuariosDTO;
+	}
+
+	public String getCodigoValorTipoCompra() {
+		return codigoValorTipoCompra;
+	}
+
+	public void setCodigoValorTipoCompra(String codigoValorTipoCompra) {
+		this.codigoValorTipoCompra = codigoValorTipoCompra;
+	}
+
+	public Integer getCodigoTipoCompra() {
+		return codigoTipoCompra;
+	}
+
+	public void setCodigoTipoCompra(Integer codigoTipoCompra) {
+		this.codigoTipoCompra = codigoTipoCompra;
+	}
+
+	public CatalogoValorDTO getTipoCompraCatalogoValorDTO() {
+		return tipoCompraCatalogoValorDTO;
+	}
+
+	public void setTipoCompraCatalogoValorDTO(CatalogoValorDTO tipoCompraCatalogoValorDTO) {
+		this.tipoCompraCatalogoValorDTO = tipoCompraCatalogoValorDTO;
 	}
 }

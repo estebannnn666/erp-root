@@ -41,6 +41,8 @@ public class ERPConstantes {
 	public static final String CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.documento.compras");
 	public static final String CODIGO_CATALOGO_VALOR_TRANSACCION_INGRESO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.transaccion.ingreso");
 	public static final String CODIGO_CATALOGO_VALOR_TRANSACCION_GASTO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.transaccion.gasto");
+	public static final String CODIGO_CATALOGO_VALOR_CLIENTE_MAYORISTA = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.cliente.mayorista");
+	public static final String CODIGO_CATALOGO_VALOR_CLIENTE_MINORISTA = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.cliente.minorista");
 	
 	/************ CODIGOS CATALAGOS TIPOS *****************/
 	public static final Integer CODIGO_CATALOGO_TIPOS_CONTACTOS = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.contacto");
@@ -53,6 +55,7 @@ public class ERPConstantes {
 	public static final Integer CODIGO_CATALOGO_TIPOS_DOCUMENTOS = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.documentos.cuentas");
 	public static final Integer CODIGO_CATALOGO_TIPOS_TRANSACCION = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.transaccion");
 	public static final Integer CODIGO_CATALOGO_TIPOS_UNIDAD_MANEJO = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.unidad.manejo");
+	public static final Integer CODIGO_CATALOGO_TIPOS_COMPRA_CLIENTE = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.cliente.tipocompra");
 	
 	/*********** PERFILES ********/
 	public static final BigDecimal CODIGO_PERFIL_ADMINISTRADOR = ERPMessages.getBigDecimal("ec.com.erp.codigo.secuencial.pefil.administrador");

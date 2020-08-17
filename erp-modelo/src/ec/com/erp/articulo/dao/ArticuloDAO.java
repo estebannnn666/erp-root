@@ -77,13 +77,14 @@ public class ArticuloDAO implements IArticuloDAO {
 			//joins
 			Criteria criteria  = session.createCriteria(ArticuloDTO.class, "root");
 			criteria.createAlias("root.articuloImpuestoDTOCols", "articuloImpuestoDTOCols", CriteriaSpecification.LEFT_JOIN);
-			criteria.createAlias("root.articuloUnidadManejoDTOCols", "articuloUnidadManejoDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("root.articuloUnidadManejoDTOCols", "articuloUnidadManejoDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("articuloImpuestoDTOCols.impuestoDTO", "impuestoDTO", CriteriaSpecification.LEFT_JOIN);
 
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("articuloUnidadManejoDTO.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			
 			if(codigoBarras != null && codigoBarras !=""){
 				codigoBarras = codigoBarras.toUpperCase();
@@ -104,6 +105,7 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.peso"), "peso");
 			projectionList.add(Projections.property("root.costo"), "costo");
 			projectionList.add(Projections.property("root.precio"), "precio");
+			projectionList.add(Projections.property("root.precioMinorista"), "precioMinorista");
 			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
 			projectionList.add(Projections.property("root.porcentajeComision"), "porcentajeComision");
 			projectionList.add(Projections.property("root.estado"), "estado");
@@ -188,6 +190,7 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.peso"), "peso");
 			projectionList.add(Projections.property("root.costo"), "costo");
 			projectionList.add(Projections.property("root.precio"), "precio");
+			projectionList.add(Projections.property("root.precioMinorista"), "precioMinorista");
 			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
 			projectionList.add(Projections.property("root.porcentajeComision"), "porcentajeComision");
 			projectionList.add(Projections.property("root.estado"), "estado");

@@ -102,7 +102,11 @@ public class PedidoGestor implements IPedidoGestor{
 					facturaDetalleDTO.setDescripcion(detallePedidoDTO.getArticuloDTO().getNombreArticulo()+" "+detallePedidoDTO.getArticuloUnidadManejoDTO().getCodigoValorUnidadManejo()+"x"+detallePedidoDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo());
 					facturaDetalleDTO.setCodigoBarras(detallePedidoDTO.getArticuloDTO().getCodigoBarras());
 					facturaDetalleDTO.setCantidad(detallePedidoDTO.getCantidad());
-					facturaDetalleDTO.setValorUnidad(detallePedidoDTO.getArticuloDTO().getPrecio());
+					if(pedidoDTO.getClienteDTO().getCodigoValorTipoCompra().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_CLIENTE_MAYORISTA)) {
+						facturaDetalleDTO.setValorUnidad(detallePedidoDTO.getArticuloDTO().getPrecio());
+					}else {
+						facturaDetalleDTO.setValorUnidad(detallePedidoDTO.getArticuloDTO().getPrecioMinorista());
+					}
 					facturaDetalleDTO.setSubTotal(detallePedidoDTO.getSubTotal());
 					facturaDetalleDTO.setFechaRegistro(new Date());
 					facturaDetalleDTO.setUsuarioRegistro(pedidoDTO.getUsuarioRegistro());
@@ -127,6 +131,7 @@ public class PedidoGestor implements IPedidoGestor{
 			
 			// Crear y guardar factura
 			FacturaCabeceraDTO facturaCabeceraDTO = new FacturaCabeceraDTO();
+			facturaCabeceraDTO.setNumeroDocumento(pedidoDTO.getNumeroPedido());
 			facturaCabeceraDTO.getId().setCodigoCompania(codigoCompania);
 			facturaCabeceraDTO.setCodigoVendedor(pedidoDTO.getCodigoVendedor());
 			facturaCabeceraDTO.setCodigoValorTipoDocumento(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
@@ -140,6 +145,8 @@ public class PedidoGestor implements IPedidoGestor{
 			facturaCabeceraDTO.setUsuarioRegistro(pedidoDTO.getUsuarioRegistro());
 			facturaCabeceraDTO.setTotalCuenta(pedidoDTO.getTotalCompra());
 			facturaCabeceraDTO.setDescuento(pedidoDTO.getDescuento());
+			facturaCabeceraDTO.setSubTotal(pedidoDTO.getSubTotal());
+			facturaCabeceraDTO.setTotalIva(pedidoDTO.getTotalIva());
 			facturaCabeceraDTO.setTotalImpuestos(pedidoDTO.getTotalImpuestos());
 			facturaCabeceraDTO.setTotalSinImpuestos(pedidoDTO.getTotalSinImpuestos());
 			facturaCabeceraDTO.setFacturaDetalleDTOCols(facturaDetalleDTOCol);		
