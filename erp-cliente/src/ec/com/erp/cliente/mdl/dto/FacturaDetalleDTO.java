@@ -29,6 +29,9 @@ public class FacturaDetalleDTO implements Serializable{
 	@EmbeddedId
 	private FacturaDetalleID id = new FacturaDetalleID();
 	
+	@Transient
+	private Long ordenRegistro;
+	
 	/**
 	 * Especifica la cantidad pedida
 	 */
@@ -255,6 +258,15 @@ public class FacturaDetalleDTO implements Serializable{
 
 	public void setArticuloUnidadManejoDTO(ArticuloUnidadManejoDTO articuloUnidadManejoDTO) {
 		this.articuloUnidadManejoDTO = articuloUnidadManejoDTO;
+	}
+
+	public Long getOrdenRegistro() {
+		this.ordenRegistro = this.id.getCodigoDetalleFactura();
+		return this.ordenRegistro;
+	}
+
+	public void setOrdenRegistro(Long ordenRegistro) {
+		this.ordenRegistro = ordenRegistro;
 	}
 	
 }

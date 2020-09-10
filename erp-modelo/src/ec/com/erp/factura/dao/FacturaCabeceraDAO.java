@@ -91,6 +91,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			criteria.createAlias("root.pagosFacturaDTOCols", "pagosFacturaDTOCols", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.tipoDocumentoCatalogoValorDTO", "tipoDocumentoCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("articuloDTO.articuloImpuestoDTOCols", "articuloImpuestoDTOCols", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("facturaDetalleDTOCols.articuloUnidadManejoDTO", "articuloUnidadManejoDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			
@@ -175,12 +176,19 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("articuloDTO.id.codigoArticulo"), "facturaDetalleDTOCols_articuloDTO_id_codigoArticulo");
 			projectionList.add(Projections.property("articuloDTO.codigoBarras"), "facturaDetalleDTOCols_articuloDTO_codigoBarras");
 			projectionList.add(Projections.property("articuloDTO.nombreArticulo"), "facturaDetalleDTOCols_articuloDTO_nombreArticulo");
+			projectionList.add(Projections.property("articuloDTO.costo"), "facturaDetalleDTOCols_articuloDTO_costo");
 			projectionList.add(Projections.property("articuloDTO.peso"), "facturaDetalleDTOCols_articuloDTO_peso");
 			projectionList.add(Projections.property("articuloDTO.precio"), "facturaDetalleDTOCols_articuloDTO_precio");
 			projectionList.add(Projections.property("articuloDTO.precioMinorista"), "facturaDetalleDTOCols_articuloDTO_precioMinorista");
 			projectionList.add(Projections.property("articuloDTO.porcentajeComision"), "facturaDetalleDTOCols_articuloDTO_porcentajeComision");
 			projectionList.add(Projections.property("articuloDTO.cantidadStock"), "facturaDetalleDTOCols_articuloDTO_cantidadStock");
 			projectionList.add(Projections.property("articuloDTO.estado"), "facturaDetalleDTOCols_articuloDTO_estado");
+			
+			// Proyecciones entidad articulo impuesto
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoCompania"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_id_codigoCompania");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoImpuesto"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_id_codigoImpuesto");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoArticulo"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloImpuestoDTOCols.estado"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_estado");
 			
 			// Proyecciobes entidad catalogo valor
 			projectionList.add(Projections.property("tipoDocumentoCatalogoValorDTO.nombreCatalogoValor"), "tipoDocumentoCatalogoValorDTO_nombreCatalogoValor");
@@ -426,12 +434,12 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 	 * @param codigoCompania
 	 * @param fechaInicio
 	 * @param fechaFin
-	 * @param tipoDocumento
+	 * @param tipoDocumentos
 	 * @return
 	 * @throws ERPException
 	 */
 	@Override
-	public BigDecimal obtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException{
+	public BigDecimal obtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, Collection<String> tiposDocumentos, Boolean pagada) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -442,10 +450,10 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			criteria.add(Restrictions.between("root.fechaDocumento", fechaInicio, fechaFin));
-			if(tipoDocumento != null && tipoDocumento !=""){
-				tipoDocumento = tipoDocumento.toUpperCase();
-				criteria.add(Restrictions.eq("root.codigoValorTipoDocumento", tipoDocumento));
+			criteria.add(Restrictions.ge("root.fechaDocumento", fechaInicio));//mayor igual 
+			criteria.add(Restrictions.lt("root.fechaDocumento", fechaFin)); //menor que
+			if(CollectionUtils.isNotEmpty(tiposDocumentos)){
+				criteria.add(Restrictions.in("root.codigoValorTipoDocumento", tiposDocumentos));
 			}
 			
 			if(pagada != null){
@@ -478,7 +486,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 	 * @throws ERPException
 	 */
 	@Override
-	public Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException{
+	public Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, Collection<String> tipoDocumento, Boolean pagada) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -489,10 +497,10 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			criteria.add(Restrictions.between("root.fechaDocumento", fechaInicio, fechaFin));
-			if(tipoDocumento != null && tipoDocumento !=""){
-				tipoDocumento = tipoDocumento.toUpperCase();
-				criteria.add(Restrictions.eq("root.codigoValorTipoDocumento", tipoDocumento));
+			criteria.add(Restrictions.ge("root.fechaDocumento", fechaInicio));//mayor igual 
+			criteria.add(Restrictions.lt("root.fechaDocumento", fechaFin)); //menor que
+			if(CollectionUtils.isNotEmpty(tipoDocumento)){
+				criteria.add(Restrictions.in("root.codigoValorTipoDocumento", tipoDocumento));
 			}
 			
 			if(pagada != null){

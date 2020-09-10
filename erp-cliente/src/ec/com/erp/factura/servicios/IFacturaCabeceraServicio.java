@@ -58,11 +58,11 @@ public interface IFacturaCabeceraServicio {
 	 * @param codigoCompania
 	 * @param fechaInicio
 	 * @param fechaFin
-	 * @param tipoDocumento
+	 * @param tipoDocumentos
 	 * @return
 	 * @throws ERPException
 	 */
-	BigDecimal findObtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException;
+	BigDecimal findObtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, Collection<String> tiposDocumentos, Boolean pagada) throws ERPException;
 	
 	/**
 	 * Obtener numero de facturas por filtros
@@ -72,7 +72,7 @@ public interface IFacturaCabeceraServicio {
 	 * @return
 	 * @throws ERPException
 	 */
-	Long findObtenerNumeroFacturasComprasVentas(Integer codigoCompania, String tipoDocumento, Boolean pagada) throws ERPException;
+	Long findObtenerNumeroFacturasComprasVentas(Integer codigoCompania, Collection<String> tipoDocumento, Boolean pagada) throws ERPException;
 	
 	/**
 	 * Devuelve html para la impresion de factura de venta

@@ -80,13 +80,13 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	 * @param codigoCompania
 	 * @param fechaInicio
 	 * @param fechaFin
-	 * @param tipoDocumento
+	 * @param tipoDocumentos
 	 * @return
 	 * @throws ERPException
 	 */
 	@Override
-	public BigDecimal findObtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException{
-		return this.facturaCabeceraGestor.obtenerComprasVentas(codigoCompania, fechaInicio, fechaFin, tipoDocumento, pagada);
+	public BigDecimal findObtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, Collection<String> tiposDocumentos, Boolean pagada) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerComprasVentas(codigoCompania, fechaInicio, fechaFin, tiposDocumentos, pagada);
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	 * @throws ERPException
 	 */
 	@Override
-	public Long findObtenerNumeroFacturasComprasVentas(Integer codigoCompania, String tipoDocumento, Boolean pagada) throws ERPException{
+	public Long findObtenerNumeroFacturasComprasVentas(Integer codigoCompania, Collection<String> tipoDocumento, Boolean pagada) throws ERPException{
 		return this.facturaCabeceraGestor.obtenerNumeroFacturasComprasVentas(codigoCompania, tipoDocumento, pagada);
 	}
 	

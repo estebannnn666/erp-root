@@ -60,11 +60,11 @@ public interface IFacturaCabeceraDAO {
 	 * @param codigoCompania
 	 * @param fechaInicio
 	 * @param fechaFin
-	 * @param tipoDocumento
+	 * @param tipoDocumentos
 	 * @return
 	 * @throws ERPException
 	 */
-	BigDecimal obtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException;
+	BigDecimal obtenerComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, Collection<String> tiposDocumentos, Boolean pagada) throws ERPException;
 	
 	/**
 	 * Obtener numero de facturas por filtros
@@ -76,5 +76,5 @@ public interface IFacturaCabeceraDAO {
 	 * @return
 	 * @throws ERPException
 	 */
-	Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, String tipoDocumento, Boolean pagada) throws ERPException;
+	Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, Collection<String> tipoDocumento, Boolean pagada) throws ERPException;
 }
