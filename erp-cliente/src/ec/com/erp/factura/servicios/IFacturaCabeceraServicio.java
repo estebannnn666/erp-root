@@ -6,9 +6,11 @@ package ec.com.erp.factura.servicios;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
+import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 
 /**
  * @author Esteban Gudino
@@ -16,6 +18,17 @@ import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
  */
 public interface IFacturaCabeceraServicio {
 
+	/**
+	 * M\u00e9todo para obtener reporte de ventas por articulo vendedor
+	 * @param codigoCompania
+	 * @param documentoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	Collection<ReporteVentasVO> findObtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
+	
 	/**
 	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
 	 * @param codigoCompania
@@ -45,6 +58,14 @@ public interface IFacturaCabeceraServicio {
 	 * @throws ERPException
 	 */
 	String finObtenerXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) throws ERPException;
+	
+	/**
+	 * Devuelve html de reporte de ventas
+	 * @param reporteVentasCol
+	 * @return
+	 * @throws ERPException
+	 */
+	String findObtenerXMLReporteVentas(Date fechaInicio, Date fechaFin, Collection<ReporteVentasVO> reporteVentasCol) throws ERPException;
 	
 	/**
 	 * Funcionalidad para cancelar factura o inactivar

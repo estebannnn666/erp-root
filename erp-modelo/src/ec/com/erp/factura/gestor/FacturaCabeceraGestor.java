@@ -23,6 +23,7 @@ import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
+import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
 import ec.com.erp.transaccion.gestor.ITransaccionGestor;
@@ -70,6 +71,20 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 
 	public void setTransaccionGestor(ITransaccionGestor transaccionGestor) {
 		this.transaccionGestor = transaccionGestor;
+	}
+	
+	/**
+	 * M\u00e9todo para obtener reporte de ventas por articulo vendedor
+	 * @param codigoCompania
+	 * @param documentoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<ReporteVentasVO> obtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.facturaDetalleGestor.obtenerReorteVentas(codigoCompania, documentoVendedor, nombreVendedor, fechaFacturaInicio, fechaFacturaFin);
 	}
 
 	/**
@@ -373,6 +388,75 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			}
 			contenidoXml.append("</listaFacturas>");			
 			contenidoXml.append("<totalPago>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(total.doubleValue()))).append("</totalPago>");
+			contenidoXml.append("</facturas>");
+			String contenidoXSL=null;
+			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);
+			Document docXML = TransformerUtil.stringToXML(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			HashMap<String , String> parametros = new HashMap<String, String>();
+			result = TransformerUtil.transformar(docXML, docXSL, parametros);
+			html = TransformerUtil.xmlToString(result);
+		} catch (Exception en) {
+			throw new ERPException("Error al procesar plantilla xsl") ;
+		}
+		return html;
+	}
+	
+	/**
+	 * Devuelve html de reporte de ventas
+	 * @param reporteVentasCol
+	 * @return
+	 * @throws ERPException
+	 */
+	public String procesarXMLReporteVentas(Date fechaInicio, Date fechaFin, Collection<ReporteVentasVO> reporteVentasCol) throws ERPException{
+		StringBuilder contenidoXml = new StringBuilder();
+		String html = "";
+		String urlTipoReporte = "";
+		try{
+			Long totalVenta = 0L;
+			BigDecimal totalVendido = BigDecimal.ZERO;
+			BigDecimal totalComision = BigDecimal.ZERO;
+			
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+			String fechaFormateadaInicio =  formatoFecha.format(fechaInicio);
+			String fechaFormateadaFin =  formatoFecha.format(fechaFin);
+			
+			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
+			formatoDecimales.setMinimumFractionDigits(2);
+
+			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_REPORTE_VENTAS;
+			
+			contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+			contenidoXml.append("<facturas>");
+
+			contenidoXml.append("<fechaInicio>").append(StringEscapeUtils.escapeXml(""+fechaFormateadaInicio)).append("</fechaInicio>");
+			contenidoXml.append("<fechaFin>").append(StringEscapeUtils.escapeXml(""+fechaFormateadaFin)).append("</fechaFin>");
+			int cont = 1;
+			//detalle reposicion
+			contenidoXml.append("<listaFacturas>");
+			for(ReporteVentasVO reporteVentas : reporteVentasCol){
+				contenidoXml.append("<factura>");
+				contenidoXml.append("<numeroFila>").append(StringEscapeUtils.escapeXml(""+cont)).append("</numeroFila>");
+				contenidoXml.append("<nombreVendodor>").append(StringEscapeUtils.escapeXml(reporteVentas.getNombreCompleto())).append("</nombreVendodor>");
+				contenidoXml.append("<nombreArticulo>").append(StringEscapeUtils.escapeXml(""+reporteVentas.getNombreArticulo())).append("</nombreArticulo>");
+				contenidoXml.append("<unidadManejo>").append(StringEscapeUtils.escapeXml(reporteVentas.getCodigoValorUnidadManejo()+" x "+reporteVentas.getValorUnidadManejo())).append("</unidadManejo>");
+				contenidoXml.append("<precioMayorista>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getPrecioMayorista().doubleValue()))).append("</precioMayorista>");
+				contenidoXml.append("<precioMinorista>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getPrecioMinorista().doubleValue()))).append("</precioMinorista>");
+				contenidoXml.append("<porcentajeComision>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getPorcentajeComision().doubleValue()))).append("</porcentajeComision>");
+				contenidoXml.append("<cantidadVendida>").append(StringEscapeUtils.escapeXml(""+reporteVentas.getCantidadVendida())).append("</cantidadVendida>");
+				contenidoXml.append("<valorVendido>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getValorVendido().doubleValue()))).append("</valorVendido>");
+				contenidoXml.append("<comision>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getValoCcomision().doubleValue()))).append("</comision>");
+				contenidoXml.append("</factura>");
+				cont++;
+				totalVenta = totalVenta + reporteVentas.getCantidadVendida();
+				totalVendido = totalVendido.add(reporteVentas.getValorVendido());
+				totalComision = totalComision.add(reporteVentas.getValoCcomision());
+			}
+			contenidoXml.append("</listaFacturas>");			
+			contenidoXml.append("<totalVenta>").append(StringEscapeUtils.escapeXml(""+totalVenta)).append("</totalVenta>");
+			contenidoXml.append("<totalVendido>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(totalVendido.doubleValue()))).append("</totalVendido>");
+			contenidoXml.append("<totalComision>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(totalComision.doubleValue()))).append("</totalComision>");
 			contenidoXml.append("</facturas>");
 			String contenidoXSL=null;
 			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);
