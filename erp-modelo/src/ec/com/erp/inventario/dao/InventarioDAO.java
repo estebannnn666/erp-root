@@ -228,7 +228,7 @@ public class InventarioDAO implements IInventarioDAO {
 			// Proyecciones catalogos
 			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "articuloUnidadManejoDTO_tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
 			
-			criteria.addOrder(Order.desc("root.fechaMovimiento"));
+			criteria.addOrder(Order.asc("articuloDTO.nombreArticulo"));
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(InventarioDTO.class));

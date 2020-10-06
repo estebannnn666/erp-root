@@ -379,6 +379,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				contenidoXml.append("<numeroDocumento>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getNumeroDocumento())).append("</numeroDocumento>");
 				contenidoXml.append("<documentoCliente>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getRucDocumento())).append("</documentoCliente>");
 				contenidoXml.append("<nombreClienteProveedor>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getNombreClienteProveedor())).append("</nombreClienteProveedor>");
+				contenidoXml.append("<nombreVendedor>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getVendedorDTO() != null ? facturaCabeceraDTO.getVendedorDTO().getPersonaDTO().getPrimerNombre() +" "+facturaCabeceraDTO.getVendedorDTO().getPersonaDTO().getPrimerApellido() : "N/D")).append("</nombreVendedor>");
 				contenidoXml.append("<fechaEmision>").append(StringEscapeUtils.escapeXml(formatoFecha.format(facturaCabeceraDTO.getFechaDocumento()))).append("</fechaEmision>");
 				contenidoXml.append("<valorTotal>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalCuenta().doubleValue()))).append("</valorTotal>");
 				contenidoXml.append("<estado>").append(StringEscapeUtils.escapeXml(facturaCabeceraDTO.getPagado() ? "SI":"NO")).append("</estado>");

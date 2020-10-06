@@ -37,17 +37,14 @@
 				<tr>
 					<td>
 						<table>
-							<col style="width:1.0cm;"/>
-							<col style="width:18.0cm;"/>
-							<col style="width:1.0cm;"/>
 							<tr>
-								<td align="left" valign="botton"></td>
 								<td align="center" valign="botton">
 									<table>
 										<col style="width:1.0cm;"/>
 										<col style="width:2.0cm;"/>
 										<col style="width:2.0cm;"/>
-										<col style="width:6.0cm;"/>
+										<col style="width:5.0cm;"/>
+										<col style="width:3.0cm;"/>
 										<col style="width:2.0cm; "/>
 										<col style="width:2.0cm; "/>
 										<col style="width:3.0cm; "/>
@@ -64,8 +61,11 @@
 														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>Doc. cliente</h3>
 														</td>
-														<td align="center" valign="botton" style="width:6.0cm;">  
+														<td align="center" valign="botton" style="width:5.0cm;">  
 															<h3>Raz&#xf3;n social</h3>
+														</td>
+														<td align="center" valign="botton" style="width:3.0cm;">  
+															<h3>Vendedor</h3>
 														</td>
 														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>Fecha</h3>
@@ -88,9 +88,12 @@
 															<td align="left" style="padding-left: 3px; width:2.0cm;">
 																<xsl:value-of select="documentoCliente"/>
 															</td>
-															<td align="left" style="padding-left: 3px; width:6.0cm;">
+															<td align="left" style="padding-left: 3px; width:5.0cm;">
 																<xsl:value-of select="nombreClienteProveedor"/>
-															</td>											
+															</td>
+															<td align="left" style="padding-left: 3px; width:3.0cm;">
+																<xsl:value-of select="nombreVendedor"/>
+															</td>																														
 															<td align="center" style="width:2.0cm;">
 																<xsl:value-of select="fechaEmision"/>
 															</td>
@@ -115,7 +118,9 @@
 														</td>
 														<td align="right" style="width:2.0cm;">
 														</td>
-														<td align="center" valign="botton" style="width:6.0cm;">  															
+														<td align="center" valign="botton" style="width:5.0cm;">  															
+														</td>
+														<td align="right" style="width:3.0cm;">
 														</td>
 														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>TOTAL</h3>
@@ -131,7 +136,6 @@
 										</tr>
 									</table>
 								</td>
-								<td align="left" valign="botton"></td>
 							</tr>
 						</table>						
 				    </td>

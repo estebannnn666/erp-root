@@ -87,6 +87,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
+			criteria.createAlias("root.vendedorDTO", "vendedorDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("vendedorDTO.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.facturaDetalleDTOCols", "facturaDetalleDTOCols", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.pagosFacturaDTOCols", "pagosFacturaDTOCols", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.tipoDocumentoCatalogoValorDTO", "tipoDocumentoCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
@@ -147,6 +149,18 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
 			
+			// Proyecciones entidad vendedor
+			projectionList.add(Projections.property("vendedorDTO.id.codigoCompania"), "vendedorDTO_id_codigoCompania");
+			projectionList.add(Projections.property("vendedorDTO.id.codigoVendedor"), "vendedorDTO_id_codigoVendedor");
+			projectionList.add(Projections.property("vendedorDTO.codigoPersona"), "vendedorDTO_codigoPersona");
+			projectionList.add(Projections.property("vendedorDTO.estado"), "vendedorDTO_estado");
+			
+			// Proyecciones entidad persona
+			projectionList.add(Projections.property("personaDTO.id.codigoCompania"), "vendedorDTO_personaDTO_id_codigoCompania");
+			projectionList.add(Projections.property("personaDTO.id.codigoPersona"), "vendedorDTO_personaDTO_id_codigoPersona");
+			projectionList.add(Projections.property("personaDTO.primerApellido"), "vendedorDTO_personaDTO_primerApellido");
+			projectionList.add(Projections.property("personaDTO.primerNombre"), "vendedorDTO_personaDTO_primerNombre");
+						
 			// Proyecciones entidad detalle pedido
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoCompania"), "facturaDetalleDTOCols_id_codigoCompania");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.id.codigoDetalleFactura"), "facturaDetalleDTOCols_id_codigoDetalleFactura");

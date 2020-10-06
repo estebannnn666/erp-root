@@ -98,18 +98,16 @@
 													<table border="1">
 														<tr>
 															<td align="center" valign="botton" style="width:2.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Nro. Destino</pre></td>
-															<td align="center" valign="botton" style="width:4.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Cliente</pre></td>
-															<td align="center" valign="botton" style="width:6.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Direcci&#xf3;n</pre></td>
-															<td align="center" valign="botton" style="width:3.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Valor del pedido</pre></td>
-															<td align="center" valign="botton" style="width:5.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Observaci&#xf3;n</pre></td>
+															<td align="center" valign="botton" style="width:7.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Descripci&#xf3;n producto</pre></td>
+															<td align="center" valign="botton" style="width:3.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Cantidad</pre></td>
+															<td align="center" valign="botton" style="width:8.0cm; height:0.4cm; padding-top:4px; background-color: #CCE4FB;"><pre style="font-size: 12px !important;">Observaci&#xf3;n</pre></td>
 														</tr>
 														<xsl:for-each select="guiaDespacho/listaDestinos/destino">
 															<tr>
 																<td align="left" style="width:2.0cm; height:0.4cm; padding-left:4px;"><xsl:value-of select="nroDestino"/></td>
-																<td align="left" style="width:4.0cm; height:0.4cm; padding-left:4px;"><xsl:value-of select="nombreCliente"/></td>
-																<td align="left" style="width:6.0cm; height:0.4cm; padding-left:4px;"><xsl:value-of select="direccionCliente"/></td>
+																<td align="left" style="width:7.0cm; height:0.4cm; padding-left:4px;"><xsl:value-of select="descripcionProducto"/></td>
 																<td align="right" style="padding-right: 3px; width:3.0cm;"><xsl:value-of select="cantidadPedida"/></td>
-																<td align="left" style="width:5.0cm; height:0.4cm; padding-left:4px;"><xsl:value-of select="observacion"/></td>								
+																<td align="left" style="width:8.0cm; height:0.4cm; padding-left:4px;"><xsl:value-of select="observacion"/></td>								
 															</tr>
 														</xsl:for-each>							
 													</table>
