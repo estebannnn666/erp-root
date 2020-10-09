@@ -21,6 +21,9 @@ public class ERPConstantes {
 	public final static String PLANTILLA_XSL_IMPRIMIR_FACTURA_VENTA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.factura.venta");
 	
 	/************ Generales ************************/
+	public static final Integer CODIGO_COMPANIA = 1;
+	public static final Integer CODIGO_IMPUESTO_IVA = 1;
+	public static final String USUARIO_GENERICO = "USR1";
 	public static final String ESTADO_ACTIVO_NUMERICO = ERPMessages.getString("ec.com.erp.general.estado.numerico.activo");
 	public static final String ESTADO_INACTIVO_NUMERICO = ERPMessages.getString("ec.com.erp.general.estado.numerico.inactivo");
 	public static final String PREFIJO_SECUENCIAL_USUARIO = ERPMessages.getString("ec.com.erp.general.prefijo.secuencial.usuario");
@@ -61,4 +64,10 @@ public class ERPConstantes {
 	/*********** PERFILES ********/
 	public static final BigDecimal CODIGO_PERFIL_ADMINISTRADOR = ERPMessages.getBigDecimal("ec.com.erp.codigo.secuencial.pefil.administrador");
 	public static final BigDecimal CODIGO_PERFIL_CLIENTES = ERPMessages.getBigDecimal("ec.com.erp.codigo.secuencial.pefil.clientes");
+	
+	/*********** CONSTANTES FIRE BASE ***************/
+	public static final String TIPO_CLIENTE_MINORISTA = "Minorista";
+	public static final String TIPO_CLIENTE_MAYORISTAS = "Mayorista";
+	public static final String TIPO_CLIENTE_PERSONA = "Persona";
+	public static final String TIPO_CLIENTE_EMPRESA = "Empresa";
 }

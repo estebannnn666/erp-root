@@ -134,4 +134,10 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
 	<bean id="erpVendedorServicio" class="ec.com.erp.vendedor.servicios.VendedorServicio">
 		<property name="vendedorGestor"><ref bean="erpVendedorGestor"/></property>
 	</bean>
+	
+	<!-- Servicio fire base -->
+	<bean id="erpFireBaseServicio" class="ec.com.erp.firebase.servicios.FireBaseServicio">
+		<property name="fireBaseClienteGestor"><ref bean="erpFireBaseClienteGestor"/></property>
+		<property name="fireBaseArticuloGestor"><ref bean="erpFireBaseArticuloGestor"/></property>
+	</bean>
 </beans>

@@ -77,8 +77,12 @@ public class ContactoDAO implements IContactoDAO {
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			criteria.add(Restrictions.eq("root.codigoPersona", codigoPersona));
-			criteria.add(Restrictions.eq("root.codigoEmpresa", codigoEmpresa));
+			if(codigoPersona != null) {
+				criteria.add(Restrictions.eq("root.codigoPersona", codigoPersona));
+			}
+			if(codigoEmpresa != null) {
+				criteria.add(Restrictions.eq("root.codigoEmpresa", codigoEmpresa));
+			}
 
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();

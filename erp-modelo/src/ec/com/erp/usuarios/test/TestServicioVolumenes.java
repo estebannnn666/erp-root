@@ -47,9 +47,17 @@ public class TestServicioVolumenes {
 		System.out.println("Tamanio: "+catalogoValorDTOCols.size());
 	}
 	
-	@Test
+	//@Test
 	public void testClientes(){
 		Collection<ClienteDTO> clienteDTOCols = ERPFactory.clientes.getClientesServicio().findObtenerListaClientes(1, null, null);
 		System.out.println("Tamanio: "+clienteDTOCols.size());
 	}
+	
+	@Test
+	public void testFireBase(){
+		System.out.println("Ingreso a realizar proceson con fire base");
+		ERPFactory.firebase.getFireBaseServicio().transDescargarClientesFireBase();
+		System.out.println("Finalizo proceso con fire base");
+	}
+	
 }
