@@ -38,4 +38,18 @@ public interface IFireBaseServicio {
 	 * @throws ERPException
 	 */
 	void findGuardarArticulosFireBase() throws ERPException;
+	
+	/**
+	 * M\u00e9todo para descargar las facturas de fire base
+	 * @return 
+	 * @throws ERPException
+	 */
+	void transDescargarFacturasFireBase() throws ERPException;
+	
+	/**
+	 * M\u00e9todo para descargar las pedidos de fire base
+	 * @return 
+	 * @throws ERPException
+	 */
+	void transDescargarPedidosFireBase() throws ERPException;
 }

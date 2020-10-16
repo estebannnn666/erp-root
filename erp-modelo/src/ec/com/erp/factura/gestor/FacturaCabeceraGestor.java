@@ -142,7 +142,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			
 			// Guardamos los detalle de la factura 
 			for (FacturaDetalleDTO facturaDetalleDTO : facturaDetalleDTOCols) {
-				if(facturaDetalleDTO.getCodigoArticulo() != null){
+				if(facturaDetalleDTO != null && facturaDetalleDTO.getCodigoArticulo() != null){
 					facturaDetalleDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 					facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
 					facturaDetalleDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());

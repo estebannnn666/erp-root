@@ -70,4 +70,6 @@ public class ERPConstantes {
 	public static final String TIPO_CLIENTE_MAYORISTAS = "Mayorista";
 	public static final String TIPO_CLIENTE_PERSONA = "Persona";
 	public static final String TIPO_CLIENTE_EMPRESA = "Empresa";
+	public static final String TIPO_DOCUMENTO_FACTURA = "Factura";
+	public static final String TIPO_DOCUMENTO_NOTA_VENTA = "Nota de venta";
 }

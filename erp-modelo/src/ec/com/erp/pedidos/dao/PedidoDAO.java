@@ -133,6 +133,7 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("root.descuento"), "descuento");
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
+			projectionList.add(Projections.property("root.codigoReferencia"), "codigoReferencia");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
@@ -284,6 +285,7 @@ public class PedidoDAO implements IPedidoDAO {
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
 			projectionList.add(Projections.property("root.descuento"), "descuento");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
+			projectionList.add(Projections.property("root.codigoReferencia"), "codigoReferencia");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
@@ -314,6 +316,9 @@ public class PedidoDAO implements IPedidoDAO {
 			if(pedidoDTO.getId().getCodigoPedido() ==  null){
 				Integer secuencialPedido  = this.secuenciaDAO.obtenerSecuencialTabla(PedidoID.NOMBRE_SECUENCIA);
 				pedidoDTO.getId().setCodigoPedido(Long.parseLong(""+secuencialPedido));
+				if(pedidoDTO.getNumeroPedido() == null) {
+					pedidoDTO.setNumeroPedido("P-"+secuencialPedido);
+				}
 				pedidoDTO.setFechaRegistro(new Date());
 				pedidoDTO.setEstado(ERPConstantes.ESTADO_ACTIVO_NUMERICO);
 				sessionFactory.getCurrentSession().save(pedidoDTO);

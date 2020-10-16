@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -145,6 +146,7 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "articuloUnidadManejoDTOCols_tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
 			
 			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.asc("root.nombreArticulo"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloDTO.class));
 			Collection<ArticuloDTO> articuloDTOCols = new  ArrayList<ArticuloDTO>();
 			articuloDTOCols =  criteria.list();

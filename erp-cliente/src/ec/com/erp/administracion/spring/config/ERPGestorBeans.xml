@@ -204,4 +204,19 @@
 		<property name="articuloGestor"><ref bean="erpArticuloGestor"/></property>
 		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
 	</bean>
+	
+	<!-- Gestor fire base facturas-->
+	<bean id="erpFireBaseFacturaGestor" class="ec.com.erp.firebase.gestor.FireBaseFacturaGestor">
+		<property name="articuloGestor"><ref bean="erpArticuloGestor"/></property>
+		<property name="vendedorGestor"><ref bean="erpVendedorGestor"/></property>
+		<property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
+	</bean>
+	
+	<!-- Gestor fire base pedidos-->
+	<bean id="erpFireBasePedidosGestor" class="ec.com.erp.firebase.gestor.FireBasePedidoGestor">
+		<property name="articuloGestor"><ref bean="erpArticuloGestor"/></property>
+		<property name="vendedorGestor"><ref bean="erpVendedorGestor"/></property>
+		<property name="pedidoGestor"><ref bean="erpPedidoGestor"/></property>
+		<property name="clientesGestor"><ref bean="erpClientesGestor"/></property>
+	</bean>
 </beans>

@@ -106,6 +106,12 @@ public class PedidoDTO implements Serializable{
 	private Boolean facturaCreada ;
 	
 	/**
+	 * Especifica el codigo de referencia fire base
+	 */
+	@Column(name = "CODIGOREFERENCIA")
+	private Long codigoReferencia;
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -353,5 +359,13 @@ public class PedidoDTO implements Serializable{
 
 	public void setVendedorDTO(VendedorDTO vendedorDTO) {
 		this.vendedorDTO = vendedorDTO;
+	}
+
+	public Long getCodigoReferencia() {
+		return codigoReferencia;
+	}
+
+	public void setCodigoReferencia(Long codigoReferencia) {
+		this.codigoReferencia = codigoReferencia;
 	}
 }
