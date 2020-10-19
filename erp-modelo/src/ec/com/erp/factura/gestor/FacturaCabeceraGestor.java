@@ -148,11 +148,11 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 					facturaDetalleDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());
 					if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS) || facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)){
 						if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
-							this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+							this.registrarInventario(facturaDetalleDTO, facturaCabeceraDTO.getNumeroDocumento(), facturaCabeceraDTO.getNombreClienteProveedor());
 						}
 					}else {
 						if(facturaDetalleDTO.getId().getCodigoDetalleFactura() == null) {
-							this.registrarInventarioCompra(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+							this.registrarInventarioCompra(facturaDetalleDTO, facturaCabeceraDTO.getNumeroDocumento(), facturaCabeceraDTO.getNombreClienteProveedor());
 						}
 					}
 					this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
@@ -203,9 +203,9 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				facturaDetalleDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
 				facturaDetalleDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS) || facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)){
-					this.reversarInventario(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+					this.reversarInventario(facturaDetalleDTO, facturaCabeceraDTO.getNumeroDocumento(), facturaCabeceraDTO.getNombreClienteProveedor());
 				}else {
-					this.reversarInventarioCompra(facturaDetalleDTO, facturaCabeceraDTO.getCodigoReferenciaFactura());
+					this.reversarInventarioCompra(facturaDetalleDTO, facturaCabeceraDTO.getNumeroDocumento(), facturaCabeceraDTO.getNombreClienteProveedor());
 				}
 				this.facturaDetalleGestor.guardarActualizarDetalleFactura(facturaDetalleDTO);
 			}
@@ -220,7 +220,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * Metodo para registrar movimiento de mercaderia salida
 	 * @param facturaDetalleDTO
 	 */
-	public void registrarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura) {
+	public void registrarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
 		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(), facturaDetalleDTO.getCodigoArticuloUnidadManejo());
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
@@ -228,7 +228,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				throw new ERPException("No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
 			}
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
-			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.venta")+" "+numeroFactura);
+			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.venta")+" "+numeroFactura+" Cliente: "+razonSocial);
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
@@ -254,12 +254,12 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * Metodo para registrar movimiento de mercaderia salida
 	 * @param facturaDetalleDTO
 	 */
-	public void registrarInventarioCompra(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura) {
+	public void registrarInventarioCompra(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
 		try {
 			InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(),facturaDetalleDTO.getCodigoArticuloUnidadManejo());
 			InventarioDTO inventarioDTO = new InventarioDTO();
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
-			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.compra")+" "+numeroFactura);
+			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.compra")+" "+numeroFactura+" Proveedor: "+razonSocial);
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
@@ -288,12 +288,12 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * Metodo para registrar movimiento de mercaderia reversa
 	 * @param facturaDetalleDTO
 	 */
-	public void reversarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura) {
+	public void reversarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
 		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(), facturaDetalleDTO.getCodigoArticuloUnidadManejo());
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
-			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.reversa")+" "+numeroFactura);
+			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.reversa")+" "+numeroFactura+" Cliente: "+razonSocial);
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
@@ -319,12 +319,12 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * Metodo para registrar movimiento de mercaderia reversa
 	 * @param facturaDetalleDTO
 	 */
-	public void reversarInventarioCompra(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura) {
+	public void reversarInventarioCompra(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
 		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(), facturaDetalleDTO.getCodigoArticuloUnidadManejo());
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
-			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.reversa.compra")+" "+numeroFactura);
+			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.reversa.compra")+" "+numeroFactura+" Proveedor: "+razonSocial);
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
