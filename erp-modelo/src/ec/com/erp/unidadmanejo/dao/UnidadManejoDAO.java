@@ -121,7 +121,7 @@ public class UnidadManejoDAO implements IUnidadManejoDAO {
 	public void guardarActualizarUnidadManejo(ArticuloUnidadManejoDTO articuloUnidadManejo) throws ERPException{
 		try{
 			if (articuloUnidadManejo.getId().getCodigoCompania() == null || articuloUnidadManejo.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -139,9 +139,9 @@ public class UnidadManejoDAO implements IUnidadManejoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar unidad de manejo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar unidad de manejo."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar unidad de manejo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar unidad de manejo."+e.getMessage());
 		} 
 	}
 

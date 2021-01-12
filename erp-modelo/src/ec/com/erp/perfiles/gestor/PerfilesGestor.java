@@ -55,7 +55,7 @@ public class PerfilesGestor implements IPerfilesGestor{
 				this.moduloDAO.crearActualizarModuloPerfil(moduloPerfilDTO);
 			}
 		} catch (Exception e) {
-			throw new ERPException("Error,"+e.getMessage());
+			throw new ERPException("Error ", e.getMessage());
 		}
 	}
 }

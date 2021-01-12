@@ -233,7 +233,7 @@ public class VendedorDAO implements IVendedorDAO {
 	public void guardarActualizarVendedor(VendedorDTO vendedorDTO) throws ERPException{
 		try{
 			if (vendedorDTO.getId().getCodigoCompania() == null || vendedorDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -250,9 +250,9 @@ public class VendedorDAO implements IVendedorDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el vendedor."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el vendedor."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el vendedor."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el vendedor."+e.getMessage());
 		} 
 	}
 

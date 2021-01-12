@@ -26,4 +26,14 @@ public class SecuenciaGestor implements ISecuenciaGestor{
 	public SecuenciaDTO obtenerSecuenciaByNombre(String nombreSecuencia) throws ERPException{
 		return this.secuenciaDAO.obtenerSecuenciaByNombre(nombreSecuencia);
 	}
+	
+	/**
+	 * Metodo para obtenere el secuencial para cualquier tabla
+	 * @param nombreSecuencia
+	 * @return
+	 * @throws ERPException
+	 */
+	public Integer obtenerSecuencialTabla(String nombreSecuencia) throws ERPException{
+		return this.secuenciaDAO.obtenerSecuencialTabla(nombreSecuencia);
+	}
 }

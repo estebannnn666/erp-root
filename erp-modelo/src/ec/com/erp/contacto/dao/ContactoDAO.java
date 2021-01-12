@@ -124,7 +124,7 @@ public class ContactoDAO implements IContactoDAO {
 	public void crearActualizarContacto(ContactoDTO contactoDTO)throws ERPException{
 		try{
 			if (contactoDTO.getId().getCodigoCompania() == null || contactoDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -143,9 +143,9 @@ public class ContactoDAO implements IContactoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el contacto."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el contacto."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el contacto."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el contacto."+e.getMessage());
 		} 
 	}
 }

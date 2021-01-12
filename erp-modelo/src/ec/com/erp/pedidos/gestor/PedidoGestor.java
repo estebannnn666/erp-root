@@ -7,15 +7,18 @@ import java.util.Date;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
+import ec.com.erp.cliente.common.utils.ValidationUtils;
 import ec.com.erp.cliente.mdl.dto.DetallePedidoDTO;
 import ec.com.erp.cliente.mdl.dto.EstadoPedidoDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.PedidoDTO;
+import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
 import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 import ec.com.erp.pedidos.dao.IDetallePedidoDAO;
 import ec.com.erp.pedidos.dao.IEstadoPedidoDAO;
 import ec.com.erp.pedidos.dao.IPedidoDAO;
+import ec.com.erp.secuencia.gestor.ISecuenciaGestor;
 
 public class PedidoGestor implements IPedidoGestor{
 
@@ -23,6 +26,7 @@ public class PedidoGestor implements IPedidoGestor{
 	private IDetallePedidoDAO detallePedidoDAO;
 	private IEstadoPedidoDAO estadoPedidoDAO;
 	private IFacturaCabeceraGestor facturaCabeceraGestor;
+	private ISecuenciaGestor secuenciaGestor;
 	
 	public IPedidoDAO getPedidoDAO() {
 		return pedidoDAO;
@@ -54,6 +58,14 @@ public class PedidoGestor implements IPedidoGestor{
 
 	public void setFacturaCabeceraGestor(IFacturaCabeceraGestor facturaCabeceraGestor) {
 		this.facturaCabeceraGestor = facturaCabeceraGestor;
+	}
+
+	public ISecuenciaGestor getSecuenciaGestor() {
+		return secuenciaGestor;
+	}
+
+	public void setSecuenciaGestor(ISecuenciaGestor secuenciaGestor) {
+		this.secuenciaGestor = secuenciaGestor;
 	}
 
 	/**
@@ -129,9 +141,12 @@ public class PedidoGestor implements IPedidoGestor{
 			estadoPedidoDTO.setUsuarioRegistro(pedidoDTO.getUsuarioRegistro());
 			this.estadoPedidoDAO.crearActualizarEstadoPedido(estadoPedidoDTO);
 			
+			Integer valorSecuencia = this.secuenciaGestor.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_FACTURA_RUC_UNO);
+			String numeroFactura = ValidationUtils.obtenerSecuencialFactura(5, String.valueOf(valorSecuencia));
+			
 			// Crear y guardar factura
 			FacturaCabeceraDTO facturaCabeceraDTO = new FacturaCabeceraDTO();
-			facturaCabeceraDTO.setNumeroDocumento(pedidoDTO.getNumeroPedido());
+			facturaCabeceraDTO.setNumeroDocumento(numeroFactura);
 			facturaCabeceraDTO.getId().setCodigoCompania(codigoCompania);
 			facturaCabeceraDTO.setCodigoVendedor(pedidoDTO.getCodigoVendedor());
 			facturaCabeceraDTO.setCodigoValorTipoDocumento(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
@@ -149,8 +164,10 @@ public class PedidoGestor implements IPedidoGestor{
 			facturaCabeceraDTO.setTotalIva(pedidoDTO.getTotalIva());
 			facturaCabeceraDTO.setTotalImpuestos(pedidoDTO.getTotalImpuestos());
 			facturaCabeceraDTO.setTotalSinImpuestos(pedidoDTO.getTotalSinImpuestos());
+			facturaCabeceraDTO.setTipoRuc(ERPConstantes.TIPO_RUC_DOS);
 			facturaCabeceraDTO.setFacturaDetalleDTOCols(facturaDetalleDTOCol);		
 			this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
+			
 		} catch (ERPException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		} catch (Exception e) {

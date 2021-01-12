@@ -143,9 +143,9 @@ public class PerfilesDAO implements IPerfilesDAO{
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el perfil."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el perfil."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el perfil."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el perfil."+e.getMessage());
 		} 
 	}
 }

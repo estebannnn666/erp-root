@@ -144,10 +144,10 @@ public class ChoferGestor implements IChoferGestor{
 			this.choferDAO.guardarActualizarChofer(choferDTO);
 		}
 		catch (ERPException e) {
-			throw new ERPException("Error, "+e.getMessage());
+			throw new ERPException("Error ", e.getMessage());
 		}
 		catch (Exception e) {
-			throw new ERPException("Error, "+e.getMessage());
+			throw new ERPException("Error ", e.getMessage());
 		}
 	}
 }

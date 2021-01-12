@@ -118,7 +118,7 @@ public class EstadoPedidoDAO implements IEstadoPedidoDAO {
 	public void crearActualizarEstadoPedido(EstadoPedidoDTO estadoPedidoDTO) throws ERPException{
 		try{
 			if (estadoPedidoDTO.getId().getCodigoCompania() == null || estadoPedidoDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -137,9 +137,9 @@ public class EstadoPedidoDAO implements IEstadoPedidoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el estado del pedido.");
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el estado del pedido.");
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el estado del pedido.");
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el estado del pedido.");
 		} 
 	}
 }

@@ -98,14 +98,10 @@ public class FireBaseClienteGestor implements IFireBaseClienteGestor {
 								clienteDTO.setPersonaDTO(new PersonaDTO());
 								clienteDTO.getPersonaDTO().setNombreCompleto(clienteFireBase.getName());
 								clienteDTO.getPersonaDTO().setNumeroDocumento(clienteFireBase.getDocument());
-								String[] nombres = clienteFireBase.getName().split(" ");
-								if(nombres.length > 1) {
-									clienteDTO.getPersonaDTO().setPrimerNombre(nombres[0]);
-									clienteDTO.getPersonaDTO().setPrimerApellido(nombres[1]);
-								}else {
-									clienteDTO.getPersonaDTO().setPrimerNombre(nombres[0]);
-									clienteDTO.getPersonaDTO().setPrimerApellido(nombres[0]);
-								}
+								clienteDTO.getPersonaDTO().setPrimerNombre(clienteFireBase.getFirstName());
+								clienteDTO.getPersonaDTO().setPrimerApellido(clienteFireBase.getFirstLastName());
+								clienteDTO.getPersonaDTO().setSegundoNombre(clienteFireBase.getSecondName());
+								clienteDTO.getPersonaDTO().setSegundoApellido(clienteFireBase.getSecondLastName());
 							}else {
 								clienteDTO.setPersonaDTO(personaDTOCols.iterator().next());
 								contactoDTO = this.contactoGestor.obtenerListaContactos(ERPConstantes.CODIGO_COMPANIA, personaDTOCols.iterator().next().getId().getCodigoPersona(), null);
@@ -175,6 +171,10 @@ public class FireBaseClienteGestor implements IFireBaseClienteGestor {
 						clientSave.setId(secuencialCliente[0]);
 						if(clienteLocal.getCodigoValorTipoCliente().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_TIPO_CLIENTE_PERSONA)) {
 							clientSave.setName(clienteLocal.getPersonaDTO().getNombreCompleto());
+							clientSave.setFirstName(clienteLocal.getPersonaDTO().getPrimerNombre());
+							clientSave.setSecondName(clienteLocal.getPersonaDTO().getSegundoNombre());
+							clientSave.setFirstLastName(clienteLocal.getPersonaDTO().getPrimerApellido());
+							clientSave.setSecondLastName(clienteLocal.getPersonaDTO().getSegundoApellido());
 							clientSave.setDocument(clienteLocal.getPersonaDTO().getNumeroDocumento());
 							clientSave.setType(ERPConstantes.TIPO_CLIENTE_PERSONA);
 							clientSave.setAddress(clienteLocal.getPersonaDTO().getContactoPersonaDTO().getDireccionPrincipal());

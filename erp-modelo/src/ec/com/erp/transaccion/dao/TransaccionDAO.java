@@ -142,7 +142,7 @@ public class TransaccionDAO implements ITransaccionDAO {
     public void guardarTransaccion(TransaccionDTO transaccionDTO) throws ERPException{
 		try{
 			if (transaccionDTO.getId().getCodigoCompania() == null || transaccionDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -156,9 +156,9 @@ public class TransaccionDAO implements ITransaccionDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar la transacci\\u00F3n."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar la transacci\\u00F3n."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar la transacci\\\\u00F3n."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar la transacci\\\\u00F3n."+e.getMessage());
 		} 
 	}
 
@@ -258,7 +258,7 @@ public class TransaccionDAO implements ITransaccionDAO {
 	public void guardarPago(PagosFacturaDTO pagosFacturaDTO) throws ERPException {
 		try{
 			if (pagosFacturaDTO.getId().getCodigoCompania() == null || pagosFacturaDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -271,9 +271,9 @@ public class TransaccionDAO implements ITransaccionDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar el pago."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar el pago."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar el pago."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar el pago."+e.getMessage());
 		} 
 	}	
 }

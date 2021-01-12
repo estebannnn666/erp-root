@@ -61,7 +61,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 			Collection<String> tiposDocumentos = new ArrayList<>();
 			tiposDocumentos.add(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
 			tiposDocumentos.add(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA);
-			Collection<FacturaCabeceraDTO> facturasDTOCols = this.facturaCabeceraGestor.obtenerListaFacturas(ERPConstantes.CODIGO_COMPANIA, null, null, null, null, null, null, tiposDocumentos);
+			Collection<FacturaCabeceraDTO> facturasDTOCols = this.facturaCabeceraGestor.obtenerListaFacturasValidarFirebase(ERPConstantes.CODIGO_COMPANIA, null, null, null, null, null, null, tiposDocumentos);
 			
 			facturasFireBase.stream().forEach(facFireBase ->{
 				FacturaCabeceraDTO articuloDTOLocal = facturasDTOCols.stream()
@@ -71,6 +71,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 				if(articuloDTOLocal == null) {
 					FacturaCabeceraDTO facturaCabeceraDTO = new FacturaCabeceraDTO();
 					facturaCabeceraDTO.getId().setCodigoCompania(ERPConstantes.CODIGO_COMPANIA);
+					facturaCabeceraDTO.setTipoRuc(ERPConstantes.TIPO_RUC_DOS);					
 					facturaCabeceraDTO.setUsuarioRegistro(ERPConstantes.USUARIO_GENERICO);
 					facturaCabeceraDTO.setNumeroDocumento(facFireBase.getHeader().getNumberDocument());
 					facturaCabeceraDTO.setCodigoTipoDocumento(ERPConstantes.CODIGO_CATALOGO_TIPOS_DOCUMENTOS);
@@ -107,14 +108,14 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 							 
 							Collection<ArticuloDTO> articuloDTOCols = this.articuloGestor.obtenerListaArticulos(ERPConstantes.CODIGO_COMPANIA, detailInvoice.getBarCodeItem(), null);
 							if(CollectionUtils.isEmpty(articuloDTOCols)) {
-								throw new ERPException("El articulo "+detailInvoice.getBarCodeItem()+" no se encuentra registrado en el sistema.");
+								throw new ERPException("Error", "El articulo "+detailInvoice.getBarCodeItem()+" no se encuentra registrado en el sistema.");
 							}else {
 								ArticuloDTO articuloDTO = articuloDTOCols.iterator().next();
 								ArticuloUnidadManejoDTO articuloUnidadManejoDTO = articuloDTO.getArticuloUnidadManejoDTOCols()
 										.stream().filter(unidadManejo -> unidadManejo.getCodigoValorUnidadManejo().equals(detailInvoice.getValueCatalogDriverUnit()) && unidadManejo.getValorUnidadManejo().intValue() == detailInvoice.getValueDriverUnit().intValue())
 										.findFirst().orElse(null);
 								if(articuloUnidadManejoDTO == null) {
-									throw new ERPException("La unidad de manejo "+detailInvoice.getValueCatalogDriverUnit()+" con valor "+detailInvoice.getValueDriverUnit()+" no se encuentra registrada en el sistema.");
+									throw new ERPException("Error", "La unidad de manejo "+detailInvoice.getValueCatalogDriverUnit()+" con valor "+detailInvoice.getValueDriverUnit()+" no se encuentra registrada en el sistema.");
 								}else {
 									FacturaDetalleDTO facturaDetalleDTO = new FacturaDetalleDTO();
 									facturaDetalleDTO.getId().setCodigoCompania(ERPConstantes.CODIGO_COMPANIA);

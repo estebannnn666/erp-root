@@ -145,7 +145,7 @@ public class GuiaDespachoDAO implements IGuiaDespachoDAO {
 	public void crearActualizarGuiaDespacho(GuiaDespachoDTO guiaDespachoDTO) throws ERPException{
 		try{
 			if (guiaDespachoDTO.getId().getCodigoCompania() == null || guiaDespachoDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -164,9 +164,9 @@ public class GuiaDespachoDAO implements IGuiaDespachoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar guia de despacho."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar guia de despacho."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar guia de despacho."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar guia de despacho."+e.getMessage());
 		} 
 	}
 

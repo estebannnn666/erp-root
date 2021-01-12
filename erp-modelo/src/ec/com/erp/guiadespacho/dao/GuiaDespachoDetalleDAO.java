@@ -140,7 +140,7 @@ public class GuiaDespachoDetalleDAO implements IGuiaDespachoDetalleDAO {
 	public void crearActualizarDetalleGuiaDespacho(GuiaDespachoDetalleDTO guiaDespachoDetalleDTO) throws ERPException{
 		try{
 			if (guiaDespachoDetalleDTO.getId().getCodigoCompania() == null || guiaDespachoDetalleDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -159,9 +159,9 @@ public class GuiaDespachoDetalleDAO implements IGuiaDespachoDetalleDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar art\u00EDculos detalle en la gu\u00EDa de despacho."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar art\u00EDculos detalle en la gu\u00EDa de despacho."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar art\u00EDculos detalle en la gu\u00EDa de despacho."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar art\u00EDculos detalle en la gu\u00EDa de despacho."+e.getMessage());
 		} 
 	}
 

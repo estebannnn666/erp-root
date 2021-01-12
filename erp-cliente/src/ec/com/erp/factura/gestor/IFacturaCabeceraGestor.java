@@ -42,6 +42,21 @@ public interface IFacturaCabeceraGestor {
 	 * @return Collection<FacturaCabeceraDTO>
 	 * @throws ERPException
 	 */
+	Collection<FacturaCabeceraDTO> obtenerListaFacturasValidarFirebase(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @param pagado
+	 * @param tipoDocumento
+	 * @return Collection<FacturaCabeceraDTO>
+	 * @throws ERPException
+	 */
 	Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin, String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException;
 	
 	/**

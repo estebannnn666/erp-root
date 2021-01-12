@@ -251,7 +251,7 @@ public class ArticuloDAO implements IArticuloDAO {
 	public void guardarActualizarArticulo(ArticuloDTO articuloDTO) throws ERPException{
 		try{
 			if (articuloDTO.getId().getCodigoCompania() == null || articuloDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -270,9 +270,9 @@ public class ArticuloDAO implements IArticuloDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
 		} 
 	}
 	
@@ -329,7 +329,7 @@ public class ArticuloDAO implements IArticuloDAO {
 	public void guardarActualizarArticuloImpuesto(ArticuloImpuestoDTO articuloImpuestoDTO) throws ERPException{
 		try{
 			if (articuloImpuestoDTO.getId().getCodigoCompania() == null || articuloImpuestoDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -344,9 +344,9 @@ public class ArticuloDAO implements IArticuloDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
 		} 
 	}
 	

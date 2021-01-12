@@ -146,6 +146,9 @@ public class FacturaCabeceraDTO implements Serializable{
 	@Column(name = "CODIGOVALORTIPODOCUMENTO")
 	private String codigoValorTipoDocumento ;
 	
+	@Transient
+	private String tipoRuc;
+	
 	/**
 	 * Estado de la factura
 	 */
@@ -446,5 +449,13 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setTotalPagos(BigDecimal totalPagos) {
 		this.totalPagos = totalPagos;
+	}
+
+	public String getTipoRuc() {
+		return tipoRuc;
+	}
+
+	public void setTipoRuc(String tipoRuc) {
+		this.tipoRuc = tipoRuc;
 	}
 }

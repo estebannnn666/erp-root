@@ -200,7 +200,7 @@ public class ProveedorDAO implements IProveedorDAO {
 	public void guardarActualizarProveedor(ProveedorDTO proveedorDTO) throws ERPException{
 		try{
 			if (proveedorDTO.getId().getCodigoCompania() == null || proveedorDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -217,9 +217,9 @@ public class ProveedorDAO implements IProveedorDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el proveedor."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el proveedor."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el proveedor."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el proveedor."+e.getMessage());
 		} 
 	}
 

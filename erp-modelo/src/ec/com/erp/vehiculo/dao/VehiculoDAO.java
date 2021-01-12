@@ -203,7 +203,7 @@ public class VehiculoDAO implements IVehiculoDAO {
 	public void guardarActualizarVehiculo(VehiculoDTO vehiculoDTO) throws ERPException{
 		try{
 			if (vehiculoDTO.getId().getCodigoCompania() == null || vehiculoDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -222,9 +222,9 @@ public class VehiculoDAO implements IVehiculoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el vehiculo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el vehiculo."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el vehiculo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el vehiculo."+e.getMessage());
 		} 
 	}
 

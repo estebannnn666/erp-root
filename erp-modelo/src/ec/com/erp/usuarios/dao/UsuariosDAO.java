@@ -198,7 +198,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 	public void crearUsuario(UsuariosDTO usuarioDTO) throws ERPException{
 		try{
 			if (usuarioDTO.getNombreUsuario() == null || usuarioDTO.getPasswordUsuario() == null) {
-				throw new ERPException("Existen campos que no deben ser nulos para crear el usuario");
+				throw new ERPException("Error", "Existen campos que no deben ser nulos para crear el usuario");
 			}	
 			sessionFactory.getCurrentSession().clear();
 			Integer secuencialArticulo  = this.secuenciaDAO.obtenerSecuencialTabla(UsuariosID.NOMBRE_SECUENCIA);
@@ -206,9 +206,9 @@ public class UsuariosDAO implements IUsuariosDAO {
 			sessionFactory.getCurrentSession().save(usuarioDTO);
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al crear el usuario."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al crear el usuario."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al crear el usuario."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al crear el usuario."+e.getMessage());
 		} 
 	}
 	
@@ -220,15 +220,15 @@ public class UsuariosDAO implements IUsuariosDAO {
 	public void actualizarUsuario(UsuariosDTO usuarioDTO) throws ERPException{
 		try{
 			if (usuarioDTO.getId().getUserId() == null || usuarioDTO.getNombreUsuario() == null || usuarioDTO.getPasswordUsuario() == null) {
-				throw new ERPException("Existen campos que no deben ser nulos para actualizar el usuario");
+				throw new ERPException("Error", "Existen campos que no deben ser nulos para actualizar el usuario");
 			}	
 			sessionFactory.getCurrentSession().clear();
 			sessionFactory.getCurrentSession().update(usuarioDTO);
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al actualizar el usuario."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al actualizar el usuario."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al actualizar el usuario."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al actualizar el usuario."+e.getMessage());
 		} 
 	}
 }

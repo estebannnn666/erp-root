@@ -121,11 +121,12 @@
     </bean>
     
     <!-- Inyeccion bean  PedidoGestor -->
-    <bean id="erpPedidoGestor" class="ec.com.erp.pedidos.gestor.PedidoGestor">
+    <bean id="erpPedidoGestor" class="ec.com.erp.pedidos.gestor.PedidoGestor">    
         <property name="pedidoDAO"><ref bean="erpPedidoDAO"/></property>
         <property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>
         <property name="detallePedidoDAO"><ref bean="erpDetallePedidoDAO"/></property>
         <property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
+        <property name="secuenciaGestor"><ref bean="erpSecuenciaGestor"/></property>
     </bean>
     
     <!-- Inyeccion bean  perfilesGestor -->
@@ -150,6 +151,7 @@
 		<property name="facturaDetalleGestor"><ref bean="erpFacturaDetalleGestor"/></property>
 		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
 		<property name="transaccionGestor"><ref bean="erpTransaccionGestor"/></property>
+		<property name="secuenciaGestor"><ref bean="erpSecuenciaGestor"/></property>
 	</bean>
 	
 	<!-- Gestor facturaDetalle -->

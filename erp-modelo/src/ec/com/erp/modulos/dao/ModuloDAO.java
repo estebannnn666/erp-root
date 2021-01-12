@@ -174,9 +174,9 @@ public class ModuloDAO implements IModuloDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
 		} 
 	}
 	
@@ -193,9 +193,9 @@ public class ModuloDAO implements IModuloDAO {
 			sessionFactory.getCurrentSession().saveOrUpdate(moduloPerfilDTO);
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el modulo."+e.getMessage());
 		} 
 	}
 }

@@ -82,9 +82,9 @@ public class SecuenciaDAO implements ISecuenciaDAO {
 			sessionFactory.getCurrentSession().update(secuenciaDTO);
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
 		} 
 	}
 	
@@ -101,9 +101,9 @@ public class SecuenciaDAO implements ISecuenciaDAO {
 			this.guardarActualizarSecuencia(secuenciaDTO);
 			return secuacialTabla;
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al actualizar el valor de la secuencia."+e.getMessage());
 		} 
 	}
 

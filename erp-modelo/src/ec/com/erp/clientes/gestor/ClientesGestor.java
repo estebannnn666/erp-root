@@ -167,10 +167,10 @@ public class ClientesGestor implements IClientesGestor{
 			this.clientesDAO.guardarActualizarClientes(clienteDTO);
 		}
 		catch (ERPException e) {
-			throw new ERPException("Error, "+e.getMessage());
+			throw new ERPException("Error", e.getMessage());
 		}
 		catch (Exception e) {
-			throw new ERPException("Error, "+e.getMessage());
+			throw new ERPException("Error", e.getMessage());
 		}
 	}
 	

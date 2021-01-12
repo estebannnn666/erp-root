@@ -255,7 +255,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			result = TransformerUtil.transformar(docXML, docXSL, parametros);
 			html = TransformerUtil.xmlToString(result);
 		} catch (Exception en) {
-			throw new ERPException("Error al procesar plantilla xsl") ;
+			throw new ERPException("Error", "Error al procesar plantilla xsl") ;
 		}
 		return html;
 	}

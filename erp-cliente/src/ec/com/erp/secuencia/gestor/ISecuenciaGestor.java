@@ -19,4 +19,12 @@ public interface ISecuenciaGestor {
 	 */
 	SecuenciaDTO obtenerSecuenciaByNombre(String nombreSecuencia) throws ERPException;
 	
+	/**
+	 * Metodo para obtenere el secuencial para cualquier tabla
+	 * @param nombreSecuencia
+	 * @return
+	 * @throws ERPException
+	 */
+	Integer obtenerSecuencialTabla(String nombreSecuencia) throws ERPException;
+	
 }

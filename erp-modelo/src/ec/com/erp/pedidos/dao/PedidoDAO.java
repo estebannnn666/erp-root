@@ -309,7 +309,7 @@ public class PedidoDAO implements IPedidoDAO {
 	public void crearActualizarPedido(PedidoDTO pedidoDTO) throws ERPException{
 		try{
 			if (pedidoDTO.getId().getCodigoCompania() == null || pedidoDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -331,9 +331,9 @@ public class PedidoDAO implements IPedidoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el pedido."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el pedido."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el pedido."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el pedido."+e.getMessage());
 		} 
 	}
 }

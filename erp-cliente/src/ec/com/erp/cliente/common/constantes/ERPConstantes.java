@@ -24,6 +24,8 @@ public class ERPConstantes {
 	public static final Integer CODIGO_COMPANIA = 1;
 	public static final Integer CODIGO_IMPUESTO_IVA = 1;
 	public static final String USUARIO_GENERICO = "USR1";
+	public static final String TIPO_RUC_UNO = "FA1";
+	public static final String TIPO_RUC_DOS = "FA2";
 	public static final String ESTADO_ACTIVO_NUMERICO = ERPMessages.getString("ec.com.erp.general.estado.numerico.activo");
 	public static final String ESTADO_INACTIVO_NUMERICO = ERPMessages.getString("ec.com.erp.general.estado.numerico.inactivo");
 	public static final String PREFIJO_SECUENCIAL_USUARIO = ERPMessages.getString("ec.com.erp.general.prefijo.secuencial.usuario");

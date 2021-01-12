@@ -198,7 +198,7 @@ public class FacturaDetalleDAO implements IFacturaDetalleDAO {
 	public void guardarActualizarDetalleFactura(FacturaDetalleDTO facturaDetalleDTO) throws ERPException{
 		try{
 			if (facturaDetalleDTO.getId().getCodigoCompania() == null || facturaDetalleDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -217,9 +217,9 @@ public class FacturaDetalleDAO implements IFacturaDetalleDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el detalle de factura."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el detalle de factura."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el detalle de factura."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el detalle de factura."+e.getMessage());
 		} 
 	}
 

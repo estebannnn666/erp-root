@@ -34,6 +34,12 @@ public class EmpresaGestor implements IEmpresaGestor{
 	 * @throws ERPException
 	 */
 	public void crearActualizarEmpresa(EmpresaDTO empresaDTO) throws ERPException{
+		if(empresaDTO.getId().getCodigoEmpresa() == null) {
+			EmpresaDTO empresaExistente = this.empresaDAO.obtenerEmpresaByCodigo(empresaDTO.getId().getCodigoCompania(), empresaDTO.getNumeroRuc());
+			if(empresaExistente != null) {
+				throw new ERPException("Error", "La Empresa con numero de RUC "+empresaDTO.getNumeroRuc()+" ya existe.");
+			}
+		}
 		this.empresaDAO.crearActualizarEmpresa(empresaDTO);
 	}
 }

@@ -100,7 +100,7 @@ public class EstadoPedidoGestor implements IEstadoPedidoGestor{
 				this.facturaCabeceraGestor.cancelarFacturaInactivar(facturaCabeceraDTO);
 			}
 		} catch (Exception e) {
-			throw new ERPException(e.getMessage());
+			throw new ERPException("Error", e.getMessage());
 		}
 	}
 }

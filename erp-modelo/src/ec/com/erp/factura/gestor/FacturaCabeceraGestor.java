@@ -23,9 +23,11 @@ import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
+import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
+import ec.com.erp.secuencia.gestor.ISecuenciaGestor;
 import ec.com.erp.transaccion.gestor.ITransaccionGestor;
 import ec.com.erp.utilitario.commons.util.TransformerUtil;
 
@@ -39,7 +41,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	private IFacturaDetalleGestor facturaDetalleGestor;
 	private IInventarioGestor inventarioGestor;
 	private ITransaccionGestor transaccionGestor;
-	
+	private ISecuenciaGestor secuenciaGestor;
 	
 	public IFacturaCabeceraDAO getFacturaCabeceraDAO() {
 		return facturaCabeceraDAO;
@@ -71,6 +73,14 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 
 	public void setTransaccionGestor(ITransaccionGestor transaccionGestor) {
 		this.transaccionGestor = transaccionGestor;
+	}
+	
+	public ISecuenciaGestor getSecuenciaGestor() {
+		return secuenciaGestor;
+	}
+
+	public void setSecuenciaGestor(ISecuenciaGestor secuenciaGestor) {
+		this.secuenciaGestor = secuenciaGestor;
 	}
 	
 	/**
@@ -115,6 +125,24 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	}
 	
 	/**
+	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @param pagado
+	 * @param tipoDocumento
+	 * @return Collection<FacturaCabeceraDTO>
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturasValidarFirebase(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException{
+		return this.facturaCabeceraDAO.obtenerListaFacturasValidarFirebase(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tiposDocumentos);
+	}
+	
+	/**
 	 * M\u00e9todo para obtener la factura del pedido
 	 * @param codigoCompania
 	 * @param codigoPedido
@@ -139,6 +167,10 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			// Guardamos la cabecera de la factura
 			facturaCabeceraDTO.setCodigoTipoDocumento(ERPConstantes.CODIGO_CATALOGO_TIPOS_DOCUMENTOS);
 			this.facturaCabeceraDAO.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
+			
+			if(facturaCabeceraDTO.getTipoRuc().equals(ERPConstantes.TIPO_RUC_DOS)) {
+				this.secuenciaGestor.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_FACTURA_RUC_UNO);
+			}
 			
 			// Guardamos los detalle de la factura 
 			for (FacturaDetalleDTO facturaDetalleDTO : facturaDetalleDTOCols) {
@@ -179,7 +211,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		} catch (ERPException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		} catch (Exception e) {
-			throw new ERPException("Error, {0}",e.getMessage());
+			throw new ERPException("Error, {0}",e.getCause());
 		} 
 	}
 	
@@ -225,7 +257,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			if(facturaDetalleDTO.getCantidad().intValue() > inventarioDTOAux.getCantidadExistencia().intValue()) {
-				throw new ERPException("No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+				throw new ERPException("Error", "No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
 			}
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
 			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.venta")+" "+numeroFactura+" Cliente: "+razonSocial);
@@ -246,7 +278,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
 		}
 		else {
-			throw new ERPException("No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+			throw new ERPException("Error", "No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
 		}
 	}
 	
@@ -280,7 +312,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			inventarioDTO.setUsuarioRegistro(facturaDetalleDTO.getUsuarioRegistro());
 			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
 		}catch (Exception e) {
-			throw new ERPException("Error al afectar inventario");
+			throw new ERPException("Error", "Error al afectar inventario");
 		}
 	}
 
@@ -311,7 +343,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
 		}
 		else {
-			throw new ERPException("No se puede registrar la resersa por que no hay existencias para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+			throw new ERPException("Error", "No se puede registrar la resersa por que no hay existencias para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
 		}
 	}
 	
@@ -342,7 +374,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
 		}
 		else {
-			throw new ERPException("No se puede registrar la resersa por que no hay existencias para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+			throw new ERPException("Error", "No se puede registrar la resersa por que no hay existencias para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
 		}
 	}
 
@@ -399,7 +431,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			result = TransformerUtil.transformar(docXML, docXSL, parametros);
 			html = TransformerUtil.xmlToString(result);
 		} catch (Exception en) {
-			throw new ERPException("Error al procesar plantilla xsl") ;
+			throw new ERPException("Error", "Error al procesar plantilla xsl") ;
 		}
 		return html;
 	}
@@ -468,7 +500,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			result = TransformerUtil.transformar(docXML, docXSL, parametros);
 			html = TransformerUtil.xmlToString(result);
 		} catch (Exception en) {
-			throw new ERPException("Error al procesar plantilla xsl") ;
+			throw new ERPException("Error", "Error al procesar plantilla xsl") ;
 		}
 		return html;
 	}
@@ -569,7 +601,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			result = TransformerUtil.transformar(docXML, docXSL, parametros);
 			html = TransformerUtil.xmlToString(result);
 		} catch (Exception en) {
-			throw new ERPException("Error al procesar plantilla xsl") ;
+			throw new ERPException("Error", "Error al procesar plantilla xsl") ;
 		}
 		return html;
 	}

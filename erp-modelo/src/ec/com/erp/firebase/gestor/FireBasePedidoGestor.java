@@ -85,7 +85,7 @@ public class FireBasePedidoGestor implements IFireBasePedidoGestor {
 						pedidoDTO.setCodigoCliente(clienteDTO.getId().getCodigoCliente());
 						pedidoDTO.setClienteDTO(clienteDTO);
 					}else {
-						throw new ERPException("El cliente con documento "+facFireBase.getHeader().getClientDocument()+" no se encuentra registrado en el sistema.");
+						throw new ERPException("Error", "El cliente con documento "+facFireBase.getHeader().getClientDocument()+" no se encuentra registrado en el sistema.");
 					}
 					pedidoDTO.setCodigoReferencia(Long.parseLong(""+facFireBase.getHeader().getIdOrder()));
 					pedidoDTO.setFechaPedido(facFireBase.getHeader().getOrderDate());
@@ -109,14 +109,14 @@ public class FireBasePedidoGestor implements IFireBasePedidoGestor {
 							 
 							Collection<ArticuloDTO> articuloDTOCols = this.articuloGestor.obtenerListaArticulos(ERPConstantes.CODIGO_COMPANIA, detailInvoice.getBarCodeItem(), null);
 							if(CollectionUtils.isEmpty(articuloDTOCols)) {
-								throw new ERPException("El articulo "+detailInvoice.getBarCodeItem()+" no se encuentra registrado en el sistema.");
+								throw new ERPException("Error", "El articulo "+detailInvoice.getBarCodeItem()+" no se encuentra registrado en el sistema.");
 							}else {
 								ArticuloDTO articuloDTO = articuloDTOCols.iterator().next();
 								ArticuloUnidadManejoDTO articuloUnidadManejoDTO = articuloDTO.getArticuloUnidadManejoDTOCols()
 										.stream().filter(unidadManejo -> unidadManejo.getCodigoValorUnidadManejo().equals(detailInvoice.getValueCatalogDriverUnit()) && unidadManejo.getValorUnidadManejo().intValue() == detailInvoice.getValueDriverUnit().intValue())
 										.findFirst().orElse(null);
 								if(articuloUnidadManejoDTO == null) {
-									throw new ERPException("La unidad de manejo "+detailInvoice.getValueCatalogDriverUnit()+" con valor "+detailInvoice.getValueDriverUnit()+" no se encuentra registrada en el sistema.");
+									throw new ERPException("Error", "La unidad de manejo "+detailInvoice.getValueCatalogDriverUnit()+" con valor "+detailInvoice.getValueDriverUnit()+" no se encuentra registrada en el sistema.");
 								}else {
 									DetallePedidoDTO detallePedidoDTO = new DetallePedidoDTO();
 									detallePedidoDTO.getId().setCodigoCompania(ERPConstantes.CODIGO_COMPANIA);

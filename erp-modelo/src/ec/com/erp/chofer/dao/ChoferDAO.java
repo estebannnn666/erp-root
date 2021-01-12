@@ -196,7 +196,7 @@ public class ChoferDAO implements IChoferDAO {
 	public void guardarActualizarChofer(ChoferDTO choferDTO) throws ERPException{
 		try{
 			if (choferDTO.getId().getCodigoCompania() == null || choferDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -215,9 +215,9 @@ public class ChoferDAO implements IChoferDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el transportista."+e.getMessage());
+			throw new ERPException("Error", "Error", "Ocurrio un error al guardar o actualizar el transportista."+e.getMessage());
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el transportista."+e.getMessage());
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el transportista."+e.getMessage());
 		} 
 	}
 

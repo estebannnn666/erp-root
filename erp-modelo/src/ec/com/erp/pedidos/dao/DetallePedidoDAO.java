@@ -116,7 +116,7 @@ public class DetallePedidoDAO implements IDetallePedidoDAO {
 	public void crearActualizarDetallePedido(DetallePedidoDTO detallePedidoDTO) throws ERPException{
 		try{
 			if (detallePedidoDTO.getId().getCodigoCompania() == null || detallePedidoDTO.getUsuarioRegistro() == null) {
-				throw new ERPException("El c\u00F3digo de compania y el id de usuario registro es requerido");
+				throw new ERPException("Error", "El c\u00F3digo de compania y el id de usuario registro es requerido");
 			}	
 			
 			sessionFactory.getCurrentSession().clear();
@@ -135,9 +135,9 @@ public class DetallePedidoDAO implements IDetallePedidoDAO {
 			}
 			sessionFactory.getCurrentSession().flush();
 		} catch (ERPException e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el detalle del pedido.");
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el detalle del pedido.");
 		} catch (Exception e) {
-			throw new ERPException("Ocurrio un error al guardar o actualizar el detalle del pedido.");
+			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el detalle del pedido.");
 		} 
 	}
 }
