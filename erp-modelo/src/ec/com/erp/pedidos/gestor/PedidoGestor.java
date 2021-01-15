@@ -156,6 +156,7 @@ public class PedidoGestor implements IPedidoGestor{
 			facturaCabeceraDTO.setTelefono(pedidoDTO.getClienteDTO().getPersonaDTO() == null ? pedidoDTO.getClienteDTO().getEmpresaDTO().getContactoEmpresaDTO().getTelefonoPrincipal() : pedidoDTO.getClienteDTO().getPersonaDTO().getContactoPersonaDTO().getTelefonoPrincipal());
 			facturaCabeceraDTO.setPagado(Boolean.FALSE);
 			facturaCabeceraDTO.setFechaDocumento(new Date());
+			facturaCabeceraDTO.setTipoCliente(pedidoDTO.getClienteDTO().getCodigoValorTipoCompra());
 			facturaCabeceraDTO.setCodigoPedido(pedidoDTO.getId().getCodigoPedido());
 			facturaCabeceraDTO.setUsuarioRegistro(pedidoDTO.getUsuarioRegistro());
 			facturaCabeceraDTO.setTotalCuenta(pedidoDTO.getTotalCompra());

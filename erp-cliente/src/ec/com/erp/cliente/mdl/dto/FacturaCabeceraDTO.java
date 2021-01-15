@@ -146,6 +146,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	@Column(name = "CODIGOVALORTIPODOCUMENTO")
 	private String codigoValorTipoDocumento ;
 	
+	/**
+	 * Especifica el tipo de cliente mayorista o minorista
+	 */
+	@Column(name = "TIPOCLIENTE")
+	private String tipoCliente ;
+	
 	@Transient
 	private String tipoRuc;
 	
@@ -457,5 +463,13 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setTipoRuc(String tipoRuc) {
 		this.tipoRuc = tipoRuc;
+	}
+
+	public String getTipoCliente() {
+		return tipoCliente;
+	}
+
+	public void setTipoCliente(String tipoCliente) {
+		this.tipoCliente = tipoCliente;
 	}
 }

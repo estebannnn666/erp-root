@@ -212,6 +212,7 @@
 		<property name="articuloGestor"><ref bean="erpArticuloGestor"/></property>
 		<property name="vendedorGestor"><ref bean="erpVendedorGestor"/></property>
 		<property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
+		<property name="clienteGestor"><ref bean="erpClientesGestor"/></property>
 	</bean>
 	
 	<!-- Gestor fire base pedidos-->

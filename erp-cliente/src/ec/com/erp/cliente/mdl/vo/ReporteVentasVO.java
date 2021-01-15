@@ -29,11 +29,19 @@ public class ReporteVentasVO implements Serializable{
 
 	private BigDecimal porcentajeComision;
 	
+	private BigDecimal porcentajeComisionMayor;
+	
+	private String tipoCliente;
+	
 	private Long cantidadVendida;
 	
 	private BigDecimal valorVendido;
 	
-	private BigDecimal valoCcomision;
+	private BigDecimal valoComisionMenor;
+	
+	private BigDecimal valoComisionMayor;
+	
+	private BigDecimal valoComisionTotal;
 
 	public String getNombreCompleto() {
 		return nombreCompleto;
@@ -91,12 +99,28 @@ public class ReporteVentasVO implements Serializable{
 		this.valorVendido = valorVendido;
 	}
 
-	public BigDecimal getValoCcomision() {
-		return valoCcomision;
+	public BigDecimal getValoComisionMenor() {
+		return valoComisionMenor;
 	}
 
-	public void setValoCcomision(BigDecimal valoCcomision) {
-		this.valoCcomision = valoCcomision;
+	public void setValoComisionMenor(BigDecimal valoComisionMenor) {
+		this.valoComisionMenor = valoComisionMenor;
+	}
+
+	public BigDecimal getValoComisionMayor() {
+		return valoComisionMayor;
+	}
+
+	public void setValoComisionMayor(BigDecimal valoComisionMayor) {
+		this.valoComisionMayor = valoComisionMayor;
+	}
+
+	public BigDecimal getValoComisionTotal() {
+		return valoComisionTotal;
+	}
+
+	public void setValoComisionTotal(BigDecimal valoComisionTotal) {
+		this.valoComisionTotal = valoComisionTotal;
 	}
 
 	public Date getFechaVenta() {
@@ -121,5 +145,21 @@ public class ReporteVentasVO implements Serializable{
 
 	public void setPrecioMinorista(BigDecimal precioMinorista) {
 		this.precioMinorista = precioMinorista;
+	}
+
+	public BigDecimal getPorcentajeComisionMayor() {
+		return porcentajeComisionMayor;
+	}
+
+	public void setPorcentajeComisionMayor(BigDecimal porcentajeComisionMayor) {
+		this.porcentajeComisionMayor = porcentajeComisionMayor;
+	}
+
+	public String getTipoCliente() {
+		return tipoCliente;
+	}
+
+	public void setTipoCliente(String tipoCliente) {
+		this.tipoCliente = tipoCliente;
 	}	
 }

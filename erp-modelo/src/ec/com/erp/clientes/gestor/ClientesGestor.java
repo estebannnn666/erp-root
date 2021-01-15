@@ -214,6 +214,18 @@ public class ClientesGestor implements IClientesGestor{
 	}
 	
 	/**
+	 * M\u00e9todo para obtener cliente por numero de documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public ClienteDTO obteneClientePorNumeroDocumento(Integer codigoCompania, String numeroDocumento) throws ERPException{
+		return this.clientesDAO.obteneClientePorNumeroDocumento(codigoCompania, numeroDocumento);
+	}
+	
+	/**
 	 * Metood para obtener cantidad de clientes todos o por fecha
 	 * @param codigoCompania
 	 * @param fechaInicio

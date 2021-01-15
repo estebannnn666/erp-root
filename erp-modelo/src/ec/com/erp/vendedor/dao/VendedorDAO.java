@@ -195,6 +195,7 @@ public class VendedorDAO implements IVendedorDAO {
 			projectionList.add(Projections.property("root.numeroDocumento"), "numeroDocumento");
 			projectionList.add(Projections.property("root.fechaDocumento"), "fechaDocumento");
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
+			projectionList.add(Projections.property("root.tipoCliente"), "tipoCliente");
 			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
 			projectionList.add(Projections.property("root.totalCuenta"), "totalCuenta");
 			
@@ -207,6 +208,7 @@ public class VendedorDAO implements IVendedorDAO {
 			projectionList.add(Projections.property("articuloDTO.id.codigoCompania"), "facturaDetalleDTOCols_articuloDTO_id_codigoCompania");
 			projectionList.add(Projections.property("articuloDTO.id.codigoArticulo"), "facturaDetalleDTOCols_articuloDTO_id_codigoArticulo");
 			projectionList.add(Projections.property("articuloDTO.porcentajeComision"), "facturaDetalleDTOCols_articuloDTO_porcentajeComision");
+			projectionList.add(Projections.property("articuloDTO.porcentajeComisionMayor"), "facturaDetalleDTOCols_articuloDTO_porcentajeComisionMayor");
 			
 			
 			criteria.setProjection(projectionList);

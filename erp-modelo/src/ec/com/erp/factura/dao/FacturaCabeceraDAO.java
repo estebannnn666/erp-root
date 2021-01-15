@@ -139,6 +139,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
 			projectionList.add(Projections.property("root.totalIva"), "totalIva");
+			projectionList.add(Projections.property("root.tipoCliente"), "tipoCliente");
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
 			projectionList.add(Projections.property("root.totalCuenta"), "totalCuenta");
@@ -309,6 +310,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
 			projectionList.add(Projections.property("root.totalIva"), "totalIva");
+			projectionList.add(Projections.property("root.tipoCliente"), "tipoCliente");
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
 			projectionList.add(Projections.property("root.totalCuenta"), "totalCuenta");
@@ -445,6 +447,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
 			projectionList.add(Projections.property("root.totalIva"), "totalIva");
 			projectionList.add(Projections.property("root.descuento"), "descuento");
+			projectionList.add(Projections.property("root.tipoCliente"), "tipoCliente");
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");
 			projectionList.add(Projections.property("root.totalCuenta"), "totalCuenta");
@@ -507,6 +510,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
 			projectionList.add(Projections.property("root.totalIva"), "totalIva");
+			projectionList.add(Projections.property("root.tipoCliente"), "tipoCliente");
 			projectionList.add(Projections.property("root.descuento"), "descuento");
 			projectionList.add(Projections.property("root.totalSinImpuestos"), "totalSinImpuestos");
 			projectionList.add(Projections.property("root.totalImpuestos"), "totalImpuestos");

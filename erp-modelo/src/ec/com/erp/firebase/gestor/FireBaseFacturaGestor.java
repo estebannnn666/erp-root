@@ -11,9 +11,11 @@ import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
 import ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO;
+import ec.com.erp.cliente.mdl.dto.ClienteDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.VendedorDTO;
+import ec.com.erp.clientes.gestor.IClientesGestor;
 import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 import ec.com.erp.firebase.commons.provider.InvoiceProvider;
 import ec.com.erp.firebase.model.DetailInvoice;
@@ -25,6 +27,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 	private IFacturaCabeceraGestor facturaCabeceraGestor;
 	private IVendedorGestor vendedorGestor;
 	private IArticuloGestor articuloGestor;
+	private IClientesGestor clienteGestor;
 	
 	public IFacturaCabeceraGestor getFacturaCabeceraGestor() {
 		return facturaCabeceraGestor;
@@ -49,6 +52,14 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 	public void setArticuloGestor(IArticuloGestor articuloGestor) {
 		this.articuloGestor = articuloGestor;
 	}
+	
+	public IClientesGestor getClienteGestor() {
+		return clienteGestor;
+	}
+
+	public void setClienteGestor(IClientesGestor clienteGestor) {
+		this.clienteGestor = clienteGestor;
+	}
 
 	/**
 	 * M\u00e9todo para descargar los ARTICULOS de fire base
@@ -69,12 +80,19 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 						.findFirst().orElse(null);
 				
 				if(articuloDTOLocal == null) {
+					
+					ClienteDTO clienteDTO = this.clienteGestor.obteneClientePorNumeroDocumento(ERPConstantes.CODIGO_COMPANIA, facFireBase.getHeader().getClientDocument());
+					if(clienteDTO == null) {
+						throw new ERPException("Error", "El cliente con documento "+facFireBase.getHeader().getClientDocument()+" no se encuentra registrado en el sistema.");
+					}
+					
 					FacturaCabeceraDTO facturaCabeceraDTO = new FacturaCabeceraDTO();
 					facturaCabeceraDTO.getId().setCodigoCompania(ERPConstantes.CODIGO_COMPANIA);
 					facturaCabeceraDTO.setTipoRuc(ERPConstantes.TIPO_RUC_DOS);					
 					facturaCabeceraDTO.setUsuarioRegistro(ERPConstantes.USUARIO_GENERICO);
 					facturaCabeceraDTO.setNumeroDocumento(facFireBase.getHeader().getNumberDocument());
 					facturaCabeceraDTO.setCodigoTipoDocumento(ERPConstantes.CODIGO_CATALOGO_TIPOS_DOCUMENTOS);
+					facturaCabeceraDTO.setTipoCliente(clienteDTO.getCodigoValorTipoCompra());
 					if(facFireBase.getHeader().getValueDocumentCode().equals(ERPConstantes.TIPO_DOCUMENTO_FACTURA)) {
 						facturaCabeceraDTO.setCodigoValorTipoDocumento(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
 					}else {

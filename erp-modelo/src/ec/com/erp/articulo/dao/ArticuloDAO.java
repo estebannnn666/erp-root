@@ -109,6 +109,7 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.precioMinorista"), "precioMinorista");
 			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
 			projectionList.add(Projections.property("root.porcentajeComision"), "porcentajeComision");
+			projectionList.add(Projections.property("root.porcentajeComisionMayor"), "porcentajeComisionMayor");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
@@ -195,6 +196,7 @@ public class ArticuloDAO implements IArticuloDAO {
 			projectionList.add(Projections.property("root.precioMinorista"), "precioMinorista");
 			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
 			projectionList.add(Projections.property("root.porcentajeComision"), "porcentajeComision");
+			projectionList.add(Projections.property("root.porcentajeComisionMayor"), "porcentajeComisionMayor");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
 			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");

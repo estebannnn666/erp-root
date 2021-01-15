@@ -477,14 +477,16 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				contenidoXml.append("<precioMayorista>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getPrecioMayorista().doubleValue()))).append("</precioMayorista>");
 				contenidoXml.append("<precioMinorista>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getPrecioMinorista().doubleValue()))).append("</precioMinorista>");
 				contenidoXml.append("<porcentajeComision>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getPorcentajeComision().doubleValue()))).append("</porcentajeComision>");
+				contenidoXml.append("<porcentajeComisionMayor>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getPorcentajeComisionMayor().doubleValue()))).append("</porcentajeComisionMayor>");
+				contenidoXml.append("<tipoCliente>").append(StringEscapeUtils.escapeXml(reporteVentas.getTipoCliente())).append("</tipoCliente>");
 				contenidoXml.append("<cantidadVendida>").append(StringEscapeUtils.escapeXml(""+reporteVentas.getCantidadVendida())).append("</cantidadVendida>");
 				contenidoXml.append("<valorVendido>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getValorVendido().doubleValue()))).append("</valorVendido>");
-				contenidoXml.append("<comision>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getValoCcomision().doubleValue()))).append("</comision>");
+				contenidoXml.append("<comision>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(reporteVentas.getValoComisionTotal().doubleValue()))).append("</comision>");
 				contenidoXml.append("</factura>");
 				cont++;
 				totalVenta = totalVenta + reporteVentas.getCantidadVendida();
 				totalVendido = totalVendido.add(reporteVentas.getValorVendido());
-				totalComision = totalComision.add(reporteVentas.getValoCcomision());
+				totalComision = totalComision.add(reporteVentas.getValoComisionTotal());
 			}
 			contenidoXml.append("</listaFacturas>");			
 			contenidoXml.append("<totalVenta>").append(StringEscapeUtils.escapeXml(""+totalVenta)).append("</totalVenta>");

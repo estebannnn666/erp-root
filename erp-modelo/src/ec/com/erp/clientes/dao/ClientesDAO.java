@@ -200,6 +200,56 @@ public class ClientesDAO implements IClientesDAO {
 		} 
 	}
 	
+	/**
+	 * M\u00e9todo para obtener cliente por numero de documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public ClienteDTO obteneClientePorNumeroDocumento(Integer codigoCompania, String numeroDocumento) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(ClienteDTO.class, "root");
+			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("root.empresaDTO", "empresaDTO", CriteriaSpecification.LEFT_JOIN);
+			
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			if(numeroDocumento != null && numeroDocumento.trim() != "") {
+				criteria.add(Restrictions.or(Restrictions.eq("personaDTO.numeroDocumento", numeroDocumento), Restrictions.eq("empresaDTO.numeroRuc", numeroDocumento)));
+			}
+			// Proyecciones entidad clientes 
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoCliente"), "id_codigoCliente");
+			projectionList.add(Projections.property("root.codigoPersona"), "codigoPersona");
+			projectionList.add(Projections.property("root.codigoEmpresa"), "codigoEmpresa");
+			projectionList.add(Projections.property("root.userId"), "userId");
+			projectionList.add(Projections.property("root.codigoValorTipoCliente"), "codigoValorTipoCliente");
+			projectionList.add(Projections.property("root.codigoTipoCliente"), "codigoTipoCliente");
+			projectionList.add(Projections.property("root.codigoValorTipoCompra"), "codigoValorTipoCompra");
+			projectionList.add(Projections.property("root.codigoTipoCompra"), "codigoTipoCompra");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ClienteDTO.class));
+			return (ClienteDTO)criteria.uniqueResult();
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+		} 
+	}
+	
 	
 	/**
 	 * M\u00e9todo para guardar y actualizar cliente

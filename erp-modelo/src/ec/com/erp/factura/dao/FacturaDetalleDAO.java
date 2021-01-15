@@ -106,16 +106,17 @@ public class FacturaDetalleDAO implements IFacturaDetalleDAO {
 				criteria.add(Restrictions.like("personaDTO.nombreCompleto", nombreVendedor, MatchMode.ANYWHERE));
 			}
 			
-
 			//proyecciones entidad negociacion proveedor
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.groupProperty("personaDTO.nombreCompleto"), "nombreCompleto");
 			projectionList.add(Projections.groupProperty("articuloDTO.nombreArticulo"), "nombreArticulo");
 			projectionList.add(Projections.groupProperty("articuloDTO.porcentajeComision"), "porcentajeComision");
+			projectionList.add(Projections.groupProperty("articuloDTO.porcentajeComisionMayor"), "porcentajeComisionMayor");
 			projectionList.add(Projections.groupProperty("articuloDTO.precio"), "precioMayorista");
 			projectionList.add(Projections.groupProperty("articuloDTO.precioMinorista"), "precioMinorista");
 			projectionList.add(Projections.groupProperty("articuloUnidadManejoDTO.codigoValorUnidadManejo"), "codigoValorUnidadManejo");
 			projectionList.add(Projections.groupProperty("articuloUnidadManejoDTO.valorUnidadManejo"), "valorUnidadManejo");
+			projectionList.add(Projections.groupProperty("facturaCabeceraDTO.tipoCliente"), "tipoCliente");
 			projectionList.add(Projections.sum("root.cantidad").as("cantidadVendida"));
 			projectionList.add(Projections.sum("root.subTotal").as("valorVendido"));
 			criteria.setProjection(projectionList);

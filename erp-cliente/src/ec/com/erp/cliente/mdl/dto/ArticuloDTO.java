@@ -81,6 +81,12 @@ public class ArticuloDTO implements Serializable{
 	private BigDecimal porcentajeComision;
 	
 	/**
+	 * Especifica el porcentaje comision al por mayor
+	 */
+	@Column(name="PORCENTAJECOMISIONMAYOR")
+	private BigDecimal porcentajeComisionMayor;
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -246,6 +252,14 @@ public class ArticuloDTO implements Serializable{
 
 	public void setPorcentajeComision(BigDecimal porcentajeComision) {
 		this.porcentajeComision = porcentajeComision;
+	}
+	
+	public BigDecimal getPorcentajeComisionMayor() {
+		return porcentajeComisionMayor;
+	}
+
+	public void setPorcentajeComisionMayor(BigDecimal porcentajeComisionMayor) {
+		this.porcentajeComisionMayor = porcentajeComisionMayor;
 	}
 
 	public BigDecimal getPrecioMinorista() {

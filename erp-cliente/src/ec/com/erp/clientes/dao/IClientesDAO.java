@@ -25,6 +25,15 @@ public interface IClientesDAO {
 	Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener cliente por numero de documento
+	 * @param codigoCompania
+	 * @param numeroDocumento
+	 * @return
+	 * @throws ERPException
+	 */
+	ClienteDTO obteneClientePorNumeroDocumento(Integer codigoCompania, String numeroDocumento) throws ERPException;
+	
+	/**
 	 * M\u00e9todo para guardar y actualizar cliente
 	 * @param clienteDTO
 	 * @throws ERPException
