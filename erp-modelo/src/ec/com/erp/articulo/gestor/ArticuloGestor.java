@@ -1,8 +1,22 @@
 package ec.com.erp.articulo.gestor;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.jdom.Document;
+import org.jsoup.Jsoup;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import ec.com.erp.articulo.dao.IArticuloDAO;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
@@ -12,6 +26,7 @@ import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
 import ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
 import ec.com.erp.unidadmanejo.dao.IUnidadManejoDAO;
+import ec.com.erp.utilitario.commons.util.TransformerUtil;
 
 public class ArticuloGestor implements IArticuloGestor{
 
@@ -164,5 +179,112 @@ public class ArticuloGestor implements IArticuloGestor{
 				this.unidadManejoDAO.guardarActualizarUnidadManejo(articuloUnidadManejoNewDTO);
 			}
 		}
+	}
+	
+	/**
+	 * Metodo para obtener imagen del articulo
+	 * @param codigoCompania
+	 * @param codigoArticulo
+	 * @return
+	 */
+	@Override
+	public byte[] obtenerImagen(Integer codigoCompania, Integer codigoArticulo) throws ERPException{
+		return this.articuloDAO.obtenerImagen(codigoCompania, codigoArticulo);
+	}
+	
+	/**
+	 * Devuelve html de reporte de catalogo de articulos
+	 * @param articuloDTOCols
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public String procesarXMLReporteCatalogo(Collection<ArticuloDTO> articuloDTOCols) throws ERPException{
+		StringBuilder contenidoXml = new StringBuilder();
+		String html = "";
+		String urlTipoReporte = "";
+		try{
+			Date fechaactual = new Date();
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+			String fechaFormateada =  formatoFecha.format(fechaactual);
+			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
+			formatoDecimales.setMinimumFractionDigits(2);
+
+			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_REPORTE_CATALOGO;
+			
+			contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+			contenidoXml.append("<articulos>");
+
+			contenidoXml.append("<fechaReporte>").append(StringEscapeUtils.escapeXml(""+fechaFormateada)).append("</fechaReporte>");
+			//detalle reposicion
+			contenidoXml.append("<listaArticulos>");
+			for(ArticuloDTO articuloDTO : articuloDTOCols){
+				String base64String = "";
+				if(articuloDTO.getImagen() != null) {
+					base64String = "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(articuloDTO.getImagen());
+				}
+				contenidoXml.append("<articulo>");
+				contenidoXml.append("<nombre>").append(StringEscapeUtils.escapeXml(articuloDTO.getNombreArticulo())).append("</nombre>");
+				contenidoXml.append("<precioMenor>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(articuloDTO.getPrecioMinorista()))).append("</precioMenor>");
+				contenidoXml.append("<precioMayor>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(articuloDTO.getPrecio()))).append("</precioMayor>");
+				contenidoXml.append("<imagen>").append(StringEscapeUtils.escapeXml(base64String)).append("</imagen>");
+				contenidoXml.append("</articulo>");
+			}
+			contenidoXml.append("</listaArticulos>");			
+			contenidoXml.append("</articulos>");
+			String contenidoXSL=null;
+			contenidoXSL = TransformerUtil.obtenerPlantillaHTML(urlTipoReporte);
+			Document docXML = TransformerUtil.stringToXML(contenidoXml.toString());
+			Document docXSL = TransformerUtil.stringToXML(contenidoXSL);
+			Document result = TransformerUtil.transformar(docXML, docXSL);
+			HashMap<String , String> parametros = new HashMap<String, String>();
+			result = TransformerUtil.transformar(docXML, docXSL, parametros);
+			html = TransformerUtil.xmlToString(result);
+		} catch (Exception en) {
+			throw new ERPException("Error", "Error al procesar plantilla xsl") ;
+		}
+		return html;
+	}
+	
+	/**
+	 * Obtener bytes reporte generado
+	 * @param articuloDTOCols
+	 * @return
+	 * @throws IOException
+	 */
+	public byte[] generateReportCatalogo(Collection<ArticuloDTO> articuloDTOCols) throws IOException {
+		String html = this.procesarXMLReporteCatalogo(articuloDTOCols);
+		String xhtml = htmlToXhtml(html);
+		byte[] contenido = xhtmlToPdf(xhtml, "reporteCotalogo.pdf");
+		System.out.println("RES:"+contenido);
+		return contenido;
+	}
+
+	private String htmlToXhtml(String html) {
+        org.jsoup.nodes.Document document = Jsoup.parse(html);
+        document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
+        return document.html();
+    }
+
+	private byte[] xhtmlToPdf(String xhtml, String outFileName) throws IOException {
+        File output = new File(outFileName);
+        ITextRenderer iTextRenderer = new ITextRenderer();
+        iTextRenderer.setDocumentFromString(xhtml);
+        iTextRenderer.layout();
+        OutputStream os = new FileOutputStream(output);
+        iTextRenderer.createPDF(os);
+        os.close();
+        byte[] bytes = Files.readAllBytes(output.toPath());
+        return bytes;
+    }
+    
+	/**
+	 * M\u00e9todo para obtener lista de articulos para catalogos
+	 * @return 
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<ArticuloDTO> obtenerArticulosCatalogos(Integer codigoCompania, String codigoBarras, String nombreArticulo) throws ERPException{
+		return this.articuloDAO.obtenerArticulosCatalogos(codigoCompania, codigoBarras, nombreArticulo);
 	}
 }

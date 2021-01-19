@@ -157,7 +157,7 @@ public class ArticuloDAO implements IArticuloDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de art\u00EDculos.").initCause(e);
 		} 
 	}
 	
@@ -241,7 +241,7 @@ public class ArticuloDAO implements IArticuloDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de art\u00EDculos.").initCause(e);
 		} 
 	}
 	
@@ -319,7 +319,7 @@ public class ArticuloDAO implements IArticuloDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de art\u00EDculos.").initCause(e);
 		} 
 	}
 	
@@ -328,6 +328,7 @@ public class ArticuloDAO implements IArticuloDAO {
 	 * @param articuloImpuestoDTO
 	 * @throws ERPException
 	 */
+	@Override
 	public void guardarActualizarArticuloImpuesto(ArticuloImpuestoDTO articuloImpuestoDTO) throws ERPException{
 		try{
 			if (articuloImpuestoDTO.getId().getCodigoCompania() == null || articuloImpuestoDTO.getUsuarioRegistro() == null) {
@@ -349,6 +350,101 @@ public class ArticuloDAO implements IArticuloDAO {
 			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
 		} catch (Exception e) {
 			throw new ERPException("Error", "Ocurrio un error al guardar o actualizar el art\u00EDculo."+e.getMessage());
+		} 
+	}
+	
+	/**
+	 * Metodo para obtener imagen del articulo
+	 * @param codigoCompania
+	 * @param codigoArticulo
+	 * @return
+	 */
+	@Override
+	public byte[] obtenerImagen(Integer codigoCompania, Integer codigoArticulo) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(ArticuloDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.id.codigoArticulo", codigoArticulo));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+
+			//proyecciones
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.imagen"), "imagen");
+			criteria.setProjection(projectionList);
+			return (byte[])criteria.uniqueResult();
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener imagen.").initCause(e);
+		} 
+	}
+	
+	
+	/**
+	 * M\u00e9todo para obtener lista de articulos para catalogos
+	 * @return 
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<ArticuloDTO> obtenerArticulosCatalogos(Integer codigoCompania, String codigoBarras, String nombreArticulo) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(ArticuloDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			
+			if(codigoBarras != null && codigoBarras !=""){
+				codigoBarras = codigoBarras.toUpperCase();
+				criteria.add(Restrictions.eq("root.codigoBarras", codigoBarras));
+			}
+			if(nombreArticulo != null && nombreArticulo !=""){
+				nombreArticulo = nombreArticulo.toUpperCase();
+				criteria.add(Restrictions.like("root.nombreArticulo", nombreArticulo, MatchMode.ANYWHERE));
+			}
+			
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoArticulo"), "id_codigoArticulo");
+			projectionList.add(Projections.property("root.codigoBarras"), "codigoBarras");
+			projectionList.add(Projections.property("root.nombreArticulo"), "nombreArticulo");
+			projectionList.add(Projections.property("root.peso"), "peso");
+			projectionList.add(Projections.property("root.costo"), "costo");
+			projectionList.add(Projections.property("root.precio"), "precio");
+			projectionList.add(Projections.property("root.imagen"), "imagen");
+			projectionList.add(Projections.property("root.precioMinorista"), "precioMinorista");
+			projectionList.add(Projections.property("root.cantidadStock"), "cantidadStock");
+			projectionList.add(Projections.property("root.porcentajeComision"), "porcentajeComision");
+			projectionList.add(Projections.property("root.porcentajeComisionMayor"), "porcentajeComisionMayor");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.asc("root.nombreArticulo"));
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloDTO.class));
+			Collection<ArticuloDTO> articuloDTOCols = new  ArrayList<ArticuloDTO>();
+			articuloDTOCols =  criteria.list();
+
+			return articuloDTOCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de art\u00EDculos.").initCause(e);
 		} 
 	}
 	

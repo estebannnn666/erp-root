@@ -87,6 +87,12 @@ public class ArticuloDTO implements Serializable{
 	private BigDecimal porcentajeComisionMayor;
 	
 	/**
+	 * Especifica ka imagen del item
+	 */
+	@Column(name="IMAGEN")
+	private byte[] imagen; 
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -268,5 +274,13 @@ public class ArticuloDTO implements Serializable{
 
 	public void setPrecioMinorista(BigDecimal precioMinorista) {
 		this.precioMinorista = precioMinorista;
+	}
+
+	public byte[] getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(byte[] imagen) {
+		this.imagen = imagen;
 	}
 }

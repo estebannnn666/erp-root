@@ -49,4 +49,19 @@ public interface IArticuloDAO {
 	 */
 	void guardarActualizarArticuloImpuesto(ArticuloImpuestoDTO articuloImpuestoDTO) throws ERPException;
 	
+	/**
+	 * Metodo para obtener imagen del articulo
+	 * @param codigoCompania
+	 * @param codigoArticulo
+	 * @return
+	 */
+	byte[] obtenerImagen(Integer codigoCompania, Integer codigoArticulo) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener lista de articulos para catalogos
+	 * @return 
+	 * @throws ERPException
+	 */
+	Collection<ArticuloDTO> obtenerArticulosCatalogos(Integer codigoCompania, String codigoBarras, String nombreArticulo) throws ERPException;
+	
 }
