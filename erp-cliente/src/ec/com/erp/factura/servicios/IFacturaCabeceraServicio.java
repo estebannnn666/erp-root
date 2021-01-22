@@ -57,7 +57,7 @@ public interface IFacturaCabeceraServicio {
 	 * @return
 	 * @throws ERPException
 	 */
-	String finObtenerXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) throws ERPException;
+	String finObtenerXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols, String titulo, String tipoReporte) throws ERPException;
 	
 	/**
 	 * Devuelve html de reporte de ventas

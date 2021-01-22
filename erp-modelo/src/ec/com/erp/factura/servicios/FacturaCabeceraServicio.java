@@ -77,8 +77,8 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	 * @return
 	 * @throws ERPException
 	 */
-	public String finObtenerXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols) throws ERPException{
-		return this.facturaCabeceraGestor.procesarXMLReporteFacturas(facturaCabeceraDTOCols);
+	public String finObtenerXMLReporteFacturas(Collection<FacturaCabeceraDTO> facturaCabeceraDTOCols, String titulo, String tipoReporte) throws ERPException{
+		return this.facturaCabeceraGestor.procesarXMLReporteFacturas(facturaCabeceraDTOCols, titulo, tipoReporte);
 	}
 	
 	/**

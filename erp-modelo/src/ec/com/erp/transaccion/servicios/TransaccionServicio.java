@@ -5,6 +5,7 @@ package ec.com.erp.transaccion.servicios;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.PagosFacturaDTO;
@@ -70,5 +71,16 @@ public class TransaccionServicio implements ITransaccionServicio {
 	public void transGuardarPago(String tipoFactura, PagosFacturaDTO pagosFacturaDTO) throws ERPException{
 		this.transaccionGestor.guardarPago(tipoFactura, pagosFacturaDTO);
 	}
-
+	
+	/**
+	 * Devuelve html de reporte de existencias
+	 * @param transaccionDTOCols
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	public String findObtenerXMLReporteTransacciones(Collection<TransaccionDTO> transaccionDTOCols, Date fechaInicio, Date fechaFin) throws ERPException{
+		return this.transaccionGestor.procesarXMLReporteTransacciones(transaccionDTOCols, fechaInicio, fechaFin);
+	}
 }

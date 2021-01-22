@@ -222,6 +222,8 @@ public class ArticuloGestor implements IArticuloGestor{
 				String base64String = "";
 				if(articuloDTO.getImagen() != null) {
 					base64String = "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(articuloDTO.getImagen());
+				}else {
+					base64String = "data:image/jpeg;base64,"+ERPConstantes.IMAGEN_DEFAULT;
 				}
 				contenidoXml.append("<articulo>");
 				contenidoXml.append("<nombre>").append(StringEscapeUtils.escapeXml(articuloDTO.getNombreArticulo())).append("</nombre>");

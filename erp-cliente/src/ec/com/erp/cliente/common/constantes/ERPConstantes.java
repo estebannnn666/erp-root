@@ -14,12 +14,15 @@ public class ERPConstantes {
 	/************ Plantillas xsl para impresion de documentos *****/
 	public final static String PLANTILLA_XSL_FOPRINCIPAL = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.principal");
 	public final static String PLANTILLA_XSL_REPORTE_FACTURAS = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.facturas");
+	public final static String PLANTILLA_XSL_REPORTE_COMPRAS = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.compras");
 	public final static String PLANTILLA_XSL_REPORTE_VENTAS = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.ventas");
 	public final static String PLANTILLA_XSL_REPORTE_KARDEX = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.kardex");
 	public final static String PLANTILLA_XSL_REPORTE_EXISTENCIA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.existencia");
+	public final static String PLANTILLA_XSL_REPORTE_CAJA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.caja");
 	public final static String PLANTILLA_XSL_IMPRIMIR_GUIA_DESPACHO = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.guia.despacho");
 	public final static String PLANTILLA_XSL_IMPRIMIR_FACTURA_VENTA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.factura.venta");
 	public final static String PLANTILLA_XSL_REPORTE_CATALOGO = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.catalogo");
+	public final static String IMAGEN_DEFAULT = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.imagen.defecto");
 	
 	/************ Generales ************************/
 	public static final Integer CODIGO_COMPANIA = 1;

@@ -2,6 +2,7 @@ package ec.com.erp.transaccion.gestor;
 
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.PagosFacturaDTO;
@@ -48,4 +49,14 @@ public interface ITransaccionGestor {
 	 * @throws ERPException
 	 */
 	void guardarPago(String tipoFactura, PagosFacturaDTO pagosFacturaDTO) throws ERPException;
+	
+	/**
+	 * Devuelve html de reporte de existencias
+	 * @param transaccionDTOCols
+	 * @param fechaInicio
+	 * @param fechaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	String procesarXMLReporteTransacciones(Collection<TransaccionDTO> transaccionDTOCols, Date fechaInicio, Date fechaFin) throws ERPException;
 }

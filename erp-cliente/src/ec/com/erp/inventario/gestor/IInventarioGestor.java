@@ -1,5 +1,6 @@
 package ec.com.erp.inventario.gestor;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
@@ -79,4 +80,12 @@ public interface IInventarioGestor {
 	 * @throws ERPException
 	 */
 	Long obtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener valores total en costo de inventario
+	 * @param codigoCompania
+	 * @return
+	 * @throws ERPException
+	 */
+	BigDecimal obtenerTotalExistencias(Integer codigoCompania) throws ERPException;
 }

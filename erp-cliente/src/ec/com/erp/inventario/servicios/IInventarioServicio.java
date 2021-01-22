@@ -1,5 +1,6 @@
 package ec.com.erp.inventario.servicios;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
@@ -80,4 +81,11 @@ public interface IInventarioServicio {
 	 */
 	Long findObtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para obtener valores total en costo de inventario
+	 * @param codigoCompania
+	 * @return
+	 * @throws ERPException
+	 */
+	BigDecimal findObtenerTotalExistencias(Integer codigoCompania) throws ERPException;
 }

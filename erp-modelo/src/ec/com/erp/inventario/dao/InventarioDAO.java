@@ -3,6 +3,7 @@
  */
 package ec.com.erp.inventario.dao;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
@@ -138,6 +139,7 @@ public class InventarioDAO implements IInventarioDAO {
 			
 			criteria.addOrder(Order.asc("articuloDTO.nombreArticulo"));
 			criteria.addOrder(Order.desc("root.fechaMovimiento"));
+			criteria.addOrder(Order.desc("root.id.codigoInventario"));
 			
 			criteria.setProjection(projectionList);
 			criteria.setResultTransformer(new MultiLevelResultTransformer(InventarioDTO.class));
@@ -366,6 +368,43 @@ public class InventarioDAO implements IInventarioDAO {
 			Long resultado = (Long)criteria.uniqueResult();
 			if(resultado == null){
 				resultado = 0L;
+			}
+			return resultado;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener ultimo movimiento registrado para el item ingresado.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para obtener valores total en costo de inventario
+	 * @param codigoCompania
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public BigDecimal obtenerTotalExistencias(Integer codigoCompania) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(InventarioDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.eq("root.esUltimoRegistro", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+						
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.sum("root.valorTotalExistencia"));
+			criteria.setProjection(projectionList);
+			BigDecimal resultado = (BigDecimal)criteria.uniqueResult();
+			if(resultado == null){
+				resultado = BigDecimal.ZERO;
 			}
 			return resultado;
 

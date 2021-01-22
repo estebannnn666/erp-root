@@ -72,6 +72,7 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 						articuloDTO.setNombreArticulo(articuloFireBase.getDataItem().getNameItem());
 						articuloDTO.setCosto(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getCost())));
 						articuloDTO.setPorcentajeComision(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getCommissionPercentage())));
+						articuloDTO.setPorcentajeComisionMayor(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getWholesaleCommissionPercentage())));
 						articuloDTO.setPrecio(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getPriceWholesaler())));
 						articuloDTO.setPrecioMinorista(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getPriceRetail())));
 						articuloDTO.setPeso(BigDecimal.ZERO);
@@ -138,6 +139,7 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 					itemSave.setDataItem(new DataItem());
 					itemSave.getDataItem().setBarCode(articuloLocal.getCodigoBarras());
 					itemSave.getDataItem().setCommissionPercentage(articuloLocal.getPorcentajeComision().toString());
+					itemSave.getDataItem().setWholesaleCommissionPercentage(articuloLocal.getPorcentajeComisionMayor().toString());
 					itemSave.getDataItem().setCost(articuloLocal.getCosto().toString());
 					itemSave.getDataItem().setNameItem(articuloLocal.getNombreArticulo());
 					itemSave.getDataItem().setPriceRetail(articuloLocal.getPrecioMinorista().toString());

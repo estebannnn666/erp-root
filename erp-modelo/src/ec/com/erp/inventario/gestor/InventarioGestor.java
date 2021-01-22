@@ -175,6 +175,8 @@ public class InventarioGestor implements IInventarioGestor{
 		String html = "";
 		String urlTipoReporte = "";
 		try{
+			Integer totalStock = 0;
+			BigDecimal totalExistencia = BigDecimal.ZERO;
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
 			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
 			formatoDecimales.setMinimumFractionDigits(2);
@@ -195,13 +197,17 @@ public class InventarioGestor implements IInventarioGestor{
 					contenidoXml.append("<codigoBarras>").append(StringEscapeUtils.escapeXml(inventarioDTO.getArticuloDTO().getCodigoBarras())).append("</codigoBarras>");
 					contenidoXml.append("<nombreArticulo>").append(StringEscapeUtils.escapeXml(inventarioDTO.getArticuloDTO().getNombreArticulo()+" "+inventarioDTO.getArticuloUnidadManejoDTO().getCodigoValorUnidadManejo()+"x"+inventarioDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo())).append("</nombreArticulo>");
 					contenidoXml.append("<detalleMovimiento>").append(StringEscapeUtils.escapeXml(inventarioDTO.getDetalleMoviento())).append("</detalleMovimiento>");
-					contenidoXml.append("<cantidadExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getCantidadExistencia() == null ? "-" : ""+inventarioDTO.getCantidadExistencia())).append("</cantidadExistencia>");
-					contenidoXml.append("<valorUnidadExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getValorUnidadExistencia() == null ? "-" : ""+formatoDecimales.format(inventarioDTO.getValorUnidadExistencia().doubleValue()))).append("</valorUnidadExistencia>");
-					contenidoXml.append("<valorTotalExistencia>").append(StringEscapeUtils.escapeXml(inventarioDTO.getValorTotalExistencia() == null ? "-" : ""+formatoDecimales.format(inventarioDTO.getValorTotalExistencia().doubleValue()))).append("</valorTotalExistencia>");
+					contenidoXml.append("<cantidadExistencia>").append(StringEscapeUtils.escapeXml(""+inventarioDTO.getCantidadExistencia())).append("</cantidadExistencia>");
+					contenidoXml.append("<valorUnidadExistencia>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(inventarioDTO.getValorUnidadExistencia().doubleValue()))).append("</valorUnidadExistencia>");
+					contenidoXml.append("<valorTotalExistencia>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(inventarioDTO.getValorTotalExistencia().doubleValue()))).append("</valorTotalExistencia>");
 					contenidoXml.append("</movimiento>");
 					cont++;
+					totalStock = totalStock + inventarioDTO.getCantidadExistencia();
+					totalExistencia = totalExistencia.add(inventarioDTO.getValorTotalExistencia());
 				}
-				contenidoXml.append("</listaMovimientos>");			
+				contenidoXml.append("</listaMovimientos>");	
+				contenidoXml.append("<totalStock>").append(StringEscapeUtils.escapeXml(""+totalStock)).append("</totalStock>");
+				contenidoXml.append("<totalExistencia>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(totalExistencia))).append("</totalExistencia>");
 				contenidoXml.append("</reporte>");
 			}
 			
@@ -229,5 +235,16 @@ public class InventarioGestor implements IInventarioGestor{
 	@Override
 	public Long obtenerCantidadTotalEntradas(Integer codigoCompania, Boolean existenciaActual) throws ERPException{
 		return this.inventarioDAO.obtenerCantidadTotalEntradas(codigoCompania, existenciaActual);
+	}
+	
+	/**
+	 * M\u00e9todo para obtener valores total en costo de inventario
+	 * @param codigoCompania
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public BigDecimal obtenerTotalExistencias(Integer codigoCompania) throws ERPException{
+		return this.inventarioDAO.obtenerTotalExistencias(codigoCompania);
 	}
 }
