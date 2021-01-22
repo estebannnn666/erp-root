@@ -3,6 +3,7 @@ package ec.com.erp.firebase.gestor;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 
@@ -19,6 +20,7 @@ import ec.com.erp.firebase.commons.provider.CommonProvider;
 import ec.com.erp.firebase.commons.provider.ItemProvider;
 import ec.com.erp.firebase.model.DataItem;
 import ec.com.erp.firebase.model.DriveUnit;
+import ec.com.erp.firebase.model.ImageItem;
 import ec.com.erp.firebase.model.Item;
 import ec.com.erp.firebase.model.Sequence;
 import ec.com.erp.firebase.model.Taxe;
@@ -106,6 +108,20 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 						this.articuloGestor.guardarActualizarArticulo(articuloDTO, articuloImpuestoDTOCols, articuloUnidadManejoDTOCols);
 					}
 				});
+			}
+			
+			Collection<ImageItem> imagenesArticulosFireBase = ItemProvider.obtainImagesItemFirebase();
+			if(CollectionUtils.isNotEmpty(imagenesArticulosFireBase) && CollectionUtils.isNotEmpty(articuloDTOCols)) {
+				for(ImageItem imageItem : imagenesArticulosFireBase) {
+					ArticuloDTO articuloDTOLocal = articuloDTOCols.stream()
+							.filter(articuloDTO -> articuloDTO.getCodigoBarras().equals(imageItem.getBarCode()))
+							.findFirst().orElse(null);
+					if(articuloDTOLocal != null) {
+						byte[] decodedImage = Base64.getDecoder().decode(imageItem.getImage());
+						articuloDTOLocal.setImagen(decodedImage);
+						this.articuloGestor.guardarActualizarArticulo(articuloDTOLocal, null, null);
+					}
+				}
 			}
 		} catch (InterruptedException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
