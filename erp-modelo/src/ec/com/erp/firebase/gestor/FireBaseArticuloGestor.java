@@ -74,7 +74,11 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 						articuloDTO.setNombreArticulo(articuloFireBase.getDataItem().getNameItem());
 						articuloDTO.setCosto(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getCost())));
 						articuloDTO.setPorcentajeComision(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getCommissionPercentage())));
-						articuloDTO.setPorcentajeComisionMayor(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getWholesaleCommissionPercentage())));
+						if(articuloFireBase.getDataItem().getWholesaleCommissionPercentage() != null) {
+							articuloDTO.setPorcentajeComisionMayor(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getWholesaleCommissionPercentage())));
+						}else {
+							articuloDTO.setPorcentajeComisionMayor(BigDecimal.ZERO);
+						}
 						articuloDTO.setPrecio(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getPriceWholesaler())));
 						articuloDTO.setPrecioMinorista(BigDecimal.valueOf(Double.parseDouble(articuloFireBase.getDataItem().getPriceRetail())));
 						articuloDTO.setPeso(BigDecimal.ZERO);
@@ -117,7 +121,7 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 							.filter(articuloDTO -> articuloDTO.getCodigoBarras().equals(imageItem.getBarCode()))
 							.findFirst().orElse(null);
 					if(articuloDTOLocal != null) {
-						byte[] decodedImage = Base64.getDecoder().decode(imageItem.getImage());
+						byte[] decodedImage = Base64.getMimeDecoder().decode(imageItem.getImage());
 						articuloDTOLocal.setImagen(decodedImage);
 						this.articuloGestor.guardarActualizarArticulo(articuloDTOLocal, null, null);
 					}
@@ -126,6 +130,8 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 		} catch (InterruptedException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		} catch (ExecutionException e) {
+			throw new ERPException("Error, {0}",e.getMessage()) ;
+		} catch (Exception e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		}
 	}	
