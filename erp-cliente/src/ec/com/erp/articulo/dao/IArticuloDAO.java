@@ -64,4 +64,11 @@ public interface IArticuloDAO {
 	 */
 	Collection<ArticuloDTO> obtenerArticulosCatalogos(Integer codigoCompania, String codigoBarras, String nombreArticulo) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para obtener lista de articulos con imagen
+	 * @return 
+	 * @throws ERPException
+	 */
+	Collection<ArticuloDTO> obtenerArticulosImagen(Integer codigoCompania) throws ERPException;
+	
 }

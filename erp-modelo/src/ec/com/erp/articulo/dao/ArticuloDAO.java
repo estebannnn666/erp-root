@@ -448,4 +448,45 @@ public class ArticuloDAO implements IArticuloDAO {
 		} 
 	}
 	
+	/**
+	 * M\u00e9todo para obtener lista de articulos con imagen
+	 * @return 
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<ArticuloDTO> obtenerArticulosImagen(Integer codigoCompania) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(ArticuloDTO.class, "root");
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			criteria.add(Restrictions.isNotNull("root.imagen"));
+			
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoArticulo"), "id_codigoArticulo");
+			projectionList.add(Projections.property("root.codigoBarras"), "codigoBarras");
+			projectionList.add(Projections.property("root.imagen"), "imagen");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloDTO.class));
+			Collection<ArticuloDTO> articuloDTOCols = new  ArrayList<ArticuloDTO>();
+			articuloDTOCols =  criteria.list();
+
+			return articuloDTOCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de art\u00EDculos.").initCause(e);
+		} 
+	}
+	
 }

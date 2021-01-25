@@ -62,4 +62,11 @@ public interface IArticuloGestor {
 	 * @throws IOException
 	 */
 	byte[] generateReportCatalogo(Collection<ArticuloDTO> articuloDTOCols) throws IOException;
+	
+	/**
+	 * M\u00e9todo para obtener lista de articulos con imagen
+	 * @return 
+	 * @throws ERPException
+	 */
+	Collection<ArticuloDTO> obtenerArticulosImagen(Integer codigoCompania) throws ERPException;
 }
