@@ -258,7 +258,6 @@ public class ArticuloGestor implements IArticuloGestor{
 		String html = this.procesarXMLReporteCatalogo(articuloDTOCols);
 		String xhtml = htmlToXhtml(html);
 		byte[] contenido = xhtmlToPdf(xhtml, "reporteCotalogo.pdf");
-		System.out.println("RES:"+contenido);
 		return contenido;
 	}
 
