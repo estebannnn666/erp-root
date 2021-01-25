@@ -150,6 +150,7 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 			Collection<ArticuloDTO> articuloDTOCols = this.articuloGestor.obtenerListaArticulos(ERPConstantes.CODIGO_COMPANIA, null, null);
 			if(CollectionUtils.isNotEmpty(articuloDTOCols)) {
 				Collection<Item> itemsUpload = new ArrayList<>();
+				Collection<ImageItem> imageItemsUpload = new ArrayList<>();
 				articuloDTOCols.stream().forEach(articuloLocal ->{
 					Item item = null;
 					if(CollectionUtils.isNotEmpty(itemsFireBase)) {
@@ -213,9 +214,20 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 						itemSave.getDataItem().setId(item.getDataItem().getId());
 					}
 					itemsUpload.add(itemSave);
+					// Add images for save in fire base
+					if(articuloLocal.getImagen() != null) {
+						String base64Image = Base64.getMimeEncoder().encodeToString(articuloLocal.getImagen());
+						ImageItem imageItem = new ImageItem();
+						imageItem.setId(itemSave.getDataItem().getId());
+						imageItem.setBarCode(articuloLocal.getCodigoBarras());
+						imageItem.setImage(base64Image);
+						imageItemsUpload.add(imageItem);
+					}
 				});
-				// Save client in fire base
+				// Save items in fire base
 				ItemProvider.createUpdateItem(itemsUpload);
+				// Save images items in fire base
+				ItemProvider.createUpdateImageItem(imageItemsUpload);
 				// Update sequense
 				CommonProvider.updateSequence("item", String.valueOf(secuencialItem[0]));
 			}
