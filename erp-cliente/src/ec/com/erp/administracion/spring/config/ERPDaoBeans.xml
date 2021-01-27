@@ -74,6 +74,12 @@
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
+    <!-- Inyeccion bean  GuiaDespachoFacturaDAO -->
+    <bean id="erpGuiaDespachoFacturaDAO" class="ec.com.erp.guiadespacho.dao.GuiaDespachoFacturaDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
     <!-- Inyeccion bean  GuiaDespachoExtrasDAO -->
     <bean id="erpGuiaDespachoExtrasDAO" class="ec.com.erp.guiadespacho.dao.GuiaDespachoExtrasDAO">
         <property name="sessionFactory" ref="sessionFactory"/>

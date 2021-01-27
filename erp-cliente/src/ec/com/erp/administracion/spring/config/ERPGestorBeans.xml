@@ -74,6 +74,11 @@
 		<property name="guiaDespachoPedidoDAO"><ref bean="erpGuiaDespachoPedidoDAO"/></property>
 	</bean>
 	
+	<!-- Gestor guiaDespachoFactura -->
+	<bean id="erpGuiaDespachoFacturaGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoFacturaGestor">
+		<property name="guiaDespachoFacturaDAO"><ref bean="erpGuiaDespachoFacturaDAO"/></property>
+	</bean>
+	
 	<!-- Gestor guiaDespachoExtras -->
 	<bean id="erpGuiaDespachoExtrasGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoExtrasGestor">
 		<property name="guiaDespachoExtrasDAO"><ref bean="erpGuiaDespachoExtrasDAO"/></property>
@@ -88,6 +93,7 @@
 	<bean id="erpGuiaDespachoGestor" class="ec.com.erp.guiadespacho.gestor.GuiaDespachoGestor">
 		<property name="guiaDespachoDAO"><ref bean="erpGuiaDespachoDAO"/></property>
 		<property name="guiaDespachoPedidoGestor"><ref bean="erpGuiaDespachoPedidoGestor"/></property>
+		<property name="guiaDespachoFacturaGestor"><ref bean="erpGuiaDespachoFacturaGestor"/></property>
 		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
 		<property name="guiaDespachoDetalleGestor"><ref bean="erpGuiaDespachoDetalleGestor"/></property>
 		<property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>

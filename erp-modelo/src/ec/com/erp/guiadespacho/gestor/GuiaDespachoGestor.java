@@ -21,6 +21,7 @@ import ec.com.erp.cliente.mdl.dto.EstadoPedidoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 import ec.com.erp.guiadespacho.dao.IGuiaDespachoDAO;
 import ec.com.erp.pedidos.dao.IEstadoPedidoDAO;
@@ -35,6 +36,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	private IGuiaDespachoDAO guiaDespachoDAO;
 	private IGuiaDespachoExtrasGestor guiaDespachoExtrasGestor;
 	private IGuiaDespachoPedidoGestor guiaDespachoPedidoGestor;
+	private IGuiaDespachoFacturaGestor guiaDespachoFacturaGestor;
 	private IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor;
 	private IEstadoPedidoDAO estadoPedidoDAO;
 	
@@ -76,6 +78,14 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 
 	public void setGuiaDespachoDetalleGestor(IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor) {
 		this.guiaDespachoDetalleGestor = guiaDespachoDetalleGestor;
+	}
+	
+	public IGuiaDespachoFacturaGestor getGuiaDespachoFacturaGestor() {
+		return guiaDespachoFacturaGestor;
+	}
+
+	public void setGuiaDespachoFacturaGestor(IGuiaDespachoFacturaGestor guiaDespachoFacturaGestor) {
+		this.guiaDespachoFacturaGestor = guiaDespachoFacturaGestor;
 	}
 
 	/**
@@ -298,6 +308,43 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 		
 		detallePedidosCosl.stream().forEach(detallePedido -> {
 			detallePedido.setUsuarioModificacion(guiaDespachoPedidoDTO.getUsuarioRegistro());
+			detallePedido.setFechaModificacion(new Date());
+			if(detallePedido.getCantidad().intValue() == 0) {
+				detallePedido.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+			}
+			this.guiaDespachoDetalleGestor.crearActualizarDetalleGuiaDespacho(detallePedido);
+		});
+	}
+	
+	/**
+	 * Method for update status invoice and delete invoice for dispatch
+	 * @param guiaDespachoFacturaDTO
+	 */
+	@Override
+	public void eliminarFacturaDespacho(String numeroGuia, GuiaDespachoFacturaDTO guiaDespachoFacturaDTO) {
+		guiaDespachoFacturaDTO.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
+		this.guiaDespachoFacturaGestor.crearActualizarGuiaDespachoFacturas(guiaDespachoFacturaDTO);
+		
+		// Actualizar factura
+		// Aqui poner metodo para actualizar el estado de la factura
+		
+		// Actualizar detalles del despacho
+		Collection<GuiaDespachoDetalleDTO> detallePedidosCosl = this.guiaDespachoDetalleGestor.obtenerListaGuiaDespachoDetalleByNumeroGuia(guiaDespachoFacturaDTO.getId().getCodigoCompania(), numeroGuia);
+		guiaDespachoFacturaDTO.getFacturaCabeceraDTO().getFacturaDetalleDTOCols().stream().forEach(detalle ->{
+			GuiaDespachoDetalleDTO detalleGuia = detallePedidosCosl.stream()
+	        		.filter(guiaDetalle -> guiaDetalle.getCodigoArticulo().intValue() == detalle.getCodigoArticulo().intValue())
+	        		.findFirst().orElse(null);
+			if(detalleGuia != null) {
+				detallePedidosCosl.stream().forEach(guiaDesp -> {
+					if(guiaDesp.getCodigoArticulo().intValue() == detalle.getCodigoArticulo().intValue()) {
+						guiaDesp.setCantidad(guiaDesp.getCantidad()-detalle.getCantidad());
+					}
+				});
+			}
+		});
+		
+		detallePedidosCosl.stream().forEach(detallePedido -> {
+			detallePedido.setUsuarioModificacion(guiaDespachoFacturaDTO.getUsuarioRegistro());
 			detallePedido.setFechaModificacion(new Date());
 			if(detallePedido.getCantidad().intValue() == 0) {
 				detallePedido.setEstado(ERPConstantes.ESTADO_INACTIVO_NUMERICO);

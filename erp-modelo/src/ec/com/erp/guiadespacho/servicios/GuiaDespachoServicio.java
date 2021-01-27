@@ -7,9 +7,11 @@ import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 import ec.com.erp.guiadespacho.gestor.IGuiaDespachoDetalleGestor;
 import ec.com.erp.guiadespacho.gestor.IGuiaDespachoExtrasGestor;
+import ec.com.erp.guiadespacho.gestor.IGuiaDespachoFacturaGestor;
 import ec.com.erp.guiadespacho.gestor.IGuiaDespachoGestor;
 import ec.com.erp.guiadespacho.gestor.IGuiaDespachoPedidoGestor;
 
@@ -17,6 +19,7 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	
 	private IGuiaDespachoGestor guiaDespachoGestor;
 	private IGuiaDespachoPedidoGestor guiaDespachoPedidoGestor;
+	private IGuiaDespachoFacturaGestor guiaDespachoFacturaGestor;
 	private IGuiaDespachoExtrasGestor guiaDespachoExtrasGestor;
 	private IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor;
 
@@ -50,6 +53,14 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 
 	public void setGuiaDespachoDetalleGestor(IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor) {
 		this.guiaDespachoDetalleGestor = guiaDespachoDetalleGestor;
+	}
+	
+	public IGuiaDespachoFacturaGestor getGuiaDespachoFacturaGestor() {
+		return guiaDespachoFacturaGestor;
+	}
+
+	public void setGuiaDespachoFacturaGestor(IGuiaDespachoFacturaGestor guiaDespachoFacturaGestor) {
+		this.guiaDespachoFacturaGestor = guiaDespachoFacturaGestor;
 	}
 
 	/**
@@ -105,6 +116,18 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 		return this.guiaDespachoPedidoGestor.obtenerListaGuiaDespachoPedidosByNumeroGuiaDespacho(codigoCompania, numeroGuia);
 	}
 	
+	/**
+	 * M\u00e9todo para obtener lista de facturas por guia de despacho
+	 * @param codigoCompania
+	 * @param numeroGuia
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<GuiaDespachoFacturaDTO> findObtenerListaGuiaDespachoFacturasByNumeroGuiaDespacho(Integer codigoCompania, String numeroGuia) throws ERPException{
+		return this.guiaDespachoFacturaGestor.obtenerListaGuiaDespachoFacturasByNumeroGuiaDespacho(codigoCompania, numeroGuia);
+	}
+	
 	
 	
 	/**
@@ -135,6 +158,15 @@ public class GuiaDespachoServicio implements IGuiaDespachoServicio{
 	@Override
 	public void transEliminarPedidoDespacho(String numeroGuia, GuiaDespachoPedidoDTO guiaDespachoPedidoDTO) {
 		this.guiaDespachoGestor.eliminarPedidoDespacho(numeroGuia, guiaDespachoPedidoDTO);
+	}
+	
+	/**
+	 * Method for update status invoice and delete invoice for dispatch
+	 * @param guiaDespachoFacturaDTO
+	 */
+	@Override
+	public void transEliminarFacturaDespacho(String numeroGuia, GuiaDespachoFacturaDTO guiaDespachoFacturaDTO) {
+		this.guiaDespachoGestor.eliminarFacturaDespacho(numeroGuia, guiaDespachoFacturaDTO);
 	}
 	
 	/**

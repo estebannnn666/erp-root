@@ -7,6 +7,7 @@ import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 
 
@@ -39,6 +40,15 @@ public interface IGuiaDespachoServicio {
 	 * @throws ERPException
 	 */
 	Collection<GuiaDespachoPedidoDTO> findObtenerListaGuiaDespachoPedidosByNumeroGuiaDespacho(Integer codigoCompania, String numeroGuia) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener lista de facturas por guia de despacho
+	 * @param codigoCompania
+	 * @param numeroGuia
+	 * @return
+	 * @throws ERPException
+	 */
+	Collection<GuiaDespachoFacturaDTO> findObtenerListaGuiaDespachoFacturasByNumeroGuiaDespacho(Integer codigoCompania, String numeroGuia) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para obtener lista de extras en guia de despacho
@@ -78,6 +88,12 @@ public interface IGuiaDespachoServicio {
 	 * @param guiaDespachoPedidoDTO
 	 */
 	void transEliminarPedidoDespacho(String numeroGuia, GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
+	
+	/**
+	 * Method for update status invoice and delete invoice for dispatch
+	 * @param guiaDespachoFacturaDTO
+	 */
+	void transEliminarFacturaDespacho(String numeroGuia, GuiaDespachoFacturaDTO guiaDespachoFacturaDTO);
 	
 	/**
 	 * Metodo para eliminar articulos extras del despacho

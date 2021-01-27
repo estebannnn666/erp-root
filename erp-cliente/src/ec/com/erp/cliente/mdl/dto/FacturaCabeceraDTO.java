@@ -147,6 +147,18 @@ public class FacturaCabeceraDTO implements Serializable{
 	private String codigoValorTipoDocumento ;
 	
 	/**
+	 * Especifica el tipo del estado de despacho de la factura
+	 */
+	@Column(name = "CODIGOTIPOESTADO")
+	private Integer codigoTipoEstado ;
+	
+	/**
+	 * Especifica el valor del estado de despacho de la factura
+	 */
+	@Column(name = "CODIGOVALORESTADO")
+	private String codigoValorEstado ;
+	
+	/**
 	 * Especifica el tipo de cliente mayorista o minorista
 	 */
 	@Column(name = "TIPOCLIENTE")
@@ -173,6 +185,9 @@ public class FacturaCabeceraDTO implements Serializable{
 	@Column(name="FECHAMODIFICACION")
 	private Date fechaModificacion;
 
+	@Transient
+	private Boolean seleccionada;
+	
 	/**
 	 * Referencia a detalle de la factura
 	 */
@@ -471,5 +486,29 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setTipoCliente(String tipoCliente) {
 		this.tipoCliente = tipoCliente;
+	}
+
+	public Integer getCodigoTipoEstado() {
+		return codigoTipoEstado;
+	}
+
+	public void setCodigoTipoEstado(Integer codigoTipoEstado) {
+		this.codigoTipoEstado = codigoTipoEstado;
+	}
+
+	public String getCodigoValorEstado() {
+		return codigoValorEstado;
+	}
+
+	public void setCodigoValorEstado(String codigoValorEstado) {
+		this.codigoValorEstado = codigoValorEstado;
+	}
+
+	public Boolean getSeleccionada() {
+		return seleccionada;
+	}
+
+	public void setSeleccionada(Boolean seleccionada) {
+		this.seleccionada = seleccionada;
 	}
 }

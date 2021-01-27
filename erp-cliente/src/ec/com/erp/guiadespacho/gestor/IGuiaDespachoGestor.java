@@ -6,6 +6,7 @@ import java.util.Collection;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
+import ec.com.erp.cliente.mdl.dto.GuiaDespachoFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
 
 
@@ -50,6 +51,12 @@ public interface IGuiaDespachoGestor {
 	 * @param guiaDespachoPedidoDTO
 	 */
 	void eliminarPedidoDespacho(String numeroGuia, GuiaDespachoPedidoDTO guiaDespachoPedidoDTO);
+	
+	/**
+	 * Method for update status invoice and delete invoice for dispatch
+	 * @param guiaDespachoFacturaDTO
+	 */
+	void eliminarFacturaDespacho(String numeroGuia, GuiaDespachoFacturaDTO guiaDespachoFacturaDTO);
 	
 	/**
 	 * Metodo para eliminar articulos extras del despacho
