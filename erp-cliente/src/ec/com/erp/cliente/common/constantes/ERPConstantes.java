@@ -53,6 +53,8 @@ public class ERPConstantes {
 	public static final String CODIGO_CATALOGO_VALOR_TRANSACCION_GASTO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.transaccion.gasto");
 	public static final String CODIGO_CATALOGO_VALOR_CLIENTE_MAYORISTA = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.cliente.mayorista");
 	public static final String CODIGO_CATALOGO_VALOR_CLIENTE_MINORISTA = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.cliente.minorista");
+	public static final String CODIGO_CATALOGO_VALOR_FACTURA_REGISTRADA = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.factura.registrada");
+	public static final String CODIGO_CATALOGO_VALOR_FACTURA_DESPACHADA = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.factura.despachada");
 	
 	/************ CODIGOS CATALAGOS TIPOS *****************/
 	public static final Integer CODIGO_CATALOGO_TIPOS_CONTACTOS = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.contacto");

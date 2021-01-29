@@ -23,6 +23,7 @@ import ec.com.erp.cliente.mdl.dto.GuiaDespachoDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoExtrasDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoFacturaDTO;
 import ec.com.erp.cliente.mdl.dto.GuiaDespachoPedidoDTO;
+import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 import ec.com.erp.guiadespacho.dao.IGuiaDespachoDAO;
 import ec.com.erp.pedidos.dao.IEstadoPedidoDAO;
 import ec.com.erp.utilitario.commons.util.TransformerUtil;
@@ -39,6 +40,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 	private IGuiaDespachoFacturaGestor guiaDespachoFacturaGestor;
 	private IGuiaDespachoDetalleGestor guiaDespachoDetalleGestor;
 	private IEstadoPedidoDAO estadoPedidoDAO;
+	private IFacturaCabeceraGestor facturaCabeceraGestor;
 	
 	public IGuiaDespachoDAO getGuiaDespachoDAO() {
 		return guiaDespachoDAO;
@@ -88,6 +90,14 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 		this.guiaDespachoFacturaGestor = guiaDespachoFacturaGestor;
 	}
 
+	public IFacturaCabeceraGestor getFacturaCabeceraGestor() {
+		return facturaCabeceraGestor;
+	}
+
+	public void setFacturaCabeceraGestor(IFacturaCabeceraGestor facturaCabeceraGestor) {
+		this.facturaCabeceraGestor = facturaCabeceraGestor;
+	}
+
 	/**
 	 * M\u00e9todo para obtener lista de despachos
 	 * @param codigoCompania
@@ -119,13 +129,27 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 			Collection<GuiaDespachoExtrasDTO> guiaDespachoExtrasDTOCols = guiaDespachoDTO.getGuiaDespachoExtrasDTOCols();
 			// Obtener la lista de detalles
 			Collection<GuiaDespachoDetalleDTO> guiaDespachoDetalleDTOCols = guiaDespachoDTO.getGuiaDespachoDetalleDTOCols();
-			// Obtener la lista de despachos extras
+			// Obtener la lista de facturas en guia de despacho
+			Collection<GuiaDespachoFacturaDTO> guiaDespachoFacturaDTOCols = guiaDespachoDTO.getGuiaDespachoFacturaDTOCols();
+			// Obtener la lista de pedidos en guia de despacho
 			Collection<GuiaDespachoPedidoDTO> guiaDespachoPedidoDTOCols = guiaDespachoDTO.getGuiaDespachoPedidoDTOCols();
-			
+						
 			// Guardar guia despacho
 			this.guiaDespachoDAO.crearActualizarGuiaDespacho(guiaDespachoDTO);
 			
-			// Guardar pedidos guia despacho
+			// Guardar facturas de la guia despacho
+			for(GuiaDespachoFacturaDTO guiaDespachoFacturaDTO : guiaDespachoFacturaDTOCols) {
+				guiaDespachoFacturaDTO.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
+				guiaDespachoFacturaDTO.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
+				guiaDespachoFacturaDTO.setCodigoGuiaDespacho(guiaDespachoDTO.getId().getCodigoGuiaDespacho());
+				if(guiaDespachoFacturaDTO.getObservacion() != null) {
+					guiaDespachoFacturaDTO.setObservacion(guiaDespachoFacturaDTO.getObservacion().toUpperCase());
+				}
+				this.guiaDespachoFacturaGestor.crearActualizarGuiaDespachoFacturas(guiaDespachoFacturaDTO);
+				this.facturaCabeceraGestor.actualizarFacturaEstadoDespachado(guiaDespachoDTO.getId().getCodigoCompania(), guiaDespachoFacturaDTO.getCodigoFactura(), guiaDespachoDTO.getUsuarioRegistro(), ERPConstantes.CODIGO_CATALOGO_VALOR_FACTURA_DESPACHADA);
+			}
+			
+			// Guardar pedidos de la guia despacho
 			for(GuiaDespachoPedidoDTO guiaDespachoPedidoDTO : guiaDespachoPedidoDTOCols) {
 				guiaDespachoPedidoDTO.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
 				guiaDespachoPedidoDTO.setUsuarioRegistro(guiaDespachoDTO.getUsuarioRegistro());
@@ -152,7 +176,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 				
 			}	
 			
-			// Guardar pedidos guia despacho
+			// Guardar articulos extra en guia despacho
 			for(GuiaDespachoExtrasDTO guiaDespachoExtrasDTO : guiaDespachoExtrasDTOCols) {
 				if(guiaDespachoExtrasDTO.getDescripcionProducto() != null && guiaDespachoExtrasDTO.getDescripcionProducto().trim() != "" && guiaDespachoExtrasDTO.getCantidad() != null) {
 					guiaDespachoExtrasDTO.getId().setCodigoCompania(guiaDespachoDTO.getId().getCodigoCompania());
@@ -326,7 +350,7 @@ public class GuiaDespachoGestor implements IGuiaDespachoGestor {
 		this.guiaDespachoFacturaGestor.crearActualizarGuiaDespachoFacturas(guiaDespachoFacturaDTO);
 		
 		// Actualizar factura
-		// Aqui poner metodo para actualizar el estado de la factura
+		this.facturaCabeceraGestor.actualizarFacturaEstadoDespachado(guiaDespachoFacturaDTO.getId().getCodigoCompania(), guiaDespachoFacturaDTO.getCodigoFactura(), guiaDespachoFacturaDTO.getUsuarioRegistro(), ERPConstantes.CODIGO_CATALOGO_VALOR_FACTURA_REGISTRADA);
 		
 		// Actualizar detalles del despacho
 		Collection<GuiaDespachoDetalleDTO> detallePedidosCosl = this.guiaDespachoDetalleGestor.obtenerListaGuiaDespachoDetalleByNumeroGuia(guiaDespachoFacturaDTO.getId().getCodigoCompania(), numeroGuia);

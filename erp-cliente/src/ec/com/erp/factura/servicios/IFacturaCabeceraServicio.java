@@ -45,6 +45,17 @@ public interface IFacturaCabeceraServicio {
 	Collection<FacturaCabeceraDTO> findObtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener lista de facturas sin despachar.
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @return
+	 * @throws ERPException
+	 */
+	Collection<FacturaCabeceraDTO> findObtenerListaFacturasSinDespachar(Integer codigoCompania, String numeroFactura, String docClienteProveedor, String nombClienteProveedor) throws ERPException;
+	
+	/**
 	 * M\u00e9todo para guardar y actualizar factura cabecera
 	 * @param facturaCabeceraDTO
 	 * @throws ERPException

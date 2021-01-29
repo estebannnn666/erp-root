@@ -31,6 +31,17 @@ public interface IFacturaCabeceraDAO {
 	Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin, String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener lista de facturas sin despachar.
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @return
+	 * @throws ERPException
+	 */
+	Collection<FacturaCabeceraDTO> obtenerListaFacturasSinDespachar(Integer codigoCompania, String numeroFactura, String docClienteProveedor, String nombClienteProveedor) throws ERPException;
+	
+	/**
 	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
 	 * @param codigoCompania
 	 * @param numeroFactura
@@ -92,4 +103,14 @@ public interface IFacturaCabeceraDAO {
 	 * @throws ERPException
 	 */
 	Long obtenerNumeroFacturasComprasVentas(Integer codigoCompania, Timestamp fechaInicio, Timestamp fechaFin, Collection<String> tipoDocumento, Boolean pagada) throws ERPException;
+	
+	/**
+	 * Actualizar estado de factura.
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @param userId
+	 * @param codigoValorEstado
+	 * @throws ERPException
+	 */
+	void actualizarFacturaEstadoDespachado(Integer codigoCompania, Long codigoFactura, String userId, String codigoValorEstado)throws ERPException;
 }

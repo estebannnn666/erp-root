@@ -97,6 +97,7 @@
 		<property name="guiaDespachoExtrasGestor"><ref bean="erpGuiaDespachoExtrasGestor"/></property>
 		<property name="guiaDespachoDetalleGestor"><ref bean="erpGuiaDespachoDetalleGestor"/></property>
 		<property name="estadoPedidoDAO"><ref bean="erpEstadoPedidoDAO"/></property>
+		<property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
 	</bean>
 	
 	<!-- Inyeccion bean  CompaniaGestor -->

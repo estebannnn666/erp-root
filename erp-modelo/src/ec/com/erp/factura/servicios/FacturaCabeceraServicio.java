@@ -62,6 +62,20 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	}
 	
 	/**
+	 * M\u00e9todo para obtener lista de facturas sin despachar.
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<FacturaCabeceraDTO> findObtenerListaFacturasSinDespachar(Integer codigoCompania, String numeroFactura, String docClienteProveedor, String nombClienteProveedor) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerListaFacturasSinDespachar(codigoCompania, numeroFactura, docClienteProveedor, nombClienteProveedor);
+	}
+	
+	/**
 	 * M\u00e9todo para guardar y actualizar factura cabecera
 	 * @param facturaCabeceraDTO
 	 * @throws ERPException

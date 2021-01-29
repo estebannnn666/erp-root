@@ -148,6 +148,7 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 			Integer[] secuencialItem = new Integer[]{Integer.parseInt(secuencial.getItem())};
 			Collection<Item> itemsFireBase = ItemProvider.obtainItemFirebase();
 			Collection<ArticuloDTO> articuloDTOCols = this.articuloGestor.obtenerListaArticulos(ERPConstantes.CODIGO_COMPANIA, null, null);
+			Collection<ArticuloDTO> imagenArticuloDTOCols = this.articuloGestor.obtenerArticulosImagen(ERPConstantes.CODIGO_COMPANIA);
 			if(CollectionUtils.isNotEmpty(articuloDTOCols)) {
 				Collection<Item> itemsUpload = new ArrayList<>();
 				Collection<ImageItem> imageItemsUpload = new ArrayList<>();
@@ -172,6 +173,7 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 						itemSave.setDriveUnit(new ArrayList<>());
 						int cont = 0;
 						for(ArticuloUnidadManejoDTO articuloUnidadManejoDTO : articuloLocal.getArticuloUnidadManejoDTOCols()) {
+							System.out.println("art:"+articuloLocal.getCodigoBarras());
 							InventarioDTO invetario = this.inventarioGestor.obtenerUltimoInventarioByArticulo(ERPConstantes.CODIGO_COMPANIA, articuloLocal.getCodigoBarras(), articuloUnidadManejoDTO.getId().getCodigoArticuloUnidadManejo());
 							if(invetario != null) {
 								stockItem = stockItem + (invetario.getCantidadExistencia() * articuloUnidadManejoDTO.getValorUnidadManejo());
@@ -215,21 +217,26 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 					}
 					itemsUpload.add(itemSave);
 					// Add images for save in fire base
-					if(articuloLocal.getImagen() != null) {
-						String base64Image = Base64.getMimeEncoder().encodeToString(articuloLocal.getImagen());
-						ImageItem imageItem = new ImageItem();
-						imageItem.setId(itemSave.getDataItem().getId());
-						imageItem.setBarCode(articuloLocal.getCodigoBarras());
-						imageItem.setImage(base64Image);
-						imageItemsUpload.add(imageItem);
+					if(CollectionUtils.isNotEmpty(imagenArticuloDTOCols)) {
+						ArticuloDTO imagenArticuloDTO = imagenArticuloDTOCols.stream()
+								.filter(predicate -> predicate.getCodigoBarras().equals(articuloLocal.getCodigoBarras()))
+								.findFirst().orElse(null);
+						if(imagenArticuloDTO != null) {
+							String base64Image = Base64.getMimeEncoder().encodeToString(imagenArticuloDTO.getImagen());
+							ImageItem imageItem = new ImageItem();
+							imageItem.setId(itemSave.getDataItem().getId());
+							imageItem.setBarCode(imagenArticuloDTO.getCodigoBarras());
+							imageItem.setImage(base64Image);
+							imageItemsUpload.add(imageItem);
+						}
 					}
 				});
 				// Save items in fire base
-				ItemProvider.createUpdateItem(itemsUpload);
+				//ItemProvider.createUpdateItem(itemsUpload);
 				// Save images items in fire base
 				ItemProvider.createUpdateImageItem(imageItemsUpload);
 				// Update sequense
-				CommonProvider.updateSequence("item", String.valueOf(secuencialItem[0]));
+				//CommonProvider.updateSequence("item", String.valueOf(secuencialItem[0]));
 			}
 		} catch (IOException | InterruptedException | ExecutionException e1) {
 			throw new ERPException("Error, {0}",e1.getMessage()) ;

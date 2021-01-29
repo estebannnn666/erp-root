@@ -94,9 +94,9 @@ public class GuiaDespachoFacturaDAO implements IGuiaDespachoFacturaDAO {
 			// Proyecciones entidad root 
 			ProjectionList projectionList = Projections.projectionList();
 			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
-			projectionList.add(Projections.property("root.id.codigoGuiaDespachoPedido"), "id_codigoGuiaDespachoPedido");
+			projectionList.add(Projections.property("root.id.codigoGuiaDespachoFactura"), "id_codigoGuiaDespachoFactura");
 			projectionList.add(Projections.property("root.codigoGuiaDespacho"), "codigoGuiaDespacho");
-			projectionList.add(Projections.property("root.codigoPedido"), "codigoPedido");
+			projectionList.add(Projections.property("root.codigoFactura"), "codigoFactura");
 			projectionList.add(Projections.property("root.orden"), "orden");
 			projectionList.add(Projections.property("root.observacion"), "observacion");
 			projectionList.add(Projections.property("root.estado"), "estado");

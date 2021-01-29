@@ -125,6 +125,20 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	}
 	
 	/**
+	 * M\u00e9todo para obtener lista de facturas sin despachar.
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturasSinDespachar(Integer codigoCompania, String numeroFactura, String docClienteProveedor, String nombClienteProveedor) throws ERPException{
+		return this.facturaCabeceraDAO.obtenerListaFacturasSinDespachar(codigoCompania, numeroFactura, docClienteProveedor, nombClienteProveedor);
+	}
+	
+	/**
 	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
 	 * @param codigoCompania
 	 * @param numeroFactura
@@ -622,5 +636,18 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			throw new ERPException("Error", "Error al procesar plantilla xsl") ;
 		}
 		return html;
+	}
+	
+	/**
+	 * Actualizar estado de factura.
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @param userId
+	 * @param codigoValorEstado
+	 * @throws ERPException
+	 */
+	@Override
+	public void actualizarFacturaEstadoDespachado(Integer codigoCompania, Long codigoFactura, String userId, String codigoValorEstado)throws ERPException{
+		this.facturaCabeceraDAO.actualizarFacturaEstadoDespachado(codigoCompania, codigoFactura, userId, codigoValorEstado);
 	}
 }

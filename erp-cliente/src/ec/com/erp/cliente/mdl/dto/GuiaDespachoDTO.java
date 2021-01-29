@@ -122,6 +122,13 @@ public class GuiaDespachoDTO implements Serializable{
 	private Collection<GuiaDespachoExtrasDTO> guiaDespachoExtrasDTOCols;
 	
 	/**
+	 * Referencia a la lista de detalle de factuas
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "guiaDespachoDTO")
+	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
+	private Collection<GuiaDespachoFacturaDTO> guiaDespachoFacturaDTOCols;
+	
+	/**
 	 * Referencia a la lista de detalle de pedidos
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "guiaDespachoDTO")
@@ -278,5 +285,13 @@ public class GuiaDespachoDTO implements Serializable{
 
 	public void setGuiaDespachoDetalleDTOCols(Collection<GuiaDespachoDetalleDTO> guiaDespachoDetalleDTOCols) {
 		this.guiaDespachoDetalleDTOCols = guiaDespachoDetalleDTOCols;
+	}
+
+	public Collection<GuiaDespachoFacturaDTO> getGuiaDespachoFacturaDTOCols() {
+		return guiaDespachoFacturaDTOCols;
+	}
+
+	public void setGuiaDespachoFacturaDTOCols(Collection<GuiaDespachoFacturaDTO> guiaDespachoFacturaDTOCols) {
+		this.guiaDespachoFacturaDTOCols = guiaDespachoFacturaDTOCols;
 	}
 }
