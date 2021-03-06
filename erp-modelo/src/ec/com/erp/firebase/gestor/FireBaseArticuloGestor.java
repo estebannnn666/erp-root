@@ -232,11 +232,11 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 					}
 				});
 				// Save items in fire base
-				//ItemProvider.createUpdateItem(itemsUpload);
+				ItemProvider.createUpdateItem(itemsUpload);
 				// Save images items in fire base
 				ItemProvider.createUpdateImageItem(imageItemsUpload);
 				// Update sequense
-				//CommonProvider.updateSequence("item", String.valueOf(secuencialItem[0]));
+				CommonProvider.updateSequence("item", String.valueOf(secuencialItem[0]));
 			}
 		} catch (IOException | InterruptedException | ExecutionException e1) {
 			throw new ERPException("Error, {0}",e1.getMessage()) ;

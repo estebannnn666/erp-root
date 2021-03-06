@@ -73,7 +73,7 @@ public class CompaniaDAO implements ICompaniaDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de companias.").initCause(e);
 		} 
 	}
 	
@@ -111,7 +111,7 @@ public class CompaniaDAO implements ICompaniaDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de companias.").initCause(e);
 		} 
 	}
 

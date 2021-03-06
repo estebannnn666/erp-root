@@ -68,6 +68,7 @@ public class ERPConstantes {
 	public static final Integer CODIGO_CATALOGO_TIPOS_TRANSACCION = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.transaccion");
 	public static final Integer CODIGO_CATALOGO_TIPOS_UNIDAD_MANEJO = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.tipo.unidad.manejo");
 	public static final Integer CODIGO_CATALOGO_TIPOS_COMPRA_CLIENTE = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.cliente.tipocompra");
+	public static final Integer CODIGO_CATALOGO_TIPOS_ZONA_CLIENTE = ERPMessages.getInteger("ec.com.erp.catalogo.tipo.cliente.zona.sector");
 	
 	/*********** PERFILES ********/
 	public static final BigDecimal CODIGO_PERFIL_ADMINISTRADOR = ERPMessages.getBigDecimal("ec.com.erp.codigo.secuencial.pefil.administrador");

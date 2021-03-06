@@ -105,7 +105,7 @@ public class EstadoPedidoDAO implements IEstadoPedidoDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de estados del pedido.").initCause(e);
 		} 
 	}
 

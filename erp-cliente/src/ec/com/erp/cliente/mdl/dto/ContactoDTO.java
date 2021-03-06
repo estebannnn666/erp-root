@@ -100,6 +100,18 @@ public class ContactoDTO implements Serializable{
 	private Integer codigoTipoContacto ;
 	
 	/**
+	 * Especifica el codigo valor del tipo de contacto
+	 */
+	@Column(name = "CODIGOVALORZONA")
+	private String codigoValorZona ;
+	
+	/**
+	 * Especifica el codigo tipo de contacto
+	 */
+	@Column(name = "CODIGOTIPOZONA")
+	private Integer codigoTipoZona ;
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -126,6 +138,16 @@ public class ContactoDTO implements Serializable{
 		@JoinColumn(name = "CODIGOTIPOCONTACTO", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
 	})
 	private CatalogoValorDTO tipoContactoCatalogoValorDTO;
+	
+	/**
+	 * Referencia CatalogoValorDTO tipo de zona
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOVALORZONA", referencedColumnName = "CODIGOCATALOGOVALOR", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOTIPOZONA", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
+	})
+	private CatalogoValorDTO zonaCatalogoValorDTO;
 	
 	/**
 	 * Referencia CatalogoValorDTO tipo de contacto
@@ -315,4 +337,27 @@ public class ContactoDTO implements Serializable{
 		this.direccionPrincipal = direccionPrincipal;
 	}
 
+	public String getCodigoValorZona() {
+		return codigoValorZona;
+	}
+
+	public void setCodigoValorZona(String codigoValorZona) {
+		this.codigoValorZona = codigoValorZona;
+	}
+
+	public Integer getCodigoTipoZona() {
+		return codigoTipoZona;
+	}
+
+	public void setCodigoTipoZona(Integer codigoTipoZona) {
+		this.codigoTipoZona = codigoTipoZona;
+	}
+
+	public CatalogoValorDTO getZonaCatalogoValorDTO() {
+		return zonaCatalogoValorDTO;
+	}
+
+	public void setZonaCatalogoValorDTO(CatalogoValorDTO zonaCatalogoValorDTO) {
+		this.zonaCatalogoValorDTO = zonaCatalogoValorDTO;
+	}
 }

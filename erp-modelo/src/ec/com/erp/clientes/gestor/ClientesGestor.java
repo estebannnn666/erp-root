@@ -134,6 +134,7 @@ public class ClientesGestor implements IClientesGestor{
 			
 			// Creamos o actualizamos el contacto
 			contactoDTO.getId().setCodigoCompania(Integer.parseInt(ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			contactoDTO.setCodigoTipoZona(ERPConstantes.CODIGO_CATALOGO_TIPOS_ZONA_CLIENTE);
 			contactoDTO.setUsuarioRegistro(clienteDTO.getUserId());
 			contactoDTO.setCallePrincipal(contactoDTO.getCallePrincipal().toUpperCase());
 			String direccion = contactoDTO.getCallePrincipal();

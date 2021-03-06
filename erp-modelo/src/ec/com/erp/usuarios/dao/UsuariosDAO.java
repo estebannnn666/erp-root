@@ -108,7 +108,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de usuarios.").initCause(e);
 		} 
 	}
 	
@@ -186,7 +186,7 @@ public class UsuariosDAO implements IUsuariosDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de usuarios.").initCause(e);
 		} 
 	}
 	

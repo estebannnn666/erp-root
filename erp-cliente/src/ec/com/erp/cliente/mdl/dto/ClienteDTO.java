@@ -38,6 +38,12 @@ public class ClienteDTO implements Serializable{
 	 */
 	@Column(name = "CODIGOEMPRESA")
 	private Long codigoEmpresa ;
+
+	/**
+	 * Especifica el codigo de vendedor
+	 */
+	@Column(name="CODIGOVENDEDOR")
+	private Long codigoVendedor;
 	
 	/**
 	 * Especifica el usuario atado al cliente
@@ -126,6 +132,16 @@ public class ClienteDTO implements Serializable{
 		@JoinColumn(name = "CODIGOEMPRESA", referencedColumnName = "CODIGOEMPRESA", insertable = false, updatable = false)
 	})
 	private EmpresaDTO empresaDTO;
+	
+	/**
+	 * Referencia al entidad Vendedor
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOCOMPANIA", referencedColumnName = "CODIGOCOMPANIA", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOVENDEDOR", referencedColumnName = "CODIGOVENDEDOR", insertable = false, updatable = false)
+	})
+	private VendedorDTO vendedorDTO;
 
 	/**
 	 * Referencia CatalogoValorDTO tipo de contacto
@@ -278,5 +294,21 @@ public class ClienteDTO implements Serializable{
 
 	public void setTipoCompraCatalogoValorDTO(CatalogoValorDTO tipoCompraCatalogoValorDTO) {
 		this.tipoCompraCatalogoValorDTO = tipoCompraCatalogoValorDTO;
+	}
+
+	public Long getCodigoVendedor() {
+		return codigoVendedor;
+	}
+
+	public void setCodigoVendedor(Long codigoVendedor) {
+		this.codigoVendedor = codigoVendedor;
+	}
+
+	public VendedorDTO getVendedorDTO() {
+		return vendedorDTO;
+	}
+
+	public void setVendedorDTO(VendedorDTO vendedorDTO) {
+		this.vendedorDTO = vendedorDTO;
 	}
 }

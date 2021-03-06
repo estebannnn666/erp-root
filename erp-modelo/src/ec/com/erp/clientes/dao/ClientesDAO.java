@@ -80,7 +80,8 @@ public class ClientesDAO implements IClientesDAO {
 
 			//joins
 			Criteria criteria  = session.createCriteria(ClienteDTO.class, "root");
-//			criteria.createAlias("root.usuariosDTO", "usuariosDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.vendedorDTO", "vendedorDTO", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("vendedorDTO.personaDTO", "personaVentaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.tipoClienteCatalogoValorDTO", "tipoClienteCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.tipoCompraCatalogoValorDTO", "tipoCompraCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
@@ -104,6 +105,7 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("root.id.codigoCliente"), "id_codigoCliente");
 			projectionList.add(Projections.property("root.codigoPersona"), "codigoPersona");
 			projectionList.add(Projections.property("root.codigoEmpresa"), "codigoEmpresa");
+			projectionList.add(Projections.property("root.codigoVendedor"), "codigoVendedor");
 			projectionList.add(Projections.property("root.userId"), "userId");
 			projectionList.add(Projections.property("root.codigoValorTipoCliente"), "codigoValorTipoCliente");
 			projectionList.add(Projections.property("root.codigoTipoCliente"), "codigoTipoCliente");
@@ -151,7 +153,9 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("contactoPersonaDTO.telefonoPrincipal"), "personaDTO_contactoPersonaDTO_telefonoPrincipal");
 			projectionList.add(Projections.property("contactoPersonaDTO.telefonoCelular"), "personaDTO_contactoPersonaDTO_telefonoCelular");			
 			projectionList.add(Projections.property("contactoPersonaDTO.codigoValarTipoContacto"), "personaDTO_contactoPersonaDTO_codigoValarTipoContacto");
-			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoContacto"), "personaDTO_contactoPersonaDTO_codigoTipoContacto");			
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoContacto"), "personaDTO_contactoPersonaDTO_codigoTipoContacto");	
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoValorZona"), "personaDTO_contactoPersonaDTO_codigoValorZona");
+			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoZona"), "personaDTO_contactoPersonaDTO_codigoTipoZona");	
 			projectionList.add(Projections.property("contactoPersonaDTO.estado"), "personaDTO_contactoPersonaDTO_estado");
 			projectionList.add(Projections.property("contactoPersonaDTO.usuarioRegistro"), "personaDTO_contactoPersonaDTO_usuarioRegistro");
 			projectionList.add(Projections.property("contactoPersonaDTO.fechaRegistro"), "personaDTO_contactoPersonaDTO_fechaRegistro");
@@ -180,11 +184,26 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("contactoEmpresaDTO.telefonoPrincipal"), "empresaDTO_contactoEmpresaDTO_telefonoPrincipal");
 			projectionList.add(Projections.property("contactoEmpresaDTO.telefonoCelular"), "empresaDTO_contactoEmpresaDTO_telefonoCelular");			
 			projectionList.add(Projections.property("contactoEmpresaDTO.codigoValarTipoContacto"), "empresaDTO_contactoEmpresaDTO_codigoValarTipoContacto");
-			projectionList.add(Projections.property("contactoEmpresaDTO.codigoTipoContacto"), "empresaDTO_contactoEmpresaDTO_codigoTipoContacto");			
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoTipoContacto"), "empresaDTO_contactoEmpresaDTO_codigoTipoContacto");	
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoValorZona"), "empresaDTO_contactoEmpresaDTO_codigoValorZona");
+			projectionList.add(Projections.property("contactoEmpresaDTO.codigoTipoZona"), "empresaDTO_contactoEmpresaDTO_codigoTipoZona");
 			projectionList.add(Projections.property("contactoEmpresaDTO.estado"), "empresaDTO_contactoEmpresaDTO_estado");
 			projectionList.add(Projections.property("contactoEmpresaDTO.usuarioRegistro"), "empresaDTO_contactoEmpresaDTO_usuarioRegistro");
 			projectionList.add(Projections.property("contactoEmpresaDTO.fechaRegistro"), "empresaDTO_contactoEmpresaDTO_fechaRegistro");
 			
+			
+			// Proyecciones entidad vendedor
+			projectionList.add(Projections.property("vendedorDTO.id.codigoCompania"), "vendedorDTO_id_codigoCompania");
+			projectionList.add(Projections.property("vendedorDTO.id.codigoVendedor"), "vendedorDTO_id_codigoVendedor");
+			projectionList.add(Projections.property("vendedorDTO.codigoPersona"), "vendedorDTO_codigoPersona");
+			projectionList.add(Projections.property("vendedorDTO.estado"), "vendedorDTO_estado");
+			
+			// Proyecciones entidad persona
+//			projectionList.add(Projections.property("personaVentaDTO.id.codigoCompania"), "vendedorDTO_personaDTO_id_codigoCompania");
+//			projectionList.add(Projections.property("personaVentaDTO.id.codigoPersona"), "vendedorDTO_personaDTO_id_codigoPersona");
+//			projectionList.add(Projections.property("personaVentaDTO.primerApellido"), "vendedorDTO_personaDTO_primerApellido");
+			projectionList.add(Projections.property("personaVentaDTO.nombreCompleto"), "vendedorDTO_personaDTO_nombreCompleto");
+						
 			criteria.setProjection(projectionList);
 			criteria.addOrder(Order.desc("root.id.codigoCliente"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ClienteDTO.class));
@@ -196,7 +215,7 @@ public class ClientesDAO implements IClientesDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de clientes.").initCause(e);
 		} 
 	}
 	
@@ -230,6 +249,7 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("root.id.codigoCliente"), "id_codigoCliente");
 			projectionList.add(Projections.property("root.codigoPersona"), "codigoPersona");
 			projectionList.add(Projections.property("root.codigoEmpresa"), "codigoEmpresa");
+			projectionList.add(Projections.property("root.codigoVendedor"), "codigoVendedor");
 			projectionList.add(Projections.property("root.userId"), "userId");
 			projectionList.add(Projections.property("root.codigoValorTipoCliente"), "codigoValorTipoCliente");
 			projectionList.add(Projections.property("root.codigoTipoCliente"), "codigoTipoCliente");
@@ -246,7 +266,7 @@ public class ClientesDAO implements IClientesDAO {
 		} catch (ERPException e) {
 			throw e;
 		} catch (Exception e) {
-			throw (ERPException)new ERPException("Error al obtener lista de convenios con diseniadores.").initCause(e);
+			throw (ERPException)new ERPException("Error al obtener lista de clientes.").initCause(e);
 		} 
 	}
 	
