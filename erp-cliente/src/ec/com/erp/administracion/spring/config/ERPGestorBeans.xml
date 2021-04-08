@@ -203,6 +203,7 @@
 	<!-- Gestor fire base cliente-->
 	<bean id="erpFireBaseClienteGestor" class="ec.com.erp.firebase.gestor.FireBaseClienteGestor">
 		<property name="clientesGestor"><ref bean="erpClientesGestor"/></property>
+		<property name="vendedorGestor"><ref bean="erpVendedorGestor"/></property>
 		<property name="personaGestor"><ref bean="erpPersonaGestor"/></property>
 		<property name="empresaGestor"><ref bean="erpEmpresaGestor"/></property>
 		<property name="contactoGestor"><ref bean="erpContactoGestor"/></property>

@@ -73,8 +73,8 @@ public class ClientesGestor implements IClientesGestor{
 	 * @return
 	 * @throws ERPException
 	 */
-	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException{	
-		return this.clientesDAO.obtenerListaClientes(codigoCompania, numeroDocumento, nombreCliente);
+	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente, String documentoVendedor) throws ERPException{	
+		return this.clientesDAO.obtenerListaClientes(codigoCompania, numeroDocumento, nombreCliente, documentoVendedor);
 	}
 	
 	/**
@@ -185,7 +185,7 @@ public class ClientesGestor implements IClientesGestor{
 	 */
 	@Override
 	public ClienteDTO obtenerClienteByCodigo(Integer codigoCompania, String numeroDocumento, String codigoValorTipoCliente) throws ERPException{
-		Collection<ClienteDTO> clienteDTOCols =  this.clientesDAO.obtenerListaClientes(codigoCompania, numeroDocumento, null);
+		Collection<ClienteDTO> clienteDTOCols =  this.clientesDAO.obtenerListaClientes(codigoCompania, numeroDocumento, null, null);
 		ClienteDTO clienteDTO = new ClienteDTO();
 		clienteDTO.setCodigoValorTipoCliente(codigoValorTipoCliente);
 		if(CollectionUtils.isEmpty(clienteDTOCols)) {

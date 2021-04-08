@@ -28,8 +28,8 @@ public class ClientesServicio implements IClientesServicio{
 	 * @return
 	 * @throws ERPException
 	 */
-	public Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException{
-		return this.clientesGestor.obtenerListaClientes(codigoCompania, numeroDocumento, nombreCliente);
+	public Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente, String documentoVendedor) throws ERPException{
+		return this.clientesGestor.obtenerListaClientes(codigoCompania, numeroDocumento, nombreCliente, documentoVendedor);
 	}
 
 	/**

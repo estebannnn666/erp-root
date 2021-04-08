@@ -23,7 +23,7 @@ public interface IClientesGestor {
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException;
+	Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente, String documentoVendedor) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para obtener cliente por numero de documento

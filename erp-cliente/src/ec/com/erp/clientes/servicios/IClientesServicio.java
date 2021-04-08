@@ -23,7 +23,7 @@ public interface IClientesServicio {
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException;
+	Collection<ClienteDTO> findObtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente, String documentoVendedor) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para guardar y actualizar cliente

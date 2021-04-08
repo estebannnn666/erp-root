@@ -112,6 +112,12 @@ public class ContactoDTO implements Serializable{
 	private Integer codigoTipoZona ;
 	
 	/**
+	 * Especifica el email
+	 */
+	@Column(name = "EMAIL")
+	private String email ;
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -359,5 +365,13 @@ public class ContactoDTO implements Serializable{
 
 	public void setZonaCatalogoValorDTO(CatalogoValorDTO zonaCatalogoValorDTO) {
 		this.zonaCatalogoValorDTO = zonaCatalogoValorDTO;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

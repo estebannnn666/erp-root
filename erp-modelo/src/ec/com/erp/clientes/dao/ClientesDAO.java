@@ -73,7 +73,7 @@ public class ClientesDAO implements IClientesDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente) throws ERPException{
+	public Collection<ClienteDTO> obtenerListaClientes(Integer codigoCompania, String numeroDocumento, String nombreCliente, String documentoVendedor) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -98,6 +98,9 @@ public class ClientesDAO implements IClientesDAO {
 			if(nombreCliente != null && nombreCliente.trim() != "") {
 				nombreCliente = nombreCliente.toUpperCase();
 				criteria.add(Restrictions.or(Restrictions.like("personaDTO.nombreCompleto", nombreCliente, MatchMode.ANYWHERE), Restrictions.like("empresaDTO.razonSocial", nombreCliente, MatchMode.ANYWHERE)));
+			}
+			if(documentoVendedor != null && documentoVendedor.trim() != "") {
+				criteria.add(Restrictions.eq("personaVentaDTO.numeroDocumento", documentoVendedor));
 			}
 			// Proyecciones entidad clientes 
 			ProjectionList projectionList = Projections.projectionList();
@@ -156,6 +159,7 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoContacto"), "personaDTO_contactoPersonaDTO_codigoTipoContacto");	
 			projectionList.add(Projections.property("contactoPersonaDTO.codigoValorZona"), "personaDTO_contactoPersonaDTO_codigoValorZona");
 			projectionList.add(Projections.property("contactoPersonaDTO.codigoTipoZona"), "personaDTO_contactoPersonaDTO_codigoTipoZona");	
+			projectionList.add(Projections.property("contactoPersonaDTO.email"), "personaDTO_contactoPersonaDTO_email");	
 			projectionList.add(Projections.property("contactoPersonaDTO.estado"), "personaDTO_contactoPersonaDTO_estado");
 			projectionList.add(Projections.property("contactoPersonaDTO.usuarioRegistro"), "personaDTO_contactoPersonaDTO_usuarioRegistro");
 			projectionList.add(Projections.property("contactoPersonaDTO.fechaRegistro"), "personaDTO_contactoPersonaDTO_fechaRegistro");
@@ -187,6 +191,7 @@ public class ClientesDAO implements IClientesDAO {
 			projectionList.add(Projections.property("contactoEmpresaDTO.codigoTipoContacto"), "empresaDTO_contactoEmpresaDTO_codigoTipoContacto");	
 			projectionList.add(Projections.property("contactoEmpresaDTO.codigoValorZona"), "empresaDTO_contactoEmpresaDTO_codigoValorZona");
 			projectionList.add(Projections.property("contactoEmpresaDTO.codigoTipoZona"), "empresaDTO_contactoEmpresaDTO_codigoTipoZona");
+			projectionList.add(Projections.property("contactoEmpresaDTO.email"), "empresaDTO_contactoEmpresaDTO_email");
 			projectionList.add(Projections.property("contactoEmpresaDTO.estado"), "empresaDTO_contactoEmpresaDTO_estado");
 			projectionList.add(Projections.property("contactoEmpresaDTO.usuarioRegistro"), "empresaDTO_contactoEmpresaDTO_usuarioRegistro");
 			projectionList.add(Projections.property("contactoEmpresaDTO.fechaRegistro"), "empresaDTO_contactoEmpresaDTO_fechaRegistro");
@@ -203,6 +208,7 @@ public class ClientesDAO implements IClientesDAO {
 //			projectionList.add(Projections.property("personaVentaDTO.id.codigoPersona"), "vendedorDTO_personaDTO_id_codigoPersona");
 //			projectionList.add(Projections.property("personaVentaDTO.primerApellido"), "vendedorDTO_personaDTO_primerApellido");
 			projectionList.add(Projections.property("personaVentaDTO.nombreCompleto"), "vendedorDTO_personaDTO_nombreCompleto");
+			projectionList.add(Projections.property("personaVentaDTO.numeroDocumento"), "vendedorDTO_personaDTO_numeroDocumento");
 						
 			criteria.setProjection(projectionList);
 			criteria.addOrder(Order.desc("root.id.codigoCliente"));
