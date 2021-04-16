@@ -34,7 +34,7 @@ public interface IInventarioServicio {
 	 * @return
 	 * @throws ERPException
 	 */
-	InventarioDTO findObtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras, Integer codigoArticuloUnidadManejo) throws ERPException;
+	InventarioDTO findObtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para crear o actualizar 

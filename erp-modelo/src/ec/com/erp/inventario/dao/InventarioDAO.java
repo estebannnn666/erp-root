@@ -252,7 +252,7 @@ public class InventarioDAO implements IInventarioDAO {
 	 * @throws ERPException
 	 */
 	@Override
-	public InventarioDTO obtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras, Integer codigoArticuloUnidadManejo) throws ERPException{
+	public InventarioDTO obtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -265,7 +265,6 @@ public class InventarioDAO implements IInventarioDAO {
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			criteria.add(Restrictions.eq("root.esUltimoRegistro", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
-			criteria.add(Restrictions.eq("root.codigoArticuloUnidadManejo", codigoArticuloUnidadManejo));
 			criteria.add(Restrictions.eq("articuloDTO.codigoBarras", codigoBarras));
 						
 			//proyecciones entidad inventario

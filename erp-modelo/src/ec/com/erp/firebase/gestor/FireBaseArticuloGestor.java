@@ -169,15 +169,17 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 					itemSave.getDataItem().setPriceRetail(articuloLocal.getPrecioMinorista().toString());
 					itemSave.getDataItem().setPriceWholesaler(articuloLocal.getPrecio().toString());
 					Integer stockItem = 0;
+					System.out.println("art:"+articuloLocal.getCodigoBarras());
+					InventarioDTO invetario = this.inventarioGestor.obtenerUltimoInventarioByArticulo(ERPConstantes.CODIGO_COMPANIA, articuloLocal.getCodigoBarras());
+					if(invetario != null) {
+						stockItem = invetario.getCantidadExistencia();
+					}
+					itemSave.getDataItem().setStock(stockItem.toString());
+					
 					if(CollectionUtils.isNotEmpty(articuloLocal.getArticuloUnidadManejoDTOCols())) {
 						itemSave.setDriveUnit(new ArrayList<>());
 						int cont = 0;
 						for(ArticuloUnidadManejoDTO articuloUnidadManejoDTO : articuloLocal.getArticuloUnidadManejoDTOCols()) {
-							System.out.println("art:"+articuloLocal.getCodigoBarras());
-							InventarioDTO invetario = this.inventarioGestor.obtenerUltimoInventarioByArticulo(ERPConstantes.CODIGO_COMPANIA, articuloLocal.getCodigoBarras(), articuloUnidadManejoDTO.getId().getCodigoArticuloUnidadManejo());
-							if(invetario != null) {
-								stockItem = stockItem + (invetario.getCantidadExistencia() * articuloUnidadManejoDTO.getValorUnidadManejo());
-							}
 							// Agregar unidades de manejo
 							DriveUnit driveUnit = new DriveUnit();
 							driveUnit.setId(""+cont);
@@ -194,7 +196,6 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 							cont++;
 						}
 					}
-					itemSave.getDataItem().setStock(stockItem.toString());
 					
 					if(CollectionUtils.isNotEmpty(articuloLocal.getArticuloImpuestoDTOCols())) {
 						itemSave.setTaxes(new ArrayList<>());

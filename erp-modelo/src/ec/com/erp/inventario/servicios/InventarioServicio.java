@@ -57,8 +57,8 @@ public class InventarioServicio implements IInventarioServicio{
 	 * @throws ERPException
 	 */
 	@Override
-	public InventarioDTO findObtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras, Integer codigoArticuloUnidadManejo) throws ERPException{
-		return this.inventarioGestor.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras, codigoArticuloUnidadManejo);
+	public InventarioDTO findObtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException{
+		return this.inventarioGestor.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras);
 	}
 
 	/**

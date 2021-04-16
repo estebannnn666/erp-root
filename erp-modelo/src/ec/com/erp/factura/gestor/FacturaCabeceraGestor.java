@@ -267,7 +267,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @param facturaDetalleDTO
 	 */
 	public void registrarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
-		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(), facturaDetalleDTO.getCodigoArticuloUnidadManejo());
+		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras());
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			if(facturaDetalleDTO.getCantidad().intValue() > inventarioDTOAux.getCantidadExistencia().intValue()) {
@@ -278,13 +278,13 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
-			inventarioDTO.setCantidadSalida(facturaDetalleDTO.getCantidad());
-			inventarioDTO.setValorUnidadSalida(facturaDetalleDTO.getValorUnidad());
-			inventarioDTO.setValorTotalSalida(facturaDetalleDTO.getSubTotal());
-			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() - facturaDetalleDTO.getCantidad());
+			Integer unidades = facturaDetalleDTO.getCantidad().intValue()  * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo().intValue();
+			inventarioDTO.setCantidadSalida(unidades);
+			inventarioDTO.setValorUnidadSalida(facturaDetalleDTO.getArticuloDTO().getCosto());
+			inventarioDTO.setValorTotalSalida(BigDecimal.valueOf(unidades.intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
+			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() - unidades.intValue());
 			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getArticuloDTO().getCosto());
-			Integer totalUnidades = inventarioDTO.getCantidadExistencia() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo();
-			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(totalUnidades.intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
+			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(inventarioDTO.getCantidadExistencia().intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
 			inventarioDTO.setCantidadEntrada(null);
 			inventarioDTO.setValorUnidadEntrada(null);
 			inventarioDTO.setValorTotalEntrada(null);
@@ -302,24 +302,24 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 */
 	public void registrarInventarioCompra(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
 		try {
-			InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(),facturaDetalleDTO.getCodigoArticuloUnidadManejo());
+			InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras());
 			InventarioDTO inventarioDTO = new InventarioDTO();
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
 			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.compra")+" "+numeroFactura+" Proveedor: "+razonSocial);
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
-			inventarioDTO.setCantidadEntrada(facturaDetalleDTO.getCantidad());
+			Integer unidades = facturaDetalleDTO.getCantidad().intValue()  * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo().intValue();
+			inventarioDTO.setCantidadEntrada(unidades);
 			inventarioDTO.setValorUnidadEntrada(facturaDetalleDTO.getValorUnidad());
 			inventarioDTO.setValorTotalEntrada(facturaDetalleDTO.getSubTotal());
 			if(inventarioDTOAux != null) {
-				inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() + facturaDetalleDTO.getCantidad());
+				inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() + unidades.intValue());
 			}else {
-				inventarioDTO.setCantidadExistencia(facturaDetalleDTO.getCantidad());
+				inventarioDTO.setCantidadExistencia(unidades);
 			}
 			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getArticuloDTO().getCosto());
-			Integer totalUnidades = inventarioDTO.getCantidadExistencia() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo();
-			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(totalUnidades.intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
+			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(inventarioDTO.getCantidadExistencia().intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
 			inventarioDTO.setCantidadSalida(null);
 			inventarioDTO.setValorUnidadSalida(null);
 			inventarioDTO.setValorTotalSalida(null);
@@ -335,7 +335,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @param facturaDetalleDTO
 	 */
 	public void reversarInventario(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
-		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(), facturaDetalleDTO.getCodigoArticuloUnidadManejo());
+		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras());
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
@@ -343,13 +343,13 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
-			inventarioDTO.setCantidadEntrada(facturaDetalleDTO.getCantidad());
-			inventarioDTO.setValorUnidadEntrada(facturaDetalleDTO.getValorUnidad());
-			inventarioDTO.setValorTotalEntrada(facturaDetalleDTO.getSubTotal());
-			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() + facturaDetalleDTO.getCantidad());
+			Integer unidades = facturaDetalleDTO.getCantidad().intValue() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo().intValue();
+			inventarioDTO.setCantidadEntrada(unidades);
+			inventarioDTO.setValorUnidadEntrada(facturaDetalleDTO.getArticuloDTO().getCosto());
+			inventarioDTO.setValorTotalEntrada(BigDecimal.valueOf(unidades.intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
+			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() + unidades);
 			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getArticuloDTO().getCosto());
-			Integer totalUnidades = inventarioDTO.getCantidadExistencia() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo();
-			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(totalUnidades.intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
+			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(inventarioDTO.getCantidadExistencia().intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
 			inventarioDTO.setCantidadSalida(null);
 			inventarioDTO.setValorUnidadSalida(null);
 			inventarioDTO.setValorTotalSalida(null);
@@ -366,7 +366,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @param facturaDetalleDTO
 	 */
 	public void reversarInventarioCompra(FacturaDetalleDTO facturaDetalleDTO, String numeroFactura, String razonSocial) {
-		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras(), facturaDetalleDTO.getCodigoArticuloUnidadManejo());
+		InventarioDTO inventarioDTOAux = this.inventarioGestor.obtenerUltimoInventarioByArticulo(facturaDetalleDTO.getId().getCodigoCompania(), facturaDetalleDTO.getArticuloDTO().getCodigoBarras());
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
@@ -374,13 +374,13 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			inventarioDTO.setArticuloDTO(facturaDetalleDTO.getArticuloDTO());
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
-			inventarioDTO.setCantidadSalida(facturaDetalleDTO.getCantidad());
+			Integer unidades = facturaDetalleDTO.getCantidad().intValue() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo().intValue();
+			inventarioDTO.setCantidadSalida(unidades);
 			inventarioDTO.setValorUnidadSalida(facturaDetalleDTO.getValorUnidad());
 			inventarioDTO.setValorTotalSalida(facturaDetalleDTO.getSubTotal());
-			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() - facturaDetalleDTO.getCantidad());
+			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() - unidades);
 			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getArticuloDTO().getCosto());
-			Integer totalUnidades = inventarioDTO.getCantidadExistencia() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo();
-			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(totalUnidades.intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
+			inventarioDTO.setValorTotalExistencia(BigDecimal.valueOf(inventarioDTO.getCantidadExistencia().intValue() * facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue()));
 			inventarioDTO.setCantidadEntrada(null);
 			inventarioDTO.setValorUnidadEntrada(null);
 			inventarioDTO.setValorTotalEntrada(null);

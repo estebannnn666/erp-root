@@ -77,8 +77,8 @@ public class InventarioGestor implements IInventarioGestor{
 	 * @throws ERPException
 	 */
 	@Override
-	public InventarioDTO obtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras, Integer codigoArticuloUnidadManejo) throws ERPException{
-		return this.inventarioDAO.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras, codigoArticuloUnidadManejo);
+	public InventarioDTO obtenerUltimoInventarioByArticulo(Integer codigoCompania, String codigoBarras) throws ERPException{
+		return this.inventarioDAO.obtenerUltimoInventarioByArticulo(codigoCompania, codigoBarras);
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public class InventarioGestor implements IInventarioGestor{
 	 */
 	@Override
 	public void crearActualizarInventario(InventarioDTO inventarioDTO)throws ERPException{
-		InventarioDTO inventarioDTOAux = this.inventarioDAO.obtenerUltimoInventarioByArticulo(inventarioDTO.getId().getCodigoCompania(), inventarioDTO.getArticuloDTO().getCodigoBarras(), inventarioDTO.getCodigoArticuloUnidadManejo());
+		InventarioDTO inventarioDTOAux = this.inventarioDAO.obtenerUltimoInventarioByArticulo(inventarioDTO.getId().getCodigoCompania(), inventarioDTO.getArticuloDTO().getCodigoBarras());
 		if(inventarioDTOAux != null) {
 			inventarioDTOAux.setEsUltimoRegistro(ERPConstantes.ESTADO_INACTIVO_NUMERICO);
 			this.inventarioDAO.crearActualizarInventario(inventarioDTOAux);
