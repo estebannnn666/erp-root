@@ -62,4 +62,11 @@ public interface IArticuloServicio {
 	 * @throws IOException
 	 */
 	byte[] findObtenerReporteCatalogo(Collection<ArticuloDTO> articuloDTOCols) throws IOException;
+	
+	/**
+	 * M\u00e9todo para obtener lista de unidades de manejo
+	 * @return 
+	 * @throws ERPException
+	 */
+	Collection<ArticuloUnidadManejoDTO> findObtenerListaUnidadManejo(Integer codigoCompania) throws ERPException;
 }

@@ -172,6 +172,8 @@ public class InventarioDAO implements IInventarioDAO {
 			//joins
 			Criteria criteria  = session.createCriteria(InventarioDTO.class, "root");
 			criteria.createAlias("root.articuloDTO", "articuloDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("articuloDTO.articuloUnidadManejoDTOCols", "articuloUnidadManejoDTOCols", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("articuloUnidadManejoDTOCols.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejo", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.articuloUnidadManejoDTO", "articuloUnidadManejoDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 
@@ -215,6 +217,20 @@ public class InventarioDAO implements IInventarioDAO {
 			projectionList.add(Projections.property("articuloDTO.precio"), "articuloDTO_precio");
 			projectionList.add(Projections.property("articuloDTO.precioMinorista"), "articuloDTO_precioMinorista");
 			projectionList.add(Projections.property("articuloDTO.peso"), "articuloDTO_peso");
+			
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoCompania"), "articuloDTO_articuloUnidadManejoDTOCols_id_codigoCompania");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoArticulo"), "articuloDTO_articuloUnidadManejoDTOCols_id_codigoArticulo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoArticuloUnidadManejo"), "articuloDTO_articuloUnidadManejoDTOCols_id_codigoArticuloUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.valorUnidadManejo"), "articuloDTO_articuloUnidadManejoDTOCols_valorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.codigoValorUnidadManejo"), "articuloDTO_articuloUnidadManejoDTOCols_codigoValorUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.codigoTipoUnidadManejo"), "articuloDTO_articuloUnidadManejoDTOCols_codigoTipoUnidadManejo");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.esPorDefecto"), "articuloDTO_articuloUnidadManejoDTOCols_esPorDefecto");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.estado"), "articuloDTO_articuloUnidadManejoDTOCols_estado");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.usuarioRegistro"), "articuloDTO_articuloUnidadManejoDTOCols_usuarioRegistro");
+			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.fechaRegistro"), "articuloDTO_articuloUnidadManejoDTOCols_fechaRegistro");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("tipoUnidadManejo.nombreCatalogoValor"), "articuloDTO_articuloUnidadManejoDTOCols_tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
 			
 			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoCompania"), "articuloUnidadManejoDTO_id_codigoCompania");
 			projectionList.add(Projections.property("articuloUnidadManejoDTO.id.codigoArticulo"), "articuloUnidadManejoDTO_id_codigoArticulo");

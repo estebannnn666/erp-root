@@ -2,6 +2,7 @@ package ec.com.erp.cliente.mdl.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import ec.com.erp.cliente.mdl.dto.id.InventarioID;
 
@@ -111,6 +113,9 @@ public class InventarioDTO implements Serializable{
 		@JoinColumn(name = "CODIGOARTICULO", referencedColumnName = "CODIGOARTICULO", insertable = false, updatable = false)
 	})
 	private ArticuloUnidadManejoDTO articuloUnidadManejoDTO;
+	
+	@Transient
+	private Collection<ArticuloUnidadManejoDTO> unidadesManejoCols;
 
 	public InventarioID getId() {
 		return id;
@@ -286,5 +291,13 @@ public class InventarioDTO implements Serializable{
 
 	public void setArticuloUnidadManejoDTO(ArticuloUnidadManejoDTO articuloUnidadManejoDTO) {
 		this.articuloUnidadManejoDTO = articuloUnidadManejoDTO;
+	}
+
+	public Collection<ArticuloUnidadManejoDTO> getUnidadesManejoCols() {
+		return unidadesManejoCols;
+	}
+
+	public void setUnidadesManejoCols(Collection<ArticuloUnidadManejoDTO> unidadesManejoCols) {
+		this.unidadesManejoCols = unidadesManejoCols;
 	}
 }

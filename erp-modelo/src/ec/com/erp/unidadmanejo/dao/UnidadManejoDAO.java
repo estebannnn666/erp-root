@@ -11,6 +11,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -99,6 +100,52 @@ public class UnidadManejoDAO implements IUnidadManejoDAO {
 			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
 			
 			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloUnidadManejoDTO.class));
+			Collection<ArticuloUnidadManejoDTO> unidadManejoDTOCols = new  ArrayList<>();
+			unidadManejoDTOCols =  criteria.list();
+
+			return unidadManejoDTOCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de unidades de manejo.").initCause(e);
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para obtener lista de unidades de manejo
+	 * @return 
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<ArticuloUnidadManejoDTO> obtenerListaUnidadManejo(Integer codigoCompania) throws ERPException{
+		try { 
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(ArticuloUnidadManejoDTO.class, "root");
+			criteria.createAlias("root.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+
+			// Proyecciones entidad impuesto
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.groupProperty("root.id.codigoCompania"), "id_codigoCompania");
+//			projectionList.add(Projections.groupProperty("root.valorUnidadManejo"), "valorUnidadManejo");
+			projectionList.add(Projections.groupProperty("root.codigoValorUnidadManejo"), "codigoValorUnidadManejo");
+			projectionList.add(Projections.groupProperty("root.codigoTipoUnidadManejo"), "codigoTipoUnidadManejo");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.groupProperty("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
+			
+			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.asc("codigoValorUnidadManejo"));
 			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloUnidadManejoDTO.class));
 			Collection<ArticuloUnidadManejoDTO> unidadManejoDTOCols = new  ArrayList<>();
 			unidadManejoDTOCols =  criteria.list();

@@ -69,4 +69,11 @@ public interface IArticuloGestor {
 	 * @throws ERPException
 	 */
 	Collection<ArticuloDTO> obtenerArticulosImagen(Integer codigoCompania) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener lista de unidades de manejo
+	 * @return 
+	 * @throws ERPException
+	 */
+	Collection<ArticuloUnidadManejoDTO> obtenerListaUnidadManejo(Integer codigoCompania) throws ERPException;
 }
