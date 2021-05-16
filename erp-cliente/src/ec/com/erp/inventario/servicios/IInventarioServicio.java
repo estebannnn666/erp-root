@@ -25,7 +25,7 @@ public interface IInventarioServicio {
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<InventarioDTO> findObtenerListaInventarioByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
+	Collection<InventarioDTO> findObtenerListaInventarioByArticuloFechas(Integer codigoCompania, Integer codigoArticuloUnidadManejo, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
 
 	/**
 	 * M\u00e9todo para obtener kardex por codigo de barra

@@ -90,4 +90,14 @@ public class ArticuloServicio implements IArticuloServicio{
 	public byte[] findObtenerReporteCatalogo(Collection<ArticuloDTO> articuloDTOCols) throws IOException {
 		return this.articuloGestor.generateReportCatalogo(articuloDTOCols);
 	}
+	
+	/**
+	 * M\u00e9todo para obtener lista de unidades de manejo por codigo de barras
+	 * @return 
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<ArticuloUnidadManejoDTO> findObtenerListaUnidadManejoByCodigoBarras(Integer codigoCompania, String codigoBarras) throws ERPException{
+		return this.articuloGestor.obtenerListaUnidadManejoByCodigoBarras(codigoCompania, codigoBarras);
+	}
 }

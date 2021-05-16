@@ -298,4 +298,14 @@ public class ArticuloGestor implements IArticuloGestor{
 	public Collection<ArticuloDTO> obtenerArticulosImagen(Integer codigoCompania) throws ERPException{
 		return this.articuloDAO.obtenerArticulosImagen(codigoCompania);
 	}
+	
+	/**
+	 * M\u00e9todo para obtener lista de unidades de manejo por codigo de barras
+	 * @return 
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<ArticuloUnidadManejoDTO> obtenerListaUnidadManejoByCodigoBarras(Integer codigoCompania, String codigoBarras) throws ERPException{
+		return this.unidadManejoDAO.obtenerListaUnidadManejoByCodigoBarras(codigoCompania, codigoBarras);
+	}
 }

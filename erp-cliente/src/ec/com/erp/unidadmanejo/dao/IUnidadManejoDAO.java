@@ -21,6 +21,13 @@ public interface IUnidadManejoDAO {
 	Collection<ArticuloUnidadManejoDTO> obtenerListaArticulosUnidadManejo(Integer codigoCompania, Integer codigoArticulo) throws ERPException;
 	
 	/**
+	 * M\u00e9todo para obtener lista de unidades de manejo por codigo de barras
+	 * @return 
+	 * @throws ERPException
+	 */
+	Collection<ArticuloUnidadManejoDTO> obtenerListaUnidadManejoByCodigoBarras(Integer codigoCompania, String codigoBarras) throws ERPException;
+	
+	/**
 	 * Metodo para guardar y actualizar articulo unidad manejo
 	 * @param articuloDTO
 	 * @throws ERPException

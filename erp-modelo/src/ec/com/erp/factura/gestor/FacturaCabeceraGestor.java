@@ -271,7 +271,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		InventarioDTO inventarioDTO = new InventarioDTO();
 		if(inventarioDTOAux != null) {
 			if(facturaDetalleDTO.getCantidad().intValue() > inventarioDTOAux.getCantidadExistencia().intValue()) {
-				throw new ERPException("Error", "No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+				throw new ERPException("Error", "No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo()+", unidad de manejo "+facturaDetalleDTO.getArticuloUnidadManejoDTO().getTipoUnidadManejoCatalogoValorDTO().getNombreCatalogoValor()+" X "+facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo());
 			}
 			inventarioDTO.getId().setCodigoCompania(facturaDetalleDTO.getId().getCodigoCompania());
 			inventarioDTO.setDetalleMoviento(ERPMessages.getString("ec.com.erp.cliente.mensaje.controlado.descripcion.invetarios.venta")+" "+numeroFactura+" Cliente: "+razonSocial);
@@ -279,8 +279,8 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
 			inventarioDTO.setCantidadSalida(facturaDetalleDTO.getCantidad());
-			inventarioDTO.setValorUnidadSalida(facturaDetalleDTO.getValorUnidad());
-			inventarioDTO.setValorTotalSalida(facturaDetalleDTO.getSubTotal());
+			inventarioDTO.setValorUnidadSalida(facturaDetalleDTO.getArticuloDTO().getCosto());
+			inventarioDTO.setValorTotalSalida(BigDecimal.valueOf(facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue() * facturaDetalleDTO.getCantidad()));
 			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() - facturaDetalleDTO.getCantidad());
 			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getArticuloDTO().getCosto());
 			Integer totalUnidades = inventarioDTO.getCantidadExistencia() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo();
@@ -292,7 +292,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			this.inventarioGestor.crearActualizarInventario(inventarioDTO);
 		}
 		else {
-			throw new ERPException("Error", "No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo());
+			throw new ERPException("Error", "No se puede registrar la venta por que no hay existencias suficientes para el articulo "+facturaDetalleDTO.getArticuloDTO().getNombreArticulo()+", unidad de manejo "+facturaDetalleDTO.getArticuloUnidadManejoDTO().getTipoUnidadManejoCatalogoValorDTO().getNombreCatalogoValor()+" X "+facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo());
 		}
 	}
 	
@@ -344,8 +344,8 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			inventarioDTO.setCodigoArticulo(facturaDetalleDTO.getCodigoArticulo());
 			inventarioDTO.setCodigoArticuloUnidadManejo(facturaDetalleDTO.getCodigoArticuloUnidadManejo());
 			inventarioDTO.setCantidadEntrada(facturaDetalleDTO.getCantidad());
-			inventarioDTO.setValorUnidadEntrada(facturaDetalleDTO.getValorUnidad());
-			inventarioDTO.setValorTotalEntrada(facturaDetalleDTO.getSubTotal());
+			inventarioDTO.setValorUnidadEntrada(facturaDetalleDTO.getArticuloDTO().getCosto());
+			inventarioDTO.setValorTotalEntrada(BigDecimal.valueOf(facturaDetalleDTO.getArticuloDTO().getCosto().doubleValue() * facturaDetalleDTO.getCantidad()));
 			inventarioDTO.setCantidadExistencia(inventarioDTOAux.getCantidadExistencia().intValue() + facturaDetalleDTO.getCantidad());
 			inventarioDTO.setValorUnidadExistencia(facturaDetalleDTO.getArticuloDTO().getCosto());
 			Integer totalUnidades = inventarioDTO.getCantidadExistencia() * facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo();

@@ -113,6 +113,59 @@ public class UnidadManejoDAO implements IUnidadManejoDAO {
 	}
 	
 	/**
+	 * M\u00e9todo para obtener lista de unidades de manejo por codigo de barras
+	 * @return 
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<ArticuloUnidadManejoDTO> obtenerListaUnidadManejoByCodigoBarras(Integer codigoCompania, String codigoBarras) throws ERPException{
+		try { 
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(ArticuloUnidadManejoDTO.class, "root");
+			criteria.createAlias("root.articuloDTO", "articuloDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("root.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
+			
+
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("articuloDTO.codigoBarras", codigoBarras));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+
+			// Proyecciones entidad impuesto
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("root.id.codigoCompania"), "id_codigoCompania");
+			projectionList.add(Projections.property("root.id.codigoArticulo"), "id_codigoArticulo");
+			projectionList.add(Projections.property("root.id.codigoArticuloUnidadManejo"), "id_codigoArticuloUnidadManejo");
+			projectionList.add(Projections.property("root.valorUnidadManejo"), "valorUnidadManejo");
+			projectionList.add(Projections.property("root.codigoValorUnidadManejo"), "codigoValorUnidadManejo");
+			projectionList.add(Projections.property("root.codigoTipoUnidadManejo"), "codigoTipoUnidadManejo");
+			projectionList.add(Projections.property("root.esPorDefecto"), "esPorDefecto");
+			projectionList.add(Projections.property("root.estado"), "estado");
+			projectionList.add(Projections.property("root.usuarioRegistro"), "usuarioRegistro");
+			projectionList.add(Projections.property("root.fechaRegistro"), "fechaRegistro");
+			
+			// Proyecciones catalogos
+			projectionList.add(Projections.property("tipoUnidadManejoCatalogoValorDTO.nombreCatalogoValor"), "tipoUnidadManejoCatalogoValorDTO_nombreCatalogoValor");
+			
+			criteria.setProjection(projectionList);
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ArticuloUnidadManejoDTO.class));
+			Collection<ArticuloUnidadManejoDTO> unidadManejoDTOCols = new  ArrayList<>();
+			unidadManejoDTOCols =  criteria.list();
+
+			return unidadManejoDTOCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener lista de unidades de manejo.").initCause(e);
+		} 
+	}
+	
+	/**
 	 * Metodo para guardar y actualizar unidad de manejo de articulo
 	 * @param articuloUnidadManejo
 	 * @throws ERPException

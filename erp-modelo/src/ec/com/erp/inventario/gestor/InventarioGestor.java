@@ -51,8 +51,8 @@ public class InventarioGestor implements IInventarioGestor{
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<InventarioDTO> obtenerListaInventarioByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
-		return this.inventarioDAO.obtenerListaInventarioByArticuloFechas(codigoCompania, codigoBarras, fechaFacturaInicio, fechaFacturaFin);
+	public Collection<InventarioDTO> obtenerListaInventarioByArticuloFechas(Integer codigoCompania, Integer codigoArticuloUnidadManejo, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.inventarioDAO.obtenerListaInventarioByArticuloFechas(codigoCompania, codigoArticuloUnidadManejo, codigoBarras, fechaFacturaInicio, fechaFacturaFin);
 	}
 
 	/**

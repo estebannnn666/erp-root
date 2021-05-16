@@ -74,7 +74,7 @@ public class InventarioDAO implements IInventarioDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<InventarioDTO> obtenerListaInventarioByArticuloFechas(Integer codigoCompania, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+	public Collection<InventarioDTO> obtenerListaInventarioByArticuloFechas(Integer codigoCompania, Integer codigoArticuloUnidadManejo, String codigoBarras, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -89,6 +89,10 @@ public class InventarioDAO implements IInventarioDAO {
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
 			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			criteria.add(Restrictions.eq("articuloDTO.codigoBarras", codigoBarras));
+			
+			if(codigoArticuloUnidadManejo != null) {
+				criteria.add(Restrictions.eq("root.codigoArticuloUnidadManejo", codigoArticuloUnidadManejo));
+			}
 			
 			if(fechaFacturaInicio != null && fechaFacturaFin != null){
 				criteria.add(Restrictions.between("root.fechaMovimiento", fechaFacturaInicio, fechaFacturaFin));
