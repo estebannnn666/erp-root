@@ -107,12 +107,13 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @param nombClienteProveedor
 	 * @param pagado
 	 * @param tipoDocumento
+	 * @param codigoVendedor
 	 * @return Collection<FacturaCabeceraDTO>
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException{
-		Collection<FacturaCabeceraDTO> listaFacturas = this.facturaCabeceraDAO.obtenerListaFacturas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tiposDocumentos);
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos, Long codigoVendedor) throws ERPException{
+		Collection<FacturaCabeceraDTO> listaFacturas = this.facturaCabeceraDAO.obtenerListaFacturas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tiposDocumentos, codigoVendedor);
 		listaFacturas.stream().forEach(factura ->{
 			if(CollectionUtils.isEmpty(factura.getPagosFacturaDTOCols())){
 				factura.setTotalPagos(BigDecimal.ZERO);

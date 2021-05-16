@@ -40,6 +40,7 @@ public class ERPConstantes {
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_CONTACTO_PRINCIPAL = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.contacto.principal");
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_PERFIL_ADMINISTRADOR = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.perfil.administrador");
 	public static final String CODIGO_CATALOGO_VALOR_TIPO_PERFIL_CLIENTES = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.perfil.clientes");	
+	public static final String CODIGO_CATALOGO_VALOR_TIPO_PERFIL_VENDEDORES = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.perfil.vendedor");
 	public static final String CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_REGISTRADO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.estado.pedido.registrado");
 	public static final String CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_PENDIENTE = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.estado.pedido.pendiente");
 	public static final String CODIGO_CATALOGO_VALOR_ESTADO_PEDIDO_ENTREGADO = ERPMessages.getString("ec.com.erp.catalogo.valor.tipo.estado.pedido.entregado");

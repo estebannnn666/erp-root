@@ -53,12 +53,13 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	 * @param nombClienteProveedor
 	 * @param pagado
 	 * @param tipoDocumento
+	 * @param codigoVendedor
 	 * @return Collection<FacturaCabeceraDTO>
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<FacturaCabeceraDTO> findObtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException{
-		return this.facturaCabeceraGestor.obtenerListaFacturas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tiposDocumentos);
+	public Collection<FacturaCabeceraDTO> findObtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos, Long codigoVendedor) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerListaFacturas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tiposDocumentos, codigoVendedor);
 	}
 	
 	/**

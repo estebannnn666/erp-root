@@ -54,6 +54,12 @@ public class UsuariosDTO implements Serializable{
 	private String passwordUsuario;
 	
 	/**
+	 * Codigo relacionado al vendedor
+	 */
+	@Column(name="CODIGOVENDEDOR")
+	private Long codigoVendedor;
+	
+	/**
 	 * Email del usaurio
 	 */
 	@Transient
@@ -153,5 +159,13 @@ public class UsuariosDTO implements Serializable{
 
 	public void setCompaniaDTO(CompaniaDTO companiaDTO) {
 		this.companiaDTO = companiaDTO;
+	}
+
+	public Long getCodigoVendedor() {
+		return codigoVendedor;
+	}
+
+	public void setCodigoVendedor(Long codigoVendedor) {
+		this.codigoVendedor = codigoVendedor;
 	}
 }

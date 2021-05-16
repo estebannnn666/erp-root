@@ -77,12 +77,13 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 	 * @param nombClienteProveedor
 	 * @param pagado
 	 * @param tipoDocumento
+	 * @param codigoVendedor
 	 * @return Collection<FacturaCabeceraDTO>
 	 * @throws ERPException
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos) throws ERPException{
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos, Long codigoVendedor) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -123,6 +124,10 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			}
 			if(CollectionUtils.isNotEmpty(tiposDocumentos)){
 				criteria.add(Restrictions.in("root.codigoValorTipoDocumento", tiposDocumentos));
+			}
+			
+			if(codigoVendedor != null){
+				criteria.add(Restrictions.eq("root.codigoVendedor", codigoVendedor));
 			}
 
 			//proyecciones entidad negociacion proveedor

@@ -143,11 +143,14 @@ public class UsuariosDAO implements IUsuariosDAO {
 			projectionList.add(Projections.property("root.codigoPerfil"), "codigoPerfil");
 			projectionList.add(Projections.property("root.nombreUsuario"), "nombreUsuario");
 			projectionList.add(Projections.property("root.passwordUsuario"), "passwordUsuario");
+			projectionList.add(Projections.property("root.codigoVendedor"), "codigoVendedor");
 			projectionList.add(Projections.property("root.estado"), "estado");
 			
 			projectionList.add(Projections.property("perfilDTO.id.codigoPerfil"), "perfilDTO_id_codigoPerfil");
 			projectionList.add(Projections.property("perfilDTO.nombrePerfil"), "perfilDTO_nombrePerfil");
 			projectionList.add(Projections.property("perfilDTO.descripcion"), "perfilDTO_descripcion");
+			projectionList.add(Projections.property("perfilDTO.codigoValorTipoPerfil"), "perfilDTO_codigoValorTipoPerfil");
+			projectionList.add(Projections.property("perfilDTO.codigoTipoPerfil"), "perfilDTO_codigoTipoPerfil");
 			
 			projectionList.add(Projections.property("companiaDTO.id.codigoCompania"), "companiaDTO_id_codigoCompania");
 			projectionList.add(Projections.property("companiaDTO.nombreCompania"), "companiaDTO_nombreCompania");
