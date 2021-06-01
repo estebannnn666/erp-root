@@ -1,5 +1,6 @@
 package ec.com.erp.factura.gestor;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -86,6 +87,14 @@ public interface IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	void guardarActualizarFacturaCabecera(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
+	
+	/**
+	 * Obtener bytes nota de venta
+	 * @param facturaCabeceraDTO
+	 * @return
+	 * @throws IOException
+	 */
+	byte[] generateNotaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws IOException;
 	
 	/**
 	 * Devuelve html de reporte de facturas

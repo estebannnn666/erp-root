@@ -3,6 +3,7 @@
  */
 package ec.com.erp.factura.servicios;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -152,5 +153,16 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	@Override
 	public String finObtenerXMLImprimirFacturaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
 		return this.facturaCabeceraGestor.obtenerXMLImprimirFacturaVenta(facturaCabeceraDTO);
+	}
+	
+	/**
+	 * Obtener bytes nota de venta
+	 * @param facturaCabeceraDTO
+	 * @return
+	 * @throws IOException
+	 */
+	@Override
+	public byte[] findObtenerNotaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws IOException {
+		return this.facturaCabeceraGestor.generateNotaVenta(facturaCabeceraDTO);
 	}
 }

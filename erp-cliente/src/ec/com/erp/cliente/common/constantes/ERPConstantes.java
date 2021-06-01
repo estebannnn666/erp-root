@@ -21,8 +21,10 @@ public class ERPConstantes {
 	public final static String PLANTILLA_XSL_REPORTE_CAJA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.caja");
 	public final static String PLANTILLA_XSL_IMPRIMIR_GUIA_DESPACHO = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.guia.despacho");
 	public final static String PLANTILLA_XSL_IMPRIMIR_FACTURA_VENTA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.factura.venta");
+	public final static String PLANTILLA_XSL_IMPRIMIR_NOTA_VETA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.nota.venta");
 	public final static String PLANTILLA_XSL_REPORTE_CATALOGO = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.reporte.catalogo");
 	public final static String IMAGEN_DEFAULT = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.imagen.defecto");
+	public final static String LOGO_NOTAS_VENTA = ERPMessages.getString("ec.com.erp.cliente.common.plantilla.impresion.imagen.logo.nota");
 	
 	/************ Generales ************************/
 	public static final Integer CODIGO_COMPANIA = 1;

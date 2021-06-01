@@ -3,6 +3,7 @@
  */
 package ec.com.erp.factura.gestor;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -25,6 +26,7 @@ import ec.com.erp.cliente.mdl.dto.InventarioDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
 import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
+import ec.com.erp.commons.util.ReportesUtil;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
 import ec.com.erp.secuencia.gestor.ISecuenciaGestor;
@@ -576,6 +578,19 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	}
 	
 	/**
+	 * Obtener bytes nota de venta
+	 * @param facturaCabeceraDTO
+	 * @return
+	 * @throws IOException
+	 */
+	public byte[] generateNotaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws IOException {
+		String html = this.obtenerXMLImprimirFacturaVenta(facturaCabeceraDTO);
+		String xhtml = ReportesUtil.htmlToXhtml(html);
+		byte[] contenido = ReportesUtil.xhtmlToPdf(xhtml, "notaventa.pdf");
+		return contenido;
+	}
+	
+	/**
 	 * Devuelve html para la impresion de factura de venta
 	 * @param facturaCabeceraDTO
 	 * @return
@@ -590,12 +605,11 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 			DecimalFormat formatoDecimales = new DecimalFormat("#.##");
 			formatoDecimales.setMinimumFractionDigits(2);
-
-			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_IMPRIMIR_FACTURA_VENTA;
-			
+			String base64String = "data:image/jpeg;base64,"+ERPConstantes.LOGO_NOTAS_VENTA;
+			urlTipoReporte = ERPConstantes.PLANTILLA_XSL_IMPRIMIR_NOTA_VETA;
 			contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
 			contenidoXml.append("<factura>");
-
+			contenidoXml.append("<imagen>").append(StringEscapeUtils.escapeXml(base64String)).append("</imagen>");
 			contenidoXml.append("<codigoFactura>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getCodigoReferenciaFactura())).append("</codigoFactura>");
 			contenidoXml.append("<numeroFactura>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getNumeroDocumento())).append("</numeroFactura>");
 			contenidoXml.append("<fechaVenta>").append(StringEscapeUtils.escapeXml(""+formatoFecha.format(facturaCabeceraDTO.getFechaDocumento()))).append("</fechaVenta>");
@@ -603,23 +617,39 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			contenidoXml.append("<nombreCliente>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getNombreClienteProveedor())).append("</nombreCliente>");
 			contenidoXml.append("<direccion>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getDireccion())).append("</direccion>");
 			contenidoXml.append("<telefono>").append(StringEscapeUtils.escapeXml(""+facturaCabeceraDTO.getTelefono())).append("</telefono>");
-			contenidoXml.append("<subtotal>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalSinImpuestos() == null ? 0 : facturaCabeceraDTO.getTotalSinImpuestos().doubleValue()))).append("</subtotal>");
-			contenidoXml.append("<iva>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalImpuestos() == null ? 0 : facturaCabeceraDTO.getTotalImpuestos().doubleValue()))).append("</iva>");
+			contenidoXml.append("<subtotal>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getSubTotal() == null ? 0 : facturaCabeceraDTO.getSubTotal().doubleValue()))).append("</subtotal>");
+			contenidoXml.append("<descuento>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getDescuento() == null ? 0 : facturaCabeceraDTO.getDescuento().doubleValue()))).append("</descuento>");
+			contenidoXml.append("<tarifaCero>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalSinImpuestos() == null ? 0 : facturaCabeceraDTO.getTotalSinImpuestos().doubleValue()))).append("</tarifaCero>");
+			contenidoXml.append("<tarifaDoce>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalImpuestos() == null ? 0 : facturaCabeceraDTO.getTotalImpuestos().doubleValue()))).append("</tarifaDoce>");
+			contenidoXml.append("<iva>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalIva() == null ? 0 : facturaCabeceraDTO.getTotalIva().doubleValue()))).append("</iva>");
 			contenidoXml.append("<total>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaCabeceraDTO.getTotalCuenta().doubleValue()))).append("</total>");
 			int cont = 1;
 			//detalle reposicion
 			contenidoXml.append("<detallesFactura>");
 			for(FacturaDetalleDTO facturaDetalleDTO : facturaCabeceraDTO.getFacturaDetalleDTOCols()){
 				if(facturaDetalleDTO.getId().getCodigoDetalleFactura() != null) {
+					String unidadManejo = facturaDetalleDTO.getArticuloUnidadManejoDTO().getTipoUnidadManejoCatalogoValorDTO().getNombreCatalogoValor().equals("UNIDAD") ? "UNIDADES" : facturaDetalleDTO.getArticuloUnidadManejoDTO().getTipoUnidadManejoCatalogoValorDTO().getNombreCatalogoValor().concat(" X ").concat(""+facturaDetalleDTO.getArticuloUnidadManejoDTO().getValorUnidadManejo());
 					contenidoXml.append("<detalle>");
 					contenidoXml.append("<nroDetalle>").append(StringEscapeUtils.escapeXml(""+cont)).append("</nroDetalle>");
 					contenidoXml.append("<cantidad>").append(StringEscapeUtils.escapeXml(""+facturaDetalleDTO.getCantidad())).append("</cantidad>");
+					contenidoXml.append("<unidadManejo>").append(StringEscapeUtils.escapeXml(unidadManejo)).append("</unidadManejo>");
 					contenidoXml.append("<descripcion>").append(StringEscapeUtils.escapeXml(facturaDetalleDTO.getDescripcion())).append("</descripcion>");
 					contenidoXml.append("<valorUnitario>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaDetalleDTO.getValorUnidad().doubleValue()))).append("</valorUnitario>");
 					contenidoXml.append("<subTotal>").append(StringEscapeUtils.escapeXml(""+formatoDecimales.format(facturaDetalleDTO.getSubTotal().doubleValue()))).append("</subTotal>");
 					contenidoXml.append("</detalle>");
 					cont++;
 				}
+			}
+			while(cont < 20) {
+				contenidoXml.append("<detalle>");
+				contenidoXml.append("<nroDetalle>").append(StringEscapeUtils.escapeXml(""+cont)).append("</nroDetalle>");
+				contenidoXml.append("<cantidad>").append(StringEscapeUtils.escapeXml("")).append("</cantidad>");
+				contenidoXml.append("<unidadManejo>").append(StringEscapeUtils.escapeXml("")).append("</unidadManejo>");
+				contenidoXml.append("<descripcion>").append(StringEscapeUtils.escapeXml("")).append("</descripcion>");
+				contenidoXml.append("<valorUnitario>").append(StringEscapeUtils.escapeXml("")).append("</valorUnitario>");
+				contenidoXml.append("<subTotal>").append(StringEscapeUtils.escapeXml("")).append("</subTotal>");
+				contenidoXml.append("</detalle>");
+				cont++;
 			}
 			contenidoXml.append("</detallesFactura>");
 			

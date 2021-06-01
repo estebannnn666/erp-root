@@ -1,10 +1,6 @@
 package ec.com.erp.articulo.gestor;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -15,8 +11,6 @@ import java.util.HashMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jdom.Document;
-import org.jsoup.Jsoup;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import ec.com.erp.articulo.dao.IArticuloDAO;
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
@@ -24,6 +18,7 @@ import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.ArticuloDTO;
 import ec.com.erp.cliente.mdl.dto.ArticuloImpuestoDTO;
 import ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO;
+import ec.com.erp.commons.util.ReportesUtil;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
 import ec.com.erp.unidadmanejo.dao.IUnidadManejoDAO;
 import ec.com.erp.utilitario.commons.util.TransformerUtil;
@@ -214,7 +209,6 @@ public class ArticuloGestor implements IArticuloGestor{
 			
 			contenidoXml.append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
 			contenidoXml.append("<articulos>");
-
 			contenidoXml.append("<fechaReporte>").append(StringEscapeUtils.escapeXml(""+fechaFormateada)).append("</fechaReporte>");
 			//detalle reposicion
 			contenidoXml.append("<listaArticulos>");
@@ -256,29 +250,11 @@ public class ArticuloGestor implements IArticuloGestor{
 	 */
 	public byte[] generateReportCatalogo(Collection<ArticuloDTO> articuloDTOCols) throws IOException {
 		String html = this.procesarXMLReporteCatalogo(articuloDTOCols);
-		String xhtml = htmlToXhtml(html);
-		byte[] contenido = xhtmlToPdf(xhtml, "reporteCotalogo.pdf");
+		String xhtml = ReportesUtil.htmlToXhtml(html);
+		byte[] contenido = ReportesUtil.xhtmlToPdf(xhtml, "reporteCotalogo.pdf");
 		return contenido;
 	}
 
-	private String htmlToXhtml(String html) {
-        org.jsoup.nodes.Document document = Jsoup.parse(html);
-        document.outputSettings().syntax(org.jsoup.nodes.Document.OutputSettings.Syntax.xml);
-        return document.html();
-    }
-
-	private byte[] xhtmlToPdf(String xhtml, String outFileName) throws IOException {
-        File output = new File(outFileName);
-        ITextRenderer iTextRenderer = new ITextRenderer();
-        iTextRenderer.setDocumentFromString(xhtml);
-        iTextRenderer.layout();
-        OutputStream os = new FileOutputStream(output);
-        iTextRenderer.createPDF(os);
-        os.close();
-        byte[] bytes = Files.readAllBytes(output.toPath());
-        return bytes;
-    }
-    
 	/**
 	 * M\u00e9todo para obtener lista de articulos para catalogos
 	 * @return 

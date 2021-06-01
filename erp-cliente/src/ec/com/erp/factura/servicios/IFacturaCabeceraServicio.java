@@ -3,6 +3,7 @@
  */
 package ec.com.erp.factura.servicios;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -114,4 +115,12 @@ public interface IFacturaCabeceraServicio {
 	 * @throws ERPException
 	 */
 	String finObtenerXMLImprimirFacturaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
+	
+	/**
+	 * Obtener bytes nota de venta
+	 * @param facturaCabeceraDTO
+	 * @return
+	 * @throws IOException
+	 */
+	byte[] findObtenerNotaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws IOException;
 }
