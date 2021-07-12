@@ -27,7 +27,7 @@
 					<table>
 						<col style="width:20cm; "/>
 						<tr>
-							<td align="center" valign="botton" style="text-transform: uppercase;"><pre>LISTA DE FACTURAS</pre></td>
+							<td align="center" valign="botton" style="text-transform: uppercase;"><pre><xsl:value-of select="facturas/titulo"/></pre></td>
 						</tr>						
 					</table>        
 				  </td>
@@ -43,11 +43,13 @@
 										<col style="width:1.0cm;"/>
 										<col style="width:2.0cm;"/>
 										<col style="width:2.0cm;"/>
-										<col style="width:5.0cm;"/>
-										<col style="width:3.0cm;"/>
-										<col style="width:2.0cm; "/>
-										<col style="width:2.0cm; "/>
+										<col style="width:4.5cm;"/>
 										<col style="width:3.0cm; "/>
+										<col style="width:2.0cm; "/>
+										<col style="width:1.5cm; "/>
+										<col style="width:1.5cm; "/>
+										<col style="width:1.5cm; "/>
+										<col style="width:1.0cm; "/>
 										<tr>
 											<td class="borde" align="center">
 												<table border="1">
@@ -61,20 +63,26 @@
 														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>Doc. cliente</h3>
 														</td>
-														<td align="center" valign="botton" style="width:5.0cm;">  
+														<td align="center" valign="botton" style="width:4.5cm;">  
 															<h3>Raz&#xf3;n social</h3>
-														</td>
+														</td>	
 														<td align="center" valign="botton" style="width:3.0cm;">  
 															<h3>Vendedor</h3>
-														</td>
+														</td>														
 														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>Fecha</h3>
 														</td>
-														<td align="center" valign="botton" style="width:2.0cm;">  
-															<h3>Valor</h3>
+														<td align="center" valign="botton" style="width:1.5cm;">  
+															<h3>Total</h3>
 														</td>
-														<td align="center" valign="botton" style="width:3.0cm;">  
-															<h3>Cobrada/Pagada</h3>
+														<td align="center" valign="botton" style="width:1.5cm;">  
+															<h3>Abonos</h3>
+														</td>
+														<td align="center" valign="botton" style="width:1.5cm;">  
+															<h3>Saldo</h3>
+														</td>
+														<td align="center" valign="botton" style="width:1.0cm;">  
+															<h3>Pagada</h3>
 														</td>
 													</tr>
 													<xsl:for-each select="facturas/listaFacturas/factura">
@@ -88,19 +96,25 @@
 															<td align="left" style="padding-left: 3px; width:2.0cm;">
 																<xsl:value-of select="documentoCliente"/>
 															</td>
-															<td align="left" style="padding-left: 3px; width:5.0cm;">
+															<td align="left" style="padding-left: 3px; width:4.5cm;">
 																<xsl:value-of select="nombreClienteProveedor"/>
-															</td>
+															</td>	
 															<td align="left" style="padding-left: 3px; width:3.0cm;">
 																<xsl:value-of select="nombreVendedor"/>
-															</td>																														
+															</td>																
 															<td align="center" style="width:2.0cm;">
 																<xsl:value-of select="fechaEmision"/>
 															</td>
-															<td align="right" style="padding-right: 3px; width:2.0cm;">
+															<td align="right" style="padding-right: 3px; width:1.5cm;">
 																<xsl:value-of select="valorTotal"/>
 															</td>
-															<td align="center" style="width:3.0cm;">
+															<td align="right" style="padding-right: 3px; width:1.5cm;">
+																<xsl:value-of select="valorAbono"/>
+															</td>
+															<td align="right" style="padding-right: 3px; width:1.5cm;">
+																<xsl:value-of select="valorSaldo"/>
+															</td>
+															<td align="center" style="width:1.0cm;">
 																<xsl:value-of select="estado"/>
 															</td>
 														</tr>
@@ -118,17 +132,23 @@
 														</td>
 														<td align="right" style="width:2.0cm;">
 														</td>
-														<td align="center" valign="botton" style="width:5.0cm;">  															
-														</td>
+														<td align="center" valign="botton" style="width:4.5cm;">  															
+														</td>	
 														<td align="right" style="width:3.0cm;">
-														</td>
+														</td>														
 														<td align="center" valign="botton" style="width:2.0cm;">  
 															<h3>TOTAL</h3>
 														</td>
-														<td align="right" valign="botton" style=" padding-right: 3px; width:2.0cm;" border="1">  
+														<td align="right" valign="botton" style=" padding-right: 3px; width:1.5cm;" border="1">  
 															<h3><xsl:value-of select="facturas/totalPago"/></h3>
 														</td>
-														<td align="right" valign="botton" style="width:3.0cm;">  															
+														<td align="right" valign="botton" style=" padding-right: 3px; width:1.5cm;" border="1">  
+															<h3><xsl:value-of select="facturas/totalAbono"/></h3>
+														</td>
+														<td align="right" valign="botton" style=" padding-right: 3px; width:1.5cm;" border="1">  
+															<h3><xsl:value-of select="facturas/totalSaldo"/></h3>
+														</td>
+														<td align="right" valign="botton" style="width:1.0cm;">  															
 														</td>
 													</tr>
 												</table>

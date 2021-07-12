@@ -49,12 +49,17 @@
 								<td align="center" valign="botton">
 									<table>
 										<col style="width:1.0cm;"/>
-										<col style="width:2.0cm;"/>
-										<col style="width:2.0cm;"/>
-										<col style="width:6.0cm;"/>
-										<col style="width:2.0cm; "/>
-										<col style="width:2.0cm; "/>
-										<col style="width:3.0cm; "/>
+										<col style="width:4.6cm;"/>
+										<col style="width:3.0cm;"/>
+										<col style="width:1.5cm;"/>
+										<col style="width:1.0cm; "/>
+										<col style="width:1.0cm; "/>
+										<col style="width:1.2cm; "/>
+										<col style="width:1.2cm; "/>
+										<col style="width:1.5cm; "/>										
+										<col style="width:1.5cm; "/>
+										<col style="width:1.0cm; "/>
+										<col style="width:1.5cm; "/>
 										<tr>
 											<td class="borde" align="center">
 												<table border="1">
@@ -62,29 +67,35 @@
 														<td align="center" valign="botton" style="width:1.0cm;">  
 															<h4>Nro.</h4>
 														</td>
-														<td align="center" valign="botton" style="width:5.0cm;">  
+														<td align="center" valign="botton" style="width:4.6cm;">  
 															<h4>Nombre vendedor</h4>
 														</td>
 														<td align="center" valign="botton" style="width:3.0cm;">  
 															<h4>Nombre art&#xed;culo</h4>
 														</td>
-														<td align="center" valign="botton" style="width:2.0cm;">  
+														<td align="center" valign="botton" style="width:1.5cm;">  
 															<h4>Uni. Man.</h4>
 														</td>
-														<td align="center" valign="botton" style="width:1.2cm;">  
+														<td align="center" valign="botton" style="width:1.0cm;">  
 															<h4>P. May</h4>
 														</td>
-														<td align="center" valign="botton" style="width:1.1cm;">  
+														<td align="center" valign="botton" style="width:1.0cm;">  
 															<h4>P. Min</h4>
 														</td>
-														<td align="center" valign="botton" style="width:1.4cm;">  
-															<h4>% Com.</h4>
+														<td align="center" valign="botton" style="width:1.2cm;">  
+															<h4>%C.Min</h4>
 														</td>
-														<td align="center" valign="botton" style="width:1.8cm;">  
-															<h4>C. Vendida</h4>
+														<td align="center" valign="botton" style="width:1.2cm;">  
+															<h4>%C.May</h4>
 														</td>
-														<td align="center" valign="botton" style="width:2.0cm;">  
-															<h4>Val. Vendido</h4>
+														<td align="center" valign="botton" style="width:1.5cm;">  
+															<h4>Tipo Com.</h4>
+														</td>
+														<td align="center" valign="botton" style="width:1.5cm;">  
+															<h4>Cantidad</h4>
+														</td>
+														<td align="center" valign="botton" style="width:1.0cm;">  
+															<h4>Valor</h4>
 														</td>
 														<td align="center" valign="botton" style="width:1.5cm;">  
 															<h4>Comisi&#xf3;n</h4>
@@ -95,28 +106,34 @@
 															<td align="center" style="width:1.0cm;">
 																<xsl:value-of select="numeroFila"/>
 															</td>
-															<td align="left" style="padding-left: 3px; width:5.0cm;">
+															<td align="left" style="padding-left: 3px; width:4.6cm;">
 																<b style="font-size:7px;"><xsl:value-of select="nombreVendodor"/></b>
 															</td>
 															<td align="left" style="padding-left: 3px; width:3.0cm;">
 																<b style="font-size:7px;"><xsl:value-of select="nombreArticulo"/></b>
 															</td>
-															<td align="left" style="padding-left: 3px; width:2.0cm;">
+															<td align="left" style="padding-left: 3px; width:1.5cm;">
 																<b style="font-size:7px;"><xsl:value-of select="unidadManejo"/></b>
 															</td>											
-															<td align="center" style="padding-right: 3px; width:1.2cm;">
+															<td align="center" style="padding-right: 3px; width:1.0cm;">
 																<b style="font-size:7px;"><xsl:value-of select="precioMayorista"/></b>
 															</td>
-															<td align="right" style="padding-right: 3px; width:1.1cm;">
+															<td align="right" style="padding-right: 3px; width:1.0cm;">
 																<b style="font-size:7px;"><xsl:value-of select="precioMinorista"/></b>
 															</td>
-															<td align="right" style="padding-right: 3px; width:1.4cm;">
+															<td align="right" style="padding-right: 3px; width:1.2cm;">
 																<b style="font-size:7px;"><xsl:value-of select="porcentajeComision"/></b>
 															</td>
-															<td align="right" style="padding-left: 3px; width:1.8cm;">
+															<td align="right" style="padding-right: 3px; width:1.2cm;">
+																<b style="font-size:7px;"><xsl:value-of select="porcentajeComisionMayor"/></b>
+															</td>
+															<td align="center" style="padding-right: 3px; width:1.5cm;">
+																<b style="font-size:7px;"><xsl:value-of select="tipoCliente"/></b>
+															</td>
+															<td align="left" style="padding-left: 3px; width:1.5cm;">
 																<b style="font-size:7px;"><xsl:value-of select="cantidadVendida"/></b>
 															</td>
-															<td align="right" style="padding-right: 3px; width:2.0cm;">
+															<td align="right" style="padding-right: 3px; width:1.0cm;">
 																<b style="font-size:7px;"><xsl:value-of select="valorVendido"/></b>
 															</td>
 															<td align="right" style="padding-right: 3px; width:1.5cm;">
@@ -137,13 +154,13 @@
 														</td>
 														<td align="right" style="width:3.0cm;">
 														</td>
-														<td align="center" valign="botton" style="width:5.7cm;">  
+														<td align="center" valign="botton" style="width:7cm;">  
 															<h4>TOTAL</h4>
 														</td>
-														<td align="right" valign="botton" style=" padding-right: 3px; width:1.8cm;" border="1">  
+														<td align="right" valign="botton" style=" padding-right: 3px; width:1.5cm;" border="1">  
 															<h4><xsl:value-of select="facturas/totalVenta"/></h4>
 														</td>
-														<td align="right" valign="botton" style=" padding-right: 3px; width:2.0cm;" border="1">  
+														<td align="right" valign="botton" style=" padding-right: 3px; width:1.0cm;" border="1">  
 															<h4><xsl:value-of select="facturas/totalVendido"/></h4>
 														</td>
 														<td align="right" valign="botton" style=" padding-right: 3px; width:1.5cm;" border="1">  

@@ -123,7 +123,34 @@
 													</xsl:for-each>
 												</table>
 											</td>
-										</tr>										 
+										</tr>
+										<tr>
+											<td class="borde" align="center">
+												<table border="1">
+													<tr>	
+														<td align="right" style="width:1.0cm;">
+														</td>
+														<td align="right" style="width:2.5cm;">
+														</td>
+														<td align="right" style="width:3.0cm;">
+														</td>
+														<td align="center" valign="botton" style="width:4.0cm;">  															
+														</td>														
+														<td align="right" valign="botton" style="width:5.0cm;">  
+															<h3>TOTAL</h3>
+														</td>														
+														<td align="right" valign="botton" style=" padding-right: 3px; width:1.5cm;" border="1">  
+															<h3><xsl:value-of select="reporte/totalStock"/></h3>
+														</td>
+														<td align="center" valign="botton" style="width:1.5cm;">  															
+														</td>
+														<td align="right" valign="botton" style=" padding-right: 3px; width:1.5cm;" border="1">  
+															<h3><xsl:value-of select="reporte/totalExistencia"/></h3>
+														</td>														
+													</tr>
+												</table>
+											</td>
+										</tr>										
 									</table>
 								</td>
 							</tr>
