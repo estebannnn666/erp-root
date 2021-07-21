@@ -5,6 +5,7 @@ package ec.com.erp.factura.gestor;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.cert.CertificateException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -13,9 +14,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
+import javax.xml.bind.JAXBException;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jdom.Document;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
@@ -28,7 +33,9 @@ import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 import ec.com.erp.commons.util.ReportesUtil;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
+import ec.com.erp.facturacion.electronica.ws.FacturaElectronocaUtil;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
+import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.secuencia.gestor.ISecuenciaGestor;
 import ec.com.erp.transaccion.gestor.ITransaccionGestor;
 import ec.com.erp.utilitario.commons.util.TransformerUtil;
@@ -44,6 +51,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	private IInventarioGestor inventarioGestor;
 	private ITransaccionGestor transaccionGestor;
 	private ISecuenciaGestor secuenciaGestor;
+	private ISecuenciaDAO secuenciaDAO;
 	
 	public IFacturaCabeceraDAO getFacturaCabeceraDAO() {
 		return facturaCabeceraDAO;
@@ -85,6 +93,14 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		this.secuenciaGestor = secuenciaGestor;
 	}
 	
+	public ISecuenciaDAO getSecuenciaDAO() {
+		return secuenciaDAO;
+	}
+
+	public void setSecuenciaDAO(ISecuenciaDAO secuenciaDAO) {
+		this.secuenciaDAO = secuenciaDAO;
+	}
+
 	/**
 	 * M\u00e9todo para obtener reporte de ventas por articulo vendedor
 	 * @param codigoCompania
@@ -177,7 +193,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	@Override
-	public void guardarActualizarFacturaCabecera(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
+	public void guardarActualizarFacturaCabecera(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
 		try{
 			// Obtenemos la lista de detalle a guardar
 			Collection<FacturaDetalleDTO> facturaDetalleDTOCols = facturaCabeceraDTO.getFacturaDetalleDTOCols();
@@ -224,6 +240,8 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				}
 				this.transaccionGestor.guardarTransaccion(transaccionDTO);
 			}
+			// Registrar factura electronica
+			this.generarFacturaElectronica(rucFactElectronica, facturaCabeceraDTO);
 			
 		} catch (ERPException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
@@ -680,5 +698,31 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	@Override
 	public void actualizarFacturaEstadoDespachado(Integer codigoCompania, Long codigoFactura, String userId, String codigoValorEstado)throws ERPException{
 		this.facturaCabeceraDAO.actualizarFacturaEstadoDespachado(codigoCompania, codigoFactura, userId, codigoValorEstado);
+	}
+	
+	private void generarFacturaElectronica(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) {
+		if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
+			try {
+				Integer secuenciaFactura;
+				if(rucFactElectronica.equals(ERPConstantes.TIPO_RUC_UNO)) {
+					secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.FACTURA_ELECTRONICA_RUC_UNO);
+				}else {
+					secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.FACTURA_ELECTRONICA_RUC_DOS);
+				}			
+				FacturaElectronocaUtil.ejecutarFacturacionElectronicaFactura(rucFactElectronica, secuenciaFactura.toString(), facturaCabeceraDTO);
+			} catch (SAXParseException e) {
+				throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
+			} catch (CertificateException e) {
+				throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
+			} catch (SAXException e) {
+				throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
+			} catch (IOException e) {
+				throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
+			} catch (JAXBException e) {
+				throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
+			} catch (InterruptedException e) {
+				throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
+			}
+		}
 	}
 }

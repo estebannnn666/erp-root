@@ -86,7 +86,7 @@ public interface IFacturaCabeceraGestor {
 	 * @param facturaCabeceraDTO
 	 * @throws ERPException
 	 */
-	void guardarActualizarFacturaCabecera(FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
+	void guardarActualizarFacturaCabecera(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
 	
 	/**
 	 * Obtener bytes nota de venta

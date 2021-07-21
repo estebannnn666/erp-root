@@ -159,6 +159,7 @@
 		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
 		<property name="transaccionGestor"><ref bean="erpTransaccionGestor"/></property>
 		<property name="secuenciaGestor"><ref bean="erpSecuenciaGestor"/></property>
+		<property name="secuenciaDAO"><ref bean="erpSecuenciaDAO"/></property>
 	</bean>
 	
 	<!-- Gestor facturaDetalle -->

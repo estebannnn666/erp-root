@@ -161,7 +161,7 @@ public class FireBaseArticuloGestor implements IFireBaseArticuloGestor {
 					
 					Item itemSave = new Item();
 					itemSave.setDataItem(new DataItem());
-					itemSave.getDataItem().setBarCode(articuloLocal.getCodigoBarras());
+					itemSave.getDataItem().setBarCode(articuloLocal.getCodigoBarras().trim());
 					itemSave.getDataItem().setCommissionPercentage(articuloLocal.getPorcentajeComision().toString());
 					itemSave.getDataItem().setWholesaleCommissionPercentage(articuloLocal.getPorcentajeComisionMayor().toString());
 					itemSave.getDataItem().setCost(articuloLocal.getCosto().toString());

@@ -154,7 +154,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 					}	
 					facturaCabeceraDTO.setFacturaDetalleDTOCols(facturaDetalleDTOCols);
 					// Guardar la factura
-					this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
+					this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(ERPConstantes.TIPO_RUC_DOS, facturaCabeceraDTO);
 				}
 			});
 		} catch (InterruptedException e) {
