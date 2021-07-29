@@ -123,4 +123,12 @@ public interface IFacturaCabeceraServicio {
 	 * @throws IOException
 	 */
 	byte[] findObtenerNotaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws IOException;
+	
+	/**
+	 * M\u00e9todo para obtener xml factura
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @throws ERPException
+	 */
+	byte[] findObtenerXmlDocumentoFactura(Integer codigoCompania, Long codigoFactura) throws ERPException;
 }

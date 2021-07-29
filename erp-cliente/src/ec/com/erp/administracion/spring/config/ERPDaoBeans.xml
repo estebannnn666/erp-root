@@ -115,6 +115,12 @@
         <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
     </bean>
     
+    <!-- Inyeccion bean  FacturaDocumentoDAO -->
+    <bean id="erpFacturaDocumentoDAO" class="ec.com.erp.factura.dao.FacturaDocumentoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
     <!-- Inyeccion bean  EstadoPedidoDAO -->
     <bean id="erpEstadoPedidoDAO" class="ec.com.erp.pedidos.dao.EstadoPedidoDAO">
         <property name="sessionFactory" ref="sessionFactory"/>

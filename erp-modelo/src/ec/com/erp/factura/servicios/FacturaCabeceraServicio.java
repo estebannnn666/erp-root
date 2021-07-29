@@ -165,4 +165,14 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	public byte[] findObtenerNotaVenta(FacturaCabeceraDTO facturaCabeceraDTO) throws IOException {
 		return this.facturaCabeceraGestor.generateNotaVenta(facturaCabeceraDTO);
 	}
+	
+	/**
+	 * M\u00e9todo para obtener xml factura
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @throws ERPException
+	 */
+	public byte[] findObtenerXmlDocumentoFactura(Integer codigoCompania, Long codigoFactura) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerXmlDocumentoFactura(codigoCompania, codigoFactura);
+	}
 }

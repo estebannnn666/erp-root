@@ -159,4 +159,12 @@ public interface IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	void actualizarFacturaEstadoDespachado(Integer codigoCompania, Long codigoFactura, String userId, String codigoValorEstado)throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener xml factura
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @throws ERPException
+	 */
+	byte[] obtenerXmlDocumentoFactura(Integer codigoCompania, Long codigoFactura) throws ERPException;
 }
