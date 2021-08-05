@@ -62,6 +62,12 @@ public class FacturaDetalleDTO implements Serializable{
 	/**
 	 * Especifica el valor por unidad
 	 */
+	@Column(name = "DESCUENTO")
+	private BigDecimal descuento ;
+	
+	/**
+	 * Especifica el valor por unidad
+	 */
 	@Column(name = "VALORUNIDAD")
 	private BigDecimal valorUnidad ;
 	
@@ -154,6 +160,14 @@ public class FacturaDetalleDTO implements Serializable{
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public BigDecimal getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(BigDecimal descuento) {
+		this.descuento = descuento;
 	}
 
 	public BigDecimal getValorUnidad() {

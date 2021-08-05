@@ -114,4 +114,14 @@ public interface IFacturaCabeceraDAO {
 	 * @throws ERPException
 	 */
 	void actualizarFacturaEstadoDespachado(Integer codigoCompania, Long codigoFactura, String userId, String codigoValorEstado)throws ERPException;
+	
+	/**
+	 * Actualizar numero de factura.
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @param userId
+	 * @param numeroFactura
+	 * @throws ERPException
+	 */
+	void actualizarFacturaNumeroFactura(Integer codigoCompania, Long codigoFactura, String userId, String numeroFactura)throws ERPException;
 }

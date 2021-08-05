@@ -177,6 +177,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("facturaDetalleDTOCols.cantidad"), "facturaDetalleDTOCols_cantidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoFactura"), "facturaDetalleDTOCols_codigoFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.descripcion"), "facturaDetalleDTOCols_descripcion");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.descuento"), "facturaDetalleDTOCols_descuento");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.valorUnidad"), "facturaDetalleDTOCols_valorUnidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.subTotal"), "facturaDetalleDTOCols_subTotal");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.estado"), "facturaDetalleDTOCols_estado");
@@ -322,6 +323,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("facturaDetalleDTOCols.cantidad"), "facturaDetalleDTOCols_cantidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoFactura"), "facturaDetalleDTOCols_codigoFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.descripcion"), "facturaDetalleDTOCols_descripcion");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.descuento"), "facturaDetalleDTOCols_descuento");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.valorUnidad"), "facturaDetalleDTOCols_valorUnidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.subTotal"), "facturaDetalleDTOCols_subTotal");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.estado"), "facturaDetalleDTOCols_estado");
@@ -481,6 +483,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoArticuloUnidadManejo"), "facturaDetalleDTOCols_codigoArticuloUnidadManejo");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.cantidad"), "facturaDetalleDTOCols_cantidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoFactura"), "facturaDetalleDTOCols_codigoFactura");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.descuento"), "facturaDetalleDTOCols_descuento");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.descripcion"), "facturaDetalleDTOCols_descripcion");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.valorUnidad"), "facturaDetalleDTOCols_valorUnidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.subTotal"), "facturaDetalleDTOCols_subTotal");
@@ -670,6 +673,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("facturaDetalleDTOCols.cantidad"), "facturaDetalleDTOCols_cantidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.codigoFactura"), "facturaDetalleDTOCols_codigoFactura");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.descripcion"), "facturaDetalleDTOCols_descripcion");
+			projectionList.add(Projections.property("facturaDetalleDTOCols.descuento"), "facturaDetalleDTOCols_descuento");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.valorUnidad"), "facturaDetalleDTOCols_valorUnidad");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.subTotal"), "facturaDetalleDTOCols_subTotal");
 			projectionList.add(Projections.property("facturaDetalleDTOCols.estado"), "facturaDetalleDTOCols_estado");
@@ -881,6 +885,37 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			throw (ERPException)new ERPException("Error al actualizar el estado de la factura.").initCause(e);
 		} catch (Exception e) {
 			throw (ERPException)new ERPException("Error al actualizar el estado de la factura.").initCause(e);
+		}
+	}
+	
+	
+	/**
+	 * Actualizar numero de factura.
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @param userId
+	 * @param numeroFactura
+	 * @throws ERPException
+	 */
+	@Override
+	public void actualizarFacturaNumeroFactura(Integer codigoCompania, Long codigoFactura, String userId, String numeroFactura)throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+			StringBuilder sqlExecute = new StringBuilder();
+			sqlExecute.append("UPDATE SCVNTFACTURACABECERA SET NUMERODOCUMENTO = :pNumeroDocumento, USUARIOMODIFICACION = :pUsuarioModificacion, FECHAMODIFICACION = :pFechaModificacion"
+					+ " WHERE CODIGOCOMPANIA = :pCodigoCompania AND CODIGOFACTURA = :pCodigoFactura ");
+			SQLQuery query = session.createSQLQuery(sqlExecute.toString());
+			query.setParameter("pNumeroDocumento", numeroFactura);
+			query.setParameter("pCodigoCompania", codigoCompania);
+			query.setParameter("pCodigoFactura", codigoFactura);
+			query.setParameter("pUsuarioModificacion", userId);
+			query.setParameter("pFechaModificacion", Calendar.getInstance().getTime());
+			query.executeUpdate();
+		} catch (ERPException e) {
+			throw (ERPException)new ERPException("Error al actualizar el secuencial de la factura.").initCause(e);
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al actualizar el secuencial de la factura.").initCause(e);
 		}
 	}
 }

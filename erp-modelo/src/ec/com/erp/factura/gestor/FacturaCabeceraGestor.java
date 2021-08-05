@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
@@ -257,7 +258,10 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			}
 			// Registrar factura electronica
 			if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
-				byte[] xmlDocument = this.generarFacturaElectronica(rucFactElectronica, facturaCabeceraDTO);
+				// Generar factura electronica
+				Map<String, Object> datosFacturaElectronica = this.generarFacturaElectronica(rucFactElectronica, facturaCabeceraDTO);
+				// Obtener datos para guardar
+				byte[] xmlDocument = (byte[])datosFacturaElectronica.get("XMLDOCUMENT");
 				FacturaDocumentoDTO facturaDocumentoDTO = new FacturaDocumentoDTO();
 				facturaDocumentoDTO.getId().setCodigoCompania(facturaCabeceraDTO.getId().getCodigoCompania());
 				facturaDocumentoDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
@@ -265,6 +269,9 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				facturaDocumentoDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());
 				facturaDocumentoDTO.setFechaRegistro(facturaCabeceraDTO.getFechaRegistro());
 				this.facturaDocumentoGestor.guardarActualizarDocumentoFactura(facturaDocumentoDTO);
+				// Actualizar el numero de documento
+				String numeroFactura = (String)datosFacturaElectronica.get("NROFACTURA");	
+				this.facturaCabeceraDAO.actualizarFacturaNumeroFactura(facturaCabeceraDTO.getId().getCodigoCompania(), facturaCabeceraDTO.getId().getCodigoFactura(), facturaCabeceraDTO.getUsuarioRegistro(), numeroFactura);
 			}
 			
 		} catch (ERPException e) {
@@ -740,7 +747,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		return xmlFactura;
 	}
 	
-	private byte[] generarFacturaElectronica(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) {
+	private Map<String, Object> generarFacturaElectronica(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) {
 		try {
 			return FacturaElectronocaUtil.ejecutarFacturacionElectronicaFactura(rucFactElectronica, facturaCabeceraDTO.getNumeroDocumento(), facturaCabeceraDTO);
 		} catch (SAXParseException e) {
