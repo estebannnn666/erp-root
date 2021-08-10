@@ -164,8 +164,11 @@ public class FacturaCabeceraDTO implements Serializable{
 	@Column(name = "TIPOCLIENTE")
 	private String tipoCliente ;
 	
-	@Transient
-	private String tipoRuc;
+	/**
+	 * Especifica el tipo de ruc uno o dos
+	 */
+	@Column(name = "TIPORUC")
+	private String tipoRuc ;
 	
 	/**
 	 * Estado de la factura

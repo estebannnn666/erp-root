@@ -35,6 +35,7 @@ import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 import ec.com.erp.commons.util.ReportesUtil;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
+import ec.com.erp.facturacion.electronica.ws.ConstruirFacturaUtil;
 import ec.com.erp.facturacion.electronica.ws.FacturaElectronocaUtil;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
@@ -204,19 +205,24 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	@Override
-	public void guardarActualizarFacturaCabecera(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
+	public void guardarActualizarFacturaCabecera(Boolean crearFacturaElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
 		try{
 			// Obtenemos la lista de detalle a guardar
 			Collection<FacturaDetalleDTO> facturaDetalleDTOCols = facturaCabeceraDTO.getFacturaDetalleDTOCols();
 			// Obtener secuencia segun el ruc
-			Integer secuenciaFactura;
-			if(rucFactElectronica.equals(ERPConstantes.TIPO_RUC_UNO)) {
-				secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.FACTURA_ELECTRONICA_RUC_UNO);
-			}else {
-				secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.FACTURA_ELECTRONICA_RUC_DOS);
+			if(facturaCabeceraDTO.getTipoRuc().equals(ERPConstantes.TIPO_RUC_UNO) && facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
+				Integer secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.FACTURA_ELECTRONICA_RUC_UNO);
+				String numeroFactura = ConstruirFacturaUtil.numeroFactura(secuenciaFactura.toString());
+				// Asignar numero de secuencia a la factura
+				facturaCabeceraDTO.setNumeroDocumento(numeroFactura);
 			}
-			// Asignar numero de secuencia a la factura
-			facturaCabeceraDTO.setNumeroDocumento(secuenciaFactura.toString());
+			if(facturaCabeceraDTO.getTipoRuc().equals(ERPConstantes.TIPO_RUC_DOS) && facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {	
+				Integer secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.FACTURA_ELECTRONICA_RUC_DOS);
+				String numeroFactura = ConstruirFacturaUtil.numeroFactura(secuenciaFactura.toString());
+				// Asignar numero de secuencia a la factura
+				facturaCabeceraDTO.setNumeroDocumento(numeroFactura);
+			}
+			
 			// Guardamos la cabecera de la factura
 			facturaCabeceraDTO.setCodigoTipoDocumento(ERPConstantes.CODIGO_CATALOGO_TIPOS_DOCUMENTOS);
 			this.facturaCabeceraDAO.guardarActualizarFacturaCabecera(facturaCabeceraDTO);
@@ -257,9 +263,9 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				this.transaccionGestor.guardarTransaccion(transaccionDTO);
 			}
 			// Registrar factura electronica
-			if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
+			if(crearFacturaElectronica && facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
 				// Generar factura electronica
-				Map<String, Object> datosFacturaElectronica = this.generarFacturaElectronica(rucFactElectronica, facturaCabeceraDTO);
+				Map<String, Object> datosFacturaElectronica = this.generarFacturaElectronica(facturaCabeceraDTO);
 				// Obtener datos para guardar
 				byte[] xmlDocument = (byte[])datosFacturaElectronica.get("XMLDOCUMENT");
 				FacturaDocumentoDTO facturaDocumentoDTO = new FacturaDocumentoDTO();
@@ -270,8 +276,9 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				facturaDocumentoDTO.setFechaRegistro(facturaCabeceraDTO.getFechaRegistro());
 				this.facturaDocumentoGestor.guardarActualizarDocumentoFactura(facturaDocumentoDTO);
 				// Actualizar el numero de documento
-				String numeroFactura = (String)datosFacturaElectronica.get("NROFACTURA");	
-				this.facturaCabeceraDAO.actualizarFacturaNumeroFactura(facturaCabeceraDTO.getId().getCodigoCompania(), facturaCabeceraDTO.getId().getCodigoFactura(), facturaCabeceraDTO.getUsuarioRegistro(), numeroFactura);
+				String numeroFacElectronica = (String)datosFacturaElectronica.get("NROFACTURA");	
+				this.facturaCabeceraDAO.actualizarFacturaNumeroFactura(facturaCabeceraDTO.getId().getCodigoCompania(), facturaCabeceraDTO.getId().getCodigoFactura(), facturaCabeceraDTO.getUsuarioRegistro(), numeroFacElectronica);
+				
 			}
 			
 		} catch (ERPException e) {
@@ -747,9 +754,9 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		return xmlFactura;
 	}
 	
-	private Map<String, Object> generarFacturaElectronica(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) {
+	private Map<String, Object> generarFacturaElectronica(FacturaCabeceraDTO facturaCabeceraDTO) {
 		try {
-			return FacturaElectronocaUtil.ejecutarFacturacionElectronicaFactura(rucFactElectronica, facturaCabeceraDTO.getNumeroDocumento(), facturaCabeceraDTO);
+			return FacturaElectronocaUtil.ejecutarFacturacionElectronicaFactura(facturaCabeceraDTO);
 		} catch (SAXParseException e) {
 			throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
 		} catch (CertificateException e) {

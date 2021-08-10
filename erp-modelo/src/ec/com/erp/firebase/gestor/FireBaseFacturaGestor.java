@@ -114,6 +114,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 					facturaCabeceraDTO.setTotalCuenta(facFireBase.getHeader().getTotalInvoice());
 					facturaCabeceraDTO.setTotalImpuestos(facFireBase.getHeader().getTotalTax());
 					facturaCabeceraDTO.setTotalIva(facFireBase.getHeader().getTotalIva());
+					facturaCabeceraDTO.setTipoRuc(ERPConstantes.TIPO_RUC_DOS);
 					if(facFireBase.getHeader().getPaidOut()) {
 						facturaCabeceraDTO.setTotalPagos(facFireBase.getHeader().getTotalInvoice());
 					}
@@ -154,7 +155,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 					}	
 					facturaCabeceraDTO.setFacturaDetalleDTOCols(facturaDetalleDTOCols);
 					// Guardar la factura
-					this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(ERPConstantes.TIPO_RUC_DOS, facturaCabeceraDTO);
+					this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(Boolean.FALSE, facturaCabeceraDTO);
 				}
 			});
 		} catch (InterruptedException e) {

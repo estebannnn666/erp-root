@@ -83,8 +83,8 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	 * @throws ERPException
 	 */
 	@Override
-	public void transGuardarActualizarFacturaCabecera(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
-		this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(rucFactElectronica, facturaCabeceraDTO);
+	public void transGuardarActualizarFacturaCabecera(Boolean crearFacturaElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
+		this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(crearFacturaElectronica, facturaCabeceraDTO);
 	}
 
 	/**

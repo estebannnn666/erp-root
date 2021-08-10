@@ -62,7 +62,7 @@ public interface IFacturaCabeceraServicio {
 	 * @param facturaCabeceraDTO
 	 * @throws ERPException
 	 */
-	void transGuardarActualizarFacturaCabecera(String rucFactElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
+	void transGuardarActualizarFacturaCabecera(Boolean crearFacturaElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
 	
 	/**
 	 * Devuelve html de reporte de facturas

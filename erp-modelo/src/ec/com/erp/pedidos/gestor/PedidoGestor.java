@@ -167,7 +167,7 @@ public class PedidoGestor implements IPedidoGestor{
 			facturaCabeceraDTO.setTotalSinImpuestos(pedidoDTO.getTotalSinImpuestos());
 			facturaCabeceraDTO.setTipoRuc(ERPConstantes.TIPO_RUC_DOS);
 			facturaCabeceraDTO.setFacturaDetalleDTOCols(facturaDetalleDTOCol);		
-			this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(ERPConstantes.TIPO_RUC_DOS, facturaCabeceraDTO);
+			this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(Boolean.FALSE, facturaCabeceraDTO);
 			
 		} catch (ERPException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
