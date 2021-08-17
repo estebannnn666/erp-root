@@ -106,4 +106,14 @@ public class FireBaseServicio implements IFireBaseServicio {
 	public void transDescargarPedidosFireBase() throws ERPException{
 		this.fireBasePedidoGestor.descargarPedidosFireBase();
 	}
+	
+	/**
+	 * M\u00e9todo para actualizar las facturas a fire base
+	 * @return 
+	 * @throws ERPException
+	 */
+	@Override
+	public void findActualizarPagoFacturas() throws ERPException{
+		this.fireBaseFacturaGestor.actualizarPagoFacturas();
+	}
 }

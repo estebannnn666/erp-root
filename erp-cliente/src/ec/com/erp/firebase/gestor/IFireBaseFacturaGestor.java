@@ -17,4 +17,8 @@ public interface IFireBaseFacturaGestor {
 	 */
 	void descargarFacturasFireBase() throws ERPException;	
 	
+	/**
+	 * Metodo para actualizar factura en app
+	 */
+	void actualizarPagoFacturas();
 }

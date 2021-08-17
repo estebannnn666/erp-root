@@ -11,6 +11,7 @@ import java.util.Date;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
+import ec.com.erp.cliente.mdl.vo.ReporteVentasFacturasVO;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 
@@ -40,8 +41,8 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<ReporteVentasVO> findObtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
-		return this.facturaCabeceraGestor.obtenerReorteVentas(codigoCompania, documentoVendedor, nombreVendedor, fechaFacturaInicio, fechaFacturaFin);
+	public Collection<ReporteVentasVO> findObtenerReporteVentas(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerReporteVentas(codigoCompania, pagada, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
 	}
 
 	/**
@@ -85,6 +86,15 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	@Override
 	public void transGuardarActualizarFacturaCabecera(Boolean crearFacturaElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException{
 		this.facturaCabeceraGestor.guardarActualizarFacturaCabecera(crearFacturaElectronica, facturaCabeceraDTO);
+	}
+	
+	/**
+	 * Metodo para firmar enviar y autorizar factura electronica
+	 * @param facturaCabeceraDTO
+	 */
+	@Override
+	public void transEnviarFirmarAutorizar(FacturaCabeceraDTO facturaCabeceraDTO){
+		this.facturaCabeceraGestor.enviarFirmarAutorizar(facturaCabeceraDTO);
 	}
 
 	/**
@@ -174,5 +184,20 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	 */
 	public byte[] findObtenerXmlDocumentoFactura(Integer codigoCompania, Long codigoFactura) throws ERPException{
 		return this.facturaCabeceraGestor.obtenerXmlDocumentoFactura(codigoCompania, codigoFactura);
+	}
+	
+	/**
+	 * M\u00e9todo para obtener reporte de ventas por facturas y vendedores.
+	 * @param codigoCompania
+	 * @param pagada
+	 * @param codigoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<ReporteVentasFacturasVO> findObtenerReporteVentasFactura(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerReporteVentasFactura(codigoCompania, pagada, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
 	}
 }

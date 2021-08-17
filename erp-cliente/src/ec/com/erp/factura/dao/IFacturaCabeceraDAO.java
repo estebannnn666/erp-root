@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
+import ec.com.erp.cliente.mdl.vo.ReporteVentasFacturasVO;
 
 
 /**
@@ -124,4 +125,16 @@ public interface IFacturaCabeceraDAO {
 	 * @throws ERPException
 	 */
 	void actualizarFacturaNumeroFactura(Integer codigoCompania, Long codigoFactura, String userId, String numeroFactura)throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener reporte de ventas por facturas y vendedores.
+	 * @param codigoCompania
+	 * @param pagada
+	 * @param codigoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	Collection<ReporteVentasFacturasVO> obtenerReporteVentasFactura(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
 }

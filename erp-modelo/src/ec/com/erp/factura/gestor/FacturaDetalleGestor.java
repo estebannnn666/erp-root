@@ -41,8 +41,8 @@ public class FacturaDetalleGestor implements IFacturaDetalleGestor {
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<ReporteVentasVO> obtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
-		return this.facturaDetalleDAO.obtenerReorteVentas(codigoCompania, documentoVendedor, nombreVendedor, fechaFacturaInicio, fechaFacturaFin);
+	public Collection<ReporteVentasVO> obtenerReporteVentas(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.facturaDetalleDAO.obtenerReporteVentas(codigoCompania, pagada, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
 	}
 
 	/**

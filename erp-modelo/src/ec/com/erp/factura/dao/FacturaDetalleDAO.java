@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.CriteriaSpecification;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -76,7 +74,7 @@ public class FacturaDetalleDAO implements IFacturaDetalleDAO {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<ReporteVentasVO> obtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+	public Collection<ReporteVentasVO> obtenerReporteVentas(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
 		try {
 			Session session = sessionFactory.getCurrentSession();
 			session.clear();
@@ -98,12 +96,11 @@ public class FacturaDetalleDAO implements IFacturaDetalleDAO {
 			if(fechaFacturaInicio != null && fechaFacturaFin != null){
 				criteria.add(Restrictions.between("facturaCabeceraDTO.fechaDocumento", fechaFacturaInicio, fechaFacturaFin));
 			}
-			if(StringUtils.isNotBlank(documentoVendedor)){
-				criteria.add(Restrictions.like("personaDTO.numeroDocumento", documentoVendedor, MatchMode.ANYWHERE));
+			if(codigoVendedor != null){
+				criteria.add(Restrictions.eq("facturaCabeceraDTO.codigoVendedor", codigoVendedor));
 			}
-			if(StringUtils.isNotBlank(nombreVendedor)){
-				nombreVendedor = nombreVendedor.toUpperCase();
-				criteria.add(Restrictions.like("personaDTO.nombreCompleto", nombreVendedor, MatchMode.ANYWHERE));
+			if(pagada != null){
+				criteria.add(Restrictions.eq("facturaCabeceraDTO.pagado", pagada));
 			}
 			
 			//proyecciones entidad negociacion proveedor

@@ -24,7 +24,7 @@ public interface IFacturaDetalleGestor {
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<ReporteVentasVO> obtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
+	Collection<ReporteVentasVO> obtenerReporteVentas(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para obtener lista de detalles por factura

@@ -8,6 +8,7 @@ import java.util.Date;
 
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
+import ec.com.erp.cliente.mdl.vo.ReporteVentasFacturasVO;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 
 
@@ -28,7 +29,7 @@ public interface IFacturaCabeceraGestor {
 	 * @return
 	 * @throws ERPException
 	 */
-	Collection<ReporteVentasVO> obtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
+	Collection<ReporteVentasVO> obtenerReporteVentas(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
 	
 	/**
 	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
@@ -87,6 +88,12 @@ public interface IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	void guardarActualizarFacturaCabecera(Boolean crearFacturaElectronica, FacturaCabeceraDTO facturaCabeceraDTO) throws ERPException;
+	
+	/**
+	 * Metodo para firmar enviar y autorizar factura electronica
+	 * @param facturaCabeceraDTO
+	 */
+	void enviarFirmarAutorizar(FacturaCabeceraDTO facturaCabeceraDTO);
 	
 	/**
 	 * Obtener bytes nota de venta
@@ -167,4 +174,16 @@ public interface IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	byte[] obtenerXmlDocumentoFactura(Integer codigoCompania, Long codigoFactura) throws ERPException;
+	
+	/**
+	 * M\u00e9todo para obtener reporte de ventas por facturas y vendedores
+	 * @param codigoCompania
+	 * @param pagada
+	 * @param codigoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	Collection<ReporteVentasFacturasVO> obtenerReporteVentasFactura(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
 }

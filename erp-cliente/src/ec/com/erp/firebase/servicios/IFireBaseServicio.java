@@ -52,4 +52,11 @@ public interface IFireBaseServicio {
 	 * @throws ERPException
 	 */
 	void transDescargarPedidosFireBase() throws ERPException;
+	
+	/**
+	 * M\u00e9todo para actualizar las facturas a fire base
+	 * @return 
+	 * @throws ERPException
+	 */
+	void findActualizarPagoFacturas() throws ERPException;
 }

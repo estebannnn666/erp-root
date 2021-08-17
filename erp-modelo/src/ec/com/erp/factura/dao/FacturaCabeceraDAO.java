@@ -26,6 +26,7 @@ import ec.com.erp.cliente.common.constantes.ERPConstantes;
 import ec.com.erp.cliente.common.exception.ERPException;
 import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
+import ec.com.erp.cliente.mdl.vo.ReporteVentasFacturasVO;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.utilitario.dao.commons.hibernate.transformers.MultiLevelResultTransformer;
 
@@ -417,6 +418,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			
 			if(numeroFactura != null && numeroFactura !=""){
 				numeroFactura = numeroFactura.toUpperCase();
@@ -738,7 +740,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			if(facturaCabeceraDTO.getId().getCodigoFactura() ==  null){
 				Integer secuencialFactura = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA);
 				facturaCabeceraDTO.getId().setCodigoFactura(Long.parseLong(""+secuencialFactura));
-				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
+				if(facturaCabeceraDTO.getCodigoReferenciaFactura() == null && facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
 					Integer secuencialFacturaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_VENTA);
 					facturaCabeceraDTO.setCodigoReferenciaFactura("FAC-"+secuencialFacturaVentas);
 				}
@@ -922,5 +924,70 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 		} catch (Exception e) {
 			throw (ERPException)new ERPException("Error al actualizar el secuencial de la factura.").initCause(e);
 		}
+	}
+	
+	/**
+	 * M\u00e9todo para obtener reporte de ventas por facturas y vendedores.
+	 * @param codigoCompania
+	 * @param pagada
+	 * @param codigoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<ReporteVentasFacturasVO> obtenerReporteVentasFactura(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		try {
+			Session session = sessionFactory.getCurrentSession();
+			session.clear();
+
+			//joins
+			Criteria criteria  = session.createCriteria(FacturaCabeceraDTO.class, "root");
+			criteria.createAlias("root.vendedorDTO", "vendedorDTO", CriteriaSpecification.INNER_JOIN);
+			criteria.createAlias("vendedorDTO.personaDTO", "personaDTO", CriteriaSpecification.INNER_JOIN);
+			
+			//restricciones
+			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
+			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+			
+			if(fechaFacturaInicio != null && fechaFacturaFin != null){
+				criteria.add(Restrictions.between("root.fechaDocumento", fechaFacturaInicio, fechaFacturaFin));
+			}
+			if(codigoVendedor != null){
+				criteria.add(Restrictions.eq("root.codigoVendedor", codigoVendedor));
+			}
+			if(pagada != null){
+				criteria.add(Restrictions.eq("root.pagado", pagada));
+			}
+			
+			//proyecciones entidad negociacion proveedor
+			ProjectionList projectionList = Projections.projectionList();
+			projectionList.add(Projections.property("personaDTO.nombreCompleto"), "nombreVendedor");
+			projectionList.add(Projections.property("root.numeroDocumento"), "numeroDocumento");
+			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumentoCliente");
+			projectionList.add(Projections.property("root.nombreClienteProveedor"), "razonSocialCliente");
+			projectionList.add(Projections.property("root.tipoCliente"), "tipoCliente");
+			projectionList.add(Projections.property("root.pagado"), "pagada");
+			projectionList.add(Projections.property("root.fechaDocumento"), "fechaVenta");
+			projectionList.add(Projections.property("root.subTotal").as("subTotal"));
+			projectionList.add(Projections.property("root.totalSinImpuestos").as("tarifaCero"));
+			projectionList.add(Projections.property("root.totalImpuestos").as("tarifaImpuesto"));
+			projectionList.add(Projections.property("root.totalIva").as("totalIva"));
+			projectionList.add(Projections.property("root.totalCuenta").as("totalVenta"));
+			projectionList.add(Projections.property("root.descuento").as("totalDescuento"));
+			criteria.setProjection(projectionList);
+			criteria.addOrder(Order.asc("root.nombreClienteProveedor"));
+			criteria.setResultTransformer(new MultiLevelResultTransformer(ReporteVentasFacturasVO.class));
+			Collection<ReporteVentasFacturasVO> facturaCabeceraDTOCols = new ArrayList<>();
+			facturaCabeceraDTOCols = criteria.list();
+			return facturaCabeceraDTOCols;
+
+		} catch (ERPException e) {
+			throw e;
+		} catch (Exception e) {
+			throw (ERPException)new ERPException("Error al obtener reporte de ventas por facturas.").initCause(e);
+		} 
 	}
 }

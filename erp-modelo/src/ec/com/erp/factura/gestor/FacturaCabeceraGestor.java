@@ -32,6 +32,7 @@ import ec.com.erp.cliente.mdl.dto.FacturaDocumentoDTO;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
 import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
+import ec.com.erp.cliente.mdl.vo.ReporteVentasFacturasVO;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 import ec.com.erp.commons.util.ReportesUtil;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
@@ -123,8 +124,8 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	 * @throws ERPException
 	 */
 	@Override
-	public Collection<ReporteVentasVO> obtenerReorteVentas(Integer codigoCompania, String documentoVendedor, String nombreVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
-		return this.facturaDetalleGestor.obtenerReorteVentas(codigoCompania, documentoVendedor, nombreVendedor, fechaFacturaInicio, fechaFacturaFin);
+	public Collection<ReporteVentasVO> obtenerReporteVentas(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.facturaDetalleGestor.obtenerReporteVentas(codigoCompania, pagada, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
 	}
 
 	/**
@@ -281,6 +282,37 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				
 			}
 			
+		} catch (ERPException e) {
+			throw new ERPException("Error, {0}",e.getMessage()) ;
+		} catch (Exception e) {
+			throw new ERPException("Error, {0}",e.getCause());
+		} 
+	}
+	
+	/**
+	 * Metodo para firmar enviar y autorizar factura electronica
+	 * @param facturaCabeceraDTO
+	 */
+	@Override
+	public void enviarFirmarAutorizar(FacturaCabeceraDTO facturaCabeceraDTO){
+		try{
+		// Registrar factura electronica
+			if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS)) {
+				// Generar factura electronica
+				Map<String, Object> datosFacturaElectronica = this.generarFacturaElectronica(facturaCabeceraDTO);
+				// Obtener datos para guardar
+				byte[] xmlDocument = (byte[])datosFacturaElectronica.get("XMLDOCUMENT");
+				FacturaDocumentoDTO facturaDocumentoDTO = new FacturaDocumentoDTO();
+				facturaDocumentoDTO.getId().setCodigoCompania(facturaCabeceraDTO.getId().getCodigoCompania());
+				facturaDocumentoDTO.setCodigoFactura(facturaCabeceraDTO.getId().getCodigoFactura());
+				facturaDocumentoDTO.setXmlFactura(xmlDocument);
+				facturaDocumentoDTO.setUsuarioRegistro(facturaCabeceraDTO.getUsuarioRegistro());
+				facturaDocumentoDTO.setFechaRegistro(facturaCabeceraDTO.getFechaRegistro());
+				this.facturaDocumentoGestor.guardarActualizarDocumentoFactura(facturaDocumentoDTO);
+				// Actualizar el numero de documento
+				String numeroFacElectronica = (String)datosFacturaElectronica.get("NROFACTURA");	
+				this.facturaCabeceraDAO.actualizarFacturaNumeroFactura(facturaCabeceraDTO.getId().getCodigoCompania(), facturaCabeceraDTO.getId().getCodigoFactura(), facturaCabeceraDTO.getUsuarioRegistro(), numeroFacElectronica);
+			}
 		} catch (ERPException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		} catch (Exception e) {
@@ -771,4 +803,20 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 			throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
 		}
 	}
+	
+	/**
+	 * M\u00e9todo para obtener reporte de ventas por facturas y vendedores
+	 * @param codigoCompania
+	 * @param pagada
+	 * @param codigoVendedor
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @return
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<ReporteVentasFacturasVO> obtenerReporteVentasFactura(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
+		return this.facturaCabeceraDAO.obtenerReporteVentasFactura(codigoCompania, pagada, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
+	}
+	
 }

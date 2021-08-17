@@ -1,5 +1,7 @@
 package ec.com.erp.firebase.gestor;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
@@ -66,6 +68,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 	 * @return 
 	 * @throws ERPException
 	 */
+	@Override
 	public void descargarFacturasFireBase() throws ERPException{
 		try {
 			Collection<Invoice> facturasFireBase = InvoiceProvider.obtainInvoicesFirebase();
@@ -76,7 +79,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 			
 			facturasFireBase.stream().forEach(facFireBase ->{
 				FacturaCabeceraDTO articuloDTOLocal = facturasDTOCols.stream()
-						.filter(facturaDTO -> facturaDTO.getNumeroDocumento().equals(facFireBase.getHeader().getNumberDocument()))
+						.filter(facturaDTO -> facturaDTO.getCodigoReferenciaFactura().equals(facFireBase.getHeader().getNumberDocument()))
 						.findFirst().orElse(null);
 				
 				if(articuloDTOLocal == null) {
@@ -90,7 +93,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 					facturaCabeceraDTO.getId().setCodigoCompania(ERPConstantes.CODIGO_COMPANIA);
 					facturaCabeceraDTO.setTipoRuc(ERPConstantes.TIPO_RUC_DOS);					
 					facturaCabeceraDTO.setUsuarioRegistro(ERPConstantes.USUARIO_GENERICO);
-					facturaCabeceraDTO.setNumeroDocumento(facFireBase.getHeader().getNumberDocument());
+					facturaCabeceraDTO.setCodigoReferenciaFactura(facFireBase.getHeader().getNumberDocument());
 					facturaCabeceraDTO.setCodigoTipoDocumento(ERPConstantes.CODIGO_CATALOGO_TIPOS_DOCUMENTOS);
 					facturaCabeceraDTO.setTipoCliente(clienteDTO.getCodigoValorTipoCompra());
 					if(facFireBase.getHeader().getValueDocumentCode().equals(ERPConstantes.TIPO_DOCUMENTO_FACTURA)) {
@@ -103,22 +106,22 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 					if(vendedorDTO != null && vendedorDTO.getId().getCodigoVendedor() != null) {
 						facturaCabeceraDTO.setCodigoVendedor(vendedorDTO.getId().getCodigoVendedor());
 					}
-					facturaCabeceraDTO.setDescuento(facFireBase.getHeader().getDiscount());
+					facturaCabeceraDTO.setDescuento(BigDecimal.valueOf(facFireBase.getHeader().getDiscount()));
 					facturaCabeceraDTO.setDireccion(facFireBase.getHeader().getClientDirection());
 					facturaCabeceraDTO.setFechaDocumento(facFireBase.getHeader().getDateDocument());
 					facturaCabeceraDTO.setNombreClienteProveedor(facFireBase.getHeader().getClientName());
 					facturaCabeceraDTO.setPagado(facFireBase.getHeader().getPaidOut());
 					facturaCabeceraDTO.setRucDocumento(facFireBase.getHeader().getClientDocument());
-					facturaCabeceraDTO.setSubTotal(facFireBase.getHeader().getSubTotal());
+					facturaCabeceraDTO.setSubTotal(BigDecimal.valueOf(facFireBase.getHeader().getSubTotal()));
 					facturaCabeceraDTO.setTelefono(facFireBase.getHeader().getClientPhone());
-					facturaCabeceraDTO.setTotalCuenta(facFireBase.getHeader().getTotalInvoice());
-					facturaCabeceraDTO.setTotalImpuestos(facFireBase.getHeader().getTotalTax());
-					facturaCabeceraDTO.setTotalIva(facFireBase.getHeader().getTotalIva());
+					facturaCabeceraDTO.setTotalCuenta(BigDecimal.valueOf(facFireBase.getHeader().getTotalInvoice()));
+					facturaCabeceraDTO.setTotalImpuestos(BigDecimal.valueOf(facFireBase.getHeader().getTotalTax()));
+					facturaCabeceraDTO.setTotalIva(BigDecimal.valueOf(facFireBase.getHeader().getTotalIva()));
 					facturaCabeceraDTO.setTipoRuc(ERPConstantes.TIPO_RUC_DOS);
 					if(facFireBase.getHeader().getPaidOut()) {
-						facturaCabeceraDTO.setTotalPagos(facFireBase.getHeader().getTotalInvoice());
+						facturaCabeceraDTO.setTotalPagos(BigDecimal.valueOf(facFireBase.getHeader().getTotalInvoice()));
 					}
-					facturaCabeceraDTO.setTotalSinImpuestos(facFireBase.getHeader().getTotalNotTax());
+					facturaCabeceraDTO.setTotalSinImpuestos(BigDecimal.valueOf(facFireBase.getHeader().getTotalNotTax()));
 					
 					Collection<FacturaDetalleDTO> facturaDetalleDTOCols = new ArrayList<>();
 					// Agregar unidades de manejo de articulo
@@ -146,8 +149,9 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 									facturaDetalleDTO.setCodigoArticuloUnidadManejo(articuloUnidadManejoDTO.getId().getCodigoArticuloUnidadManejo());
 									facturaDetalleDTO.setCodigoBarras(detailInvoice.getBarCodeItem());
 									facturaDetalleDTO.setDescripcion(detailInvoice.getDescription());
-									facturaDetalleDTO.setSubTotal(detailInvoice.getSubTotal());
-									facturaDetalleDTO.setValorUnidad(detailInvoice.getUnitValue());
+									facturaDetalleDTO.setDescuento(detailInvoice.getDiscount() != null ? BigDecimal.valueOf(detailInvoice.getDiscount()): BigDecimal.ZERO);
+									facturaDetalleDTO.setSubTotal(BigDecimal.valueOf(detailInvoice.getSubTotal()));
+									facturaDetalleDTO.setValorUnidad(BigDecimal.valueOf(detailInvoice.getUnitValue()));
 									facturaDetalleDTOCols.add(facturaDetalleDTO);
 								}
 							}
@@ -165,5 +169,36 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 		}
 	}	
 	
+	
+	/**
+	 * Metodo para actualizar factura en app
+	 */
+	@Override
+	public void actualizarPagoFacturas(){
+		try{
+			Collection<Invoice> facturasFireBase = InvoiceProvider.obtainInvoicesFirebase();
+			Collection<String> tiposDocumentos = new ArrayList<>();
+			Collection<Invoice> facturasActualizar = new ArrayList<>();
+			tiposDocumentos.add(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
+			tiposDocumentos.add(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA);
+			Collection<FacturaCabeceraDTO> facturasDTOCols = this.facturaCabeceraGestor.obtenerListaFacturasValidarFirebase(ERPConstantes.CODIGO_COMPANIA, null, null, null, null, null, null, tiposDocumentos);
+			facturasFireBase.stream().forEach(facturaApp -> {
+				FacturaCabeceraDTO facturaCabeceraDTO = facturasDTOCols.stream()
+				    .filter(facturaLocal -> facturaLocal.getCodigoReferenciaFactura().equals(facturaApp.getHeader().getNumberDocument()) && facturaLocal.getPagado() && !facturaApp.getHeader().getPaidOut()).findFirst().orElse(null);
+				if(facturaCabeceraDTO != null){
+					facturaApp.getHeader().setPaidOut(Boolean.TRUE);
+					facturasActualizar.add(facturaApp);
+				}
+			});
+			// Update invoices
+			InvoiceProvider.updateInvoice(facturasActualizar);
+		} catch (InterruptedException e) {
+			throw new ERPException("Error, {0}",e.getMessage()) ;
+		} catch (ExecutionException e) {
+			throw new ERPException("Error, {0}",e.getMessage()) ;
+		} catch (IOException e) {
+			throw new ERPException("Error, {0}",e.getMessage()) ;
+		}
+	}
 	
 }
