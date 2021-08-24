@@ -39,6 +39,7 @@ import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
 import ec.com.erp.facturacion.electronica.ws.ConstruirFacturaUtil;
 import ec.com.erp.facturacion.electronica.ws.FacturaElectronocaUtil;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
+import ec.com.erp.notificacionmail.gestor.INotificacionMailGestor;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.secuencia.gestor.ISecuenciaGestor;
 import ec.com.erp.transaccion.gestor.ITransaccionGestor;
@@ -57,6 +58,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	private ISecuenciaGestor secuenciaGestor;
 	private ISecuenciaDAO secuenciaDAO;
 	private IFacturaDocumentoGestor facturaDocumentoGestor;
+	private INotificacionMailGestor notificacionMailGestor;
 	
 	public IFacturaCabeceraDAO getFacturaCabeceraDAO() {
 		return facturaCabeceraDAO;
@@ -112,6 +114,14 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 
 	public void setFacturaDocumentoGestor(IFacturaDocumentoGestor facturaDocumentoGestor) {
 		this.facturaDocumentoGestor = facturaDocumentoGestor;
+	}
+	
+	public INotificacionMailGestor getNotificacionMailGestor() {
+		return notificacionMailGestor;
+	}
+
+	public void setNotificacionMailGestor(INotificacionMailGestor notificacionMailGestor) {
+		this.notificacionMailGestor = notificacionMailGestor;
 	}
 
 	/**
@@ -279,7 +289,11 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				// Actualizar el numero de documento
 				String numeroFacElectronica = (String)datosFacturaElectronica.get("NROFACTURA");	
 				this.facturaCabeceraDAO.actualizarFacturaNumeroFactura(facturaCabeceraDTO.getId().getCodigoCompania(), facturaCabeceraDTO.getId().getCodigoFactura(), facturaCabeceraDTO.getUsuarioRegistro(), numeroFacElectronica);
-				
+				// Enviar correo con factura
+				if(facturaCabeceraDTO.getEmail() != null){
+					byte[] invoice = this.generarFacturaElectronica(xmlDocument);
+					this.notificacionMailGestor.enviarFacturaMail(facturaCabeceraDTO.getEmail(), invoice);
+				}
 			}
 			
 		} catch (ERPException e) {
@@ -802,6 +816,14 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		} catch (InterruptedException e) {
 			throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
 		}
+	}
+	
+	private byte[] generarFacturaElectronica(byte[] xmlFactura) throws IOException {  
+		try {
+			return FacturaElectronocaUtil.imprimirRideFactura(xmlFactura);
+		} catch (Exception e) {
+			throw new ERPException("Error", "Error al obtener factura electronica"+e.getMessage()) ;
+		} 
 	}
 	
 	/**

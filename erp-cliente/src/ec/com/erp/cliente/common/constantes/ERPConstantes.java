@@ -84,4 +84,9 @@ public class ERPConstantes {
 	public static final String TIPO_CLIENTE_EMPRESA = "Empresa";
 	public static final String TIPO_DOCUMENTO_FACTURA = "Factura";
 	public static final String TIPO_DOCUMENTO_NOTA_VENTA = "Nota de venta";
+	
+	/*********** CONSTANTES PARAMETROS ***************/
+	public static final String PARAMETRO_EMAIL_REMITENTE = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.envio.mail.remitente");
+	public static final String PARAMETRO_EMAIL_CONTRASENIA = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.contrasenia.remitente");
+	public static final String PARAMETRO_EMAIL_CUERPO = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.envio.mail.contenido");
 }

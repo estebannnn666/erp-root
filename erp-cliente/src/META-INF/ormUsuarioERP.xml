@@ -39,4 +39,5 @@
 	<entity class="ec.com.erp.cliente.mdl.dto.ArticuloUnidadManejoDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.VendedorDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.FacturaDocumentoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.ParametroDTO"></entity>
 </entity-mappings>

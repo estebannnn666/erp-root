@@ -144,6 +144,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
 			projectionList.add(Projections.property("root.direccion"), "direccion");
 			projectionList.add(Projections.property("root.telefono"), "telefono");
+			projectionList.add(Projections.property("root.email"), "email");
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
 			projectionList.add(Projections.property("root.totalIva"), "totalIva");
@@ -303,6 +304,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
 			projectionList.add(Projections.property("root.direccion"), "direccion");
 			projectionList.add(Projections.property("root.telefono"), "telefono");
+			projectionList.add(Projections.property("root.email"), "email");
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
 			projectionList.add(Projections.property("root.totalIva"), "totalIva");
@@ -453,6 +455,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
 			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
 			projectionList.add(Projections.property("root.direccion"), "direccion");
+			projectionList.add(Projections.property("root.email"), "email");
 			projectionList.add(Projections.property("root.telefono"), "telefono");
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
@@ -591,6 +594,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
 			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
 			projectionList.add(Projections.property("root.direccion"), "direccion");
+			projectionList.add(Projections.property("root.email"), "email");
 			projectionList.add(Projections.property("root.telefono"), "telefono");
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");
@@ -656,6 +660,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("root.rucDocumento"), "rucDocumento");
 			projectionList.add(Projections.property("root.nombreClienteProveedor"), "nombreClienteProveedor");
 			projectionList.add(Projections.property("root.direccion"), "direccion");
+			projectionList.add(Projections.property("root.email"), "email");
 			projectionList.add(Projections.property("root.telefono"), "telefono");
 			projectionList.add(Projections.property("root.pagado"), "pagado");
 			projectionList.add(Projections.property("root.subTotal"), "subTotal");

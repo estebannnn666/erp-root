@@ -143,4 +143,14 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
 		<property name="fireBaseFacturaGestor"><ref bean="erpFireBaseFacturaGestor"/></property>
 		<property name="fireBasePedidoGestor"><ref bean="erpFireBasePedidosGestor"/></property>
 	</bean>
+	
+	<!-- Servicio parametro -->
+	<bean id="erpParametroServicio" class="ec.com.erp.parametro.servicios.ParametroServicio">
+		<property name="parametroGestor"><ref bean="erpParametroGestor"/></property>
+	</bean>
+	
+	<!-- Servicio notificacion -->
+	<bean id="erpNotificacionMailServicio" class="ec.com.erp.notificacionmail.servicios.NotificacionMailServicio">
+		<property name="notificacionMailGestor"><ref bean="erpNotificacionMailGestor"/></property>
+	</bean>
 </beans>

@@ -84,6 +84,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	private String direccion ;
 	
 	/**
+	 * Especifica la direccion email del cliente
+	 */
+	@Column(name = "EMAIL")
+	private String email;
+	
+	/**
 	 * Especifica el telefono para la factura
 	 */
 	@Column(name = "TELEFONO")
@@ -513,5 +519,13 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setSeleccionada(Boolean seleccionada) {
 		this.seleccionada = seleccionada;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

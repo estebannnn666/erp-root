@@ -161,6 +161,9 @@
 		<property name="secuenciaGestor"><ref bean="erpSecuenciaGestor"/></property>
 		<property name="facturaDocumentoGestor"><ref bean="erpFacturaDocumentoGestor"/></property>
 		<property name="secuenciaDAO"><ref bean="erpSecuenciaDAO"/></property>
+		<property name="notificacionMailGestor"><ref bean="erpNotificacionMailGestor"/></property>
+		
+		
 	</bean>
 	
 	<!-- Gestor facturaDetalle -->
@@ -236,5 +239,15 @@
 		<property name="vendedorGestor"><ref bean="erpVendedorGestor"/></property>
 		<property name="pedidoGestor"><ref bean="erpPedidoGestor"/></property>
 		<property name="clientesGestor"><ref bean="erpClientesGestor"/></property>
+	</bean>
+	
+	<!-- Gestor parametro-->
+	<bean id="erpParametroGestor" class="ec.com.erp.parametro.gestor.ParametroGestor">
+		<property name="parametroDAO"><ref bean="erpParametroDAO"/></property>
+	</bean>
+	
+	<!-- Gestor parametro-->
+	<bean id="erpNotificacionMailGestor" class="ec.com.erp.notificacionmail.gestor.NotificacionMailGestor">
+		<property name="parametroGestor"><ref bean="erpParametroGestor"/></property>
 	</bean>
 </beans>
