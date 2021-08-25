@@ -19,6 +19,7 @@ import javax.xml.bind.JAXBException;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -291,7 +292,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				this.facturaCabeceraDAO.actualizarFacturaNumeroFactura(facturaCabeceraDTO.getId().getCodigoCompania(), facturaCabeceraDTO.getId().getCodigoFactura(), facturaCabeceraDTO.getUsuarioRegistro(), numeroFacElectronica);
 				// Enviar correo con factura
 				try{
-					if(facturaCabeceraDTO.getEmail() != null){
+					if(StringUtils.isNotBlank(facturaCabeceraDTO.getEmail())){
 						byte[] invoice = this.generarFacturaElectronica(xmlDocument);
 						this.notificacionMailGestor.enviarFacturaMail(facturaCabeceraDTO.getEmail(), invoice);
 					}
