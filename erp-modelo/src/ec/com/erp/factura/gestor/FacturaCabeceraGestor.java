@@ -290,9 +290,13 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 				String numeroFacElectronica = (String)datosFacturaElectronica.get("NROFACTURA");	
 				this.facturaCabeceraDAO.actualizarFacturaNumeroFactura(facturaCabeceraDTO.getId().getCodigoCompania(), facturaCabeceraDTO.getId().getCodigoFactura(), facturaCabeceraDTO.getUsuarioRegistro(), numeroFacElectronica);
 				// Enviar correo con factura
-				if(facturaCabeceraDTO.getEmail() != null){
-					byte[] invoice = this.generarFacturaElectronica(xmlDocument);
-					this.notificacionMailGestor.enviarFacturaMail(facturaCabeceraDTO.getEmail(), invoice);
+				try{
+					if(facturaCabeceraDTO.getEmail() != null){
+						byte[] invoice = this.generarFacturaElectronica(xmlDocument);
+						this.notificacionMailGestor.enviarFacturaMail(facturaCabeceraDTO.getEmail(), invoice);
+					}
+				}catch (Exception e) {
+					System.out.println("Error al enviar email: "+e);
 				}
 			}
 			
