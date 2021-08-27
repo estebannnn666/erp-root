@@ -420,7 +420,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			
 			//restricciones
 			criteria.add(Restrictions.eq("root.id.codigoCompania", codigoCompania));
-			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
+//			criteria.add(Restrictions.eq("root.estado", ERPConstantes.ESTADO_ACTIVO_NUMERICO));
 			
 			if(numeroFactura != null && numeroFactura !=""){
 				numeroFactura = numeroFactura.toUpperCase();
@@ -749,7 +749,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 					Integer secuencialFacturaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_VENTA);
 					facturaCabeceraDTO.setCodigoReferenciaFactura("FAC-"+secuencialFacturaVentas);
 				}
-				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)) {
+				if(facturaCabeceraDTO.getCodigoReferenciaFactura() == null && facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA)) {
 					Integer secuencialNotaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_NOTA_VENTA);
 					facturaCabeceraDTO.setCodigoReferenciaFactura("NOT-"+secuencialNotaVentas);
 				}

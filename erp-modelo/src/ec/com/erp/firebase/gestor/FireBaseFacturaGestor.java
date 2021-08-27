@@ -2,6 +2,7 @@ package ec.com.erp.firebase.gestor;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
@@ -21,7 +22,9 @@ import ec.com.erp.clientes.gestor.IClientesGestor;
 import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 import ec.com.erp.firebase.commons.provider.InvoiceProvider;
 import ec.com.erp.firebase.model.DetailInvoice;
+import ec.com.erp.firebase.model.HeadInvoiceUpdate;
 import ec.com.erp.firebase.model.Invoice;
+import ec.com.erp.firebase.model.InvoiceUpdate;
 import ec.com.erp.vendedor.gestor.IVendedorGestor;
 
 public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
@@ -100,6 +103,7 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 						facturaCabeceraDTO.setCodigoValorTipoDocumento(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
 					}else {
 						facturaCabeceraDTO.setCodigoValorTipoDocumento(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA);
+						facturaCabeceraDTO.setNumeroDocumento(facFireBase.getHeader().getNumberDocument());
 					}
 					// Obtener datos del vendedor si existe
 					VendedorDTO vendedorDTO = this.vendedorGestor.obtenerVendedor(ERPConstantes.CODIGO_COMPANIA, facFireBase.getHeader().getUserId());
@@ -176,22 +180,25 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 	@Override
 	public void actualizarPagoFacturas(){
 		try{
+			SimpleDateFormat formatoFecha = new SimpleDateFormat("YYYY-MM-dd");
 			Collection<Invoice> facturasFireBase = InvoiceProvider.obtainInvoicesFirebase();
 			Collection<String> tiposDocumentos = new ArrayList<>();
-			Collection<Invoice> facturasActualizar = new ArrayList<>();
+			Collection<InvoiceUpdate> facturasActualizar = new ArrayList<>();
 			tiposDocumentos.add(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_VENTAS);
 			tiposDocumentos.add(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_NOTA_VENTA);
 			Collection<FacturaCabeceraDTO> facturasDTOCols = this.facturaCabeceraGestor.obtenerListaFacturasValidarFirebase(ERPConstantes.CODIGO_COMPANIA, null, null, null, null, null, null, tiposDocumentos);
 			facturasFireBase.stream().forEach(facturaApp -> {
 				FacturaCabeceraDTO facturaCabeceraDTO = facturasDTOCols.stream()
-				    .filter(facturaLocal -> facturaLocal.getCodigoReferenciaFactura().equals(facturaApp.getHeader().getNumberDocument()) && facturaLocal.getPagado() && !facturaApp.getHeader().getPaidOut()).findFirst().orElse(null);
+				    .filter(facturaLocal -> facturaLocal.getCodigoReferenciaFactura().equals(facturaApp.getHeader().getNumberDocument()) && facturaLocal.getPagado() && !facturaApp.getHeader().getPaidOut())
+				    .findFirst().orElse(null);
 				if(facturaCabeceraDTO != null){
+					InvoiceUpdate invoiceUpdate = crearFacturaActualizar(facturaApp, formatoFecha.format(facturaCabeceraDTO.getFechaDocumento()));
 					facturaApp.getHeader().setPaidOut(Boolean.TRUE);
-					facturasActualizar.add(facturaApp);
+					facturasActualizar.add(invoiceUpdate);
 				}
 			});
 			// Update invoices
-			InvoiceProvider.updateInvoice(facturasActualizar);
+			InvoiceProvider.updateInvoiceAux(facturasActualizar);
 		} catch (InterruptedException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		} catch (ExecutionException e) {
@@ -199,6 +206,31 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 		} catch (IOException e) {
 			throw new ERPException("Error, {0}",e.getMessage()) ;
 		}
+	}
+	
+	public InvoiceUpdate crearFacturaActualizar(Invoice invoice, String dateDocument){
+		InvoiceUpdate invoiceUpdate = new InvoiceUpdate();
+		invoiceUpdate.setDetails(invoice.getDetails());
+		invoiceUpdate.setHeader(new HeadInvoiceUpdate());
+		invoiceUpdate.getHeader().setIdInvoice(invoice.getHeader().getIdInvoice());
+		invoiceUpdate.getHeader().setClientDirection(invoice.getHeader().getClientDirection());
+		invoiceUpdate.getHeader().setClientDocument(invoice.getHeader().getClientDocument()); 
+		invoiceUpdate.getHeader().setClientName(invoice.getHeader().getClientName()); 
+		invoiceUpdate.getHeader().setClientPhone(invoice.getHeader().getClientPhone()); 
+		invoiceUpdate.getHeader().setDateDocument(dateDocument); 
+		invoiceUpdate.getHeader().setDiscount(invoice.getHeader().getDiscount()); 
+		invoiceUpdate.getHeader().setNumberDocument(invoice.getHeader().getNumberDocument());
+		invoiceUpdate.getHeader().setPaidOut(invoice.getHeader().getPaidOut());
+		invoiceUpdate.getHeader().setSubTotal(invoice.getHeader().getSubTotal());
+		invoiceUpdate.getHeader().setTotalInvoice(invoice.getHeader().getTotalInvoice());
+		invoiceUpdate.getHeader().setTotalIva(invoice.getHeader().getTotalIva());
+		invoiceUpdate.getHeader().setTotalNotTax(invoice.getHeader().getTotalNotTax());
+		invoiceUpdate.getHeader().setTotalTax(invoice.getHeader().getTotalTax());
+		invoiceUpdate.getHeader().setTypeDocumentCode(invoice.getHeader().getTypeDocumentCode());
+		invoiceUpdate.getHeader().setUserId(invoice.getHeader().getUserId());
+		invoiceUpdate.getHeader().setSeller(invoice.getHeader().getSeller());
+		invoiceUpdate.getHeader().setValueDocumentCode(invoice.getHeader().getValueDocumentCode());
+		return invoiceUpdate;
 	}
 	
 }
