@@ -197,6 +197,9 @@ public class FacturaCabeceraDTO implements Serializable{
 	@Transient
 	private Boolean seleccionada;
 	
+	@Transient
+	private Boolean actualizarSecuencia;
+	
 	/**
 	 * Referencia a detalle de la factura
 	 */
@@ -527,5 +530,13 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Boolean getActualizarSecuencia() {
+		return actualizarSecuencia;
+	}
+
+	public void setActualizarSecuencia(Boolean actualizarSecuencia) {
+		this.actualizarSecuencia = actualizarSecuencia;
 	}
 }

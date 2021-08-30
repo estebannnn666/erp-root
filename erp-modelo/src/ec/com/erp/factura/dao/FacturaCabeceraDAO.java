@@ -753,6 +753,9 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 					Integer secuencialNotaVentas = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_NOTA_VENTA);
 					facturaCabeceraDTO.setCodigoReferenciaFactura("NOT-"+secuencialNotaVentas);
 				}
+				if(facturaCabeceraDTO.getActualizarSecuencia() != null && facturaCabeceraDTO.getActualizarSecuencia()){
+					this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_FACTURA_RUC_UNO);
+				}
 				if(facturaCabeceraDTO.getCodigoValorTipoDocumento().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_DOCUMENTO_COMPRAS)) {
 					Integer secuencialFacturaCompras = this.secuenciaDAO.obtenerSecuencialTabla(FacturaCabeceraID.NOMBRE_SECUENCIA_COMPRA);
 					facturaCabeceraDTO.setCodigoReferenciaFactura("DOC-"+secuencialFacturaCompras);
