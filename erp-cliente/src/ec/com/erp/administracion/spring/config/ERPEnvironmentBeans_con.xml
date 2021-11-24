@@ -24,7 +24,7 @@
      	<property name="url" value="jdbc:postgresql://localhost:5432/nevados" />
      	<property name="username" value="postgres" />
      	<property name="password" value="postgres" />
-     	<!-- <property name="url" value="jdbc:postgresql://209.209.40.79:19879/nevados" />
+     	<!--<property name="url" value="jdbc:postgresql://209.209.40.79:19879/nevados" />
      	<property name="username" value="esteban" />
      	<property name="password" value="esteban_1987" />-->
  	</bean>

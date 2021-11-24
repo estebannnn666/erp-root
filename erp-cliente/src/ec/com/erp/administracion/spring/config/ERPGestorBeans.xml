@@ -162,8 +162,7 @@
 		<property name="facturaDocumentoGestor"><ref bean="erpFacturaDocumentoGestor"/></property>
 		<property name="secuenciaDAO"><ref bean="erpSecuenciaDAO"/></property>
 		<property name="notificacionMailGestor"><ref bean="erpNotificacionMailGestor"/></property>
-		
-		
+		<property name="parametroGestor"><ref bean="erpParametroGestor"/></property>
 	</bean>
 	
 	<!-- Gestor facturaDetalle -->

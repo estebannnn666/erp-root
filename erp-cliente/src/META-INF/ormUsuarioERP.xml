@@ -40,4 +40,7 @@
 	<entity class="ec.com.erp.cliente.mdl.dto.VendedorDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.FacturaDocumentoDTO"></entity>
 	<entity class="ec.com.erp.cliente.mdl.dto.ParametroDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.NotaCreditoDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.NotaCreditoDetalleDTO"></entity>
+	<entity class="ec.com.erp.cliente.mdl.dto.NotaCreditoDocumentoDTO"></entity>
 </entity-mappings>

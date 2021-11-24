@@ -84,6 +84,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	private String direccion ;
 	
 	/**
+	 * Especifica la ciudad para la factura
+	 */
+	@Column(name = "CIUDAD")
+	private String ciudad ;
+	
+	/**
 	 * Especifica la direccion email del cliente
 	 */
 	@Column(name = "EMAIL")
@@ -539,4 +545,12 @@ public class FacturaCabeceraDTO implements Serializable{
 	public void setActualizarSecuencia(Boolean actualizarSecuencia) {
 		this.actualizarSecuencia = actualizarSecuencia;
 	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public void setCiudad(String ciudad) {
+		this.ciudad = ciudad;
+	}	
 }

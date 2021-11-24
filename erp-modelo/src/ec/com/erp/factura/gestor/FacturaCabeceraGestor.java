@@ -9,6 +9,7 @@ import java.security.cert.CertificateException;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -31,6 +32,7 @@ import ec.com.erp.cliente.mdl.dto.FacturaCabeceraDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDetalleDTO;
 import ec.com.erp.cliente.mdl.dto.FacturaDocumentoDTO;
 import ec.com.erp.cliente.mdl.dto.InventarioDTO;
+import ec.com.erp.cliente.mdl.dto.ParametroDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
 import ec.com.erp.cliente.mdl.dto.id.FacturaCabeceraID;
 import ec.com.erp.cliente.mdl.vo.ReporteVentasFacturasVO;
@@ -38,9 +40,10 @@ import ec.com.erp.cliente.mdl.vo.ReporteVentasVO;
 import ec.com.erp.commons.util.ReportesUtil;
 import ec.com.erp.factura.dao.IFacturaCabeceraDAO;
 import ec.com.erp.facturacion.electronica.ws.ConstruirFacturaUtil;
-import ec.com.erp.facturacion.electronica.ws.FacturaElectronocaUtil;
+import ec.com.erp.facturacion.electronica.ws.FacturaElectronicaUtil;
 import ec.com.erp.inventario.gestor.IInventarioGestor;
 import ec.com.erp.notificacionmail.gestor.INotificacionMailGestor;
+import ec.com.erp.parametro.gestor.IParametroGestor;
 import ec.com.erp.secuencia.dao.ISecuenciaDAO;
 import ec.com.erp.secuencia.gestor.ISecuenciaGestor;
 import ec.com.erp.transaccion.gestor.ITransaccionGestor;
@@ -60,6 +63,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	private ISecuenciaDAO secuenciaDAO;
 	private IFacturaDocumentoGestor facturaDocumentoGestor;
 	private INotificacionMailGestor notificacionMailGestor;
+	private IParametroGestor parametroGestor;
 	
 	public IFacturaCabeceraDAO getFacturaCabeceraDAO() {
 		return facturaCabeceraDAO;
@@ -123,6 +127,14 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 
 	public void setNotificacionMailGestor(INotificacionMailGestor notificacionMailGestor) {
 		this.notificacionMailGestor = notificacionMailGestor;
+	}
+	
+	public IParametroGestor getParametroGestor() {
+		return parametroGestor;
+	}
+
+	public void setParametroGestor(IParametroGestor parametroGestor) {
+		this.parametroGestor = parametroGestor;
 	}
 
 	/**
@@ -807,7 +819,13 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	
 	private Map<String, Object> generarFacturaElectronica(FacturaCabeceraDTO facturaCabeceraDTO) {
 		try {
-			return FacturaElectronocaUtil.ejecutarFacturacionElectronicaFactura(facturaCabeceraDTO);
+			Collection<String> codigosParametros = new ArrayList<>();
+			codigosParametros.add(ERPConstantes.PARAMETRO_NOMBRE_ESTABLECIMIENTO);
+			codigosParametros.add(ERPConstantes.PARAMETRO_NOMBRE_PUNTO_EMISION);
+			Collection<ParametroDTO> parametrosFactura = this.parametroGestor.obtenerParametrosByCodigos(codigosParametros);
+			ParametroDTO parametroDTOEsta = parametrosFactura.stream().filter(param -> param.getId().getCodigoParametro().equals(ERPConstantes.PARAMETRO_NOMBRE_ESTABLECIMIENTO)).findFirst().orElse(null);
+			ParametroDTO parametroDTOPunt = parametrosFactura.stream().filter(param -> param.getId().getCodigoParametro().equals(ERPConstantes.PARAMETRO_NOMBRE_PUNTO_EMISION)).findFirst().orElse(null);
+			return FacturaElectronicaUtil.ejecutarFacturacionElectronicaFactura(facturaCabeceraDTO, parametroDTOEsta.getValorParametro(), parametroDTOPunt.getValorParametro());
 		} catch (SAXParseException e) {
 			throw new ERPException("Error", "Error al generar factura electronica"+e.getMessage()) ;
 		} catch (CertificateException e) {
@@ -825,7 +843,7 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	
 	private byte[] generarFacturaElectronica(byte[] xmlFactura) throws IOException {  
 		try {
-			return FacturaElectronocaUtil.imprimirRideFactura(xmlFactura);
+			return FacturaElectronicaUtil.imprimirRideFactura(xmlFactura);
 		} catch (Exception e) {
 			throw new ERPException("Error", "Error al obtener factura electronica"+e.getMessage()) ;
 		} 

@@ -89,4 +89,6 @@ public class ERPConstantes {
 	public static final String PARAMETRO_EMAIL_REMITENTE = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.envio.mail.remitente");
 	public static final String PARAMETRO_EMAIL_CONTRASENIA = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.contrasenia.remitente");
 	public static final String PARAMETRO_EMAIL_CUERPO = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.envio.mail.contenido");
+	public static final String PARAMETRO_NOMBRE_ESTABLECIMIENTO = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.facturacion.establecimiento");
+	public static final String PARAMETRO_NOMBRE_PUNTO_EMISION = ERPMessages.getString("ec.com.erp.cliente.parametro.configuracion.facturacion.punto.emision");
 }

@@ -112,6 +112,8 @@ public class FireBaseFacturaGestor implements IFireBaseFacturaGestor {
 					}
 					facturaCabeceraDTO.setDescuento(BigDecimal.valueOf(facFireBase.getHeader().getDiscount()));
 					facturaCabeceraDTO.setDireccion(facFireBase.getHeader().getClientDirection());
+					facturaCabeceraDTO.setDireccion(facFireBase.getHeader().getClientDirection());
+					facturaCabeceraDTO.setCiudad(clienteDTO.getPersonaDTO() == null ? clienteDTO.getEmpresaDTO().getContactoEmpresaDTO().getCiudad() : clienteDTO.getPersonaDTO().getContactoPersonaDTO().getCiudad());
 					facturaCabeceraDTO.setFechaDocumento(facFireBase.getHeader().getDateDocument());
 					facturaCabeceraDTO.setNombreClienteProveedor(facFireBase.getHeader().getClientName());
 					facturaCabeceraDTO.setPagado(facFireBase.getHeader().getPaidOut());
