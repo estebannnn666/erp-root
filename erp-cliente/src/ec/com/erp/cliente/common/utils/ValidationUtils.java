@@ -33,4 +33,17 @@ public class ValidationUtils {
 		MathContext ctx = new MathContext(precision);
 		return value.round(ctx).setScale(scale, RoundingMode.HALF_UP);
 	}
+	
+	public static String obtenerSecuencialNotaCredito(int numTotal, String establecimiento, String puntoEmision, String cadena) {
+		StringBuilder cadenaCompleta = new StringBuilder();
+		cadenaCompleta.append(establecimiento).append("-").append(puntoEmision).append("-");
+		int tamCadena = cadena.length();
+		int cont = tamCadena;
+		while(cont < numTotal) {
+			cadenaCompleta.append("0");
+			cont++;
+		}
+		cadenaCompleta.append(cadena);
+		return cadenaCompleta.toString();
+	}
 }

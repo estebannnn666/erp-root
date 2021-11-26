@@ -249,4 +249,27 @@
 	<bean id="erpNotificacionMailGestor" class="ec.com.erp.notificacionmail.gestor.NotificacionMailGestor">
 		<property name="parametroGestor"><ref bean="erpParametroGestor"/></property>
 	</bean>
+	
+	 <!-- Gestor Nota Credito -->
+	<bean id="erpNotaCreditoGestor" class="ec.com.erp.notacredito.gestor.NotaCreditoGestor">
+		<property name="notaCreditoDAO"><ref bean="erpNotaCreditoDAO"/></property>
+		<property name="notaCreditoDetalleGestor"><ref bean="erpNotaCreditoDetalleGestor"/></property>
+		<property name="inventarioGestor"><ref bean="erpInventarioGestor"/></property>
+		<property name="transaccionGestor"><ref bean="erpTransaccionGestor"/></property>
+		<property name="notaCreditoDocumentoGestor"><ref bean="erpNotaCreditoDocumentoGestor"/></property>
+		<property name="secuenciaDAO"><ref bean="erpSecuenciaDAO"/></property>
+		<property name="notificacionMailGestor"><ref bean="erpNotificacionMailGestor"/></property>
+		<property name="parametroGestor"><ref bean="erpParametroGestor"/></property>
+		<property name="facturaCabeceraGestor"><ref bean="erpFacturaCabeceraGestor"/></property>
+	</bean>
+	
+	<!-- Gestor Nota Credito Detalle -->
+	<bean id="erpNotaCreditoDetalleGestor" class="ec.com.erp.notacredito.gestor.NotaCreditoDetalleGestor">
+		<property name="notaCreditoDetalleDAO"><ref bean="erpNotaCreditoDetalleDAO"/></property>
+	</bean>
+	
+	 <!-- Gestor Nota Credito Documento -->
+    <bean id="erpNotaCreditoDocumentoGestor" class="ec.com.erp.notacredito.gestor.NotaCreditoDocumentoGestor">
+        <property name="notaCreditoDocumentoDAO" ref="erpNotaCreditoDocumentoDAO"/>
+    </bean>
 </beans>

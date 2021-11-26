@@ -35,4 +35,18 @@ public interface INotaCreditoGestor {
 	 */
 	void guardarActualizarNotaCredito(Boolean crearNotaCreditoElectronica, NotaCreditoDTO notaCreditoDTO) throws ERPException;
 	
+	/**
+	 * M\u00e9todo para obtener xml nota de credito
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @throws ERPException
+	 */
+	byte[] obtenerXmlDocumentoNotaCredito(Integer codigoCompania, Long codigoFactura) throws ERPException;
+	
+	/**
+	 * Metodo para firmar enviar y autorizar nota credito electronica
+	 * @param notaCreditoDTO
+	 */
+	void enviarFirmarAutorizarNotaCredito(NotaCreditoDTO notaCreditoDTO);
+	
 }

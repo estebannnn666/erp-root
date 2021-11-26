@@ -142,7 +142,7 @@ public class NotaCreditoDAO implements INotaCreditoDAO {
 			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.codigoArticulo"), "notaCreditoDetalleDTOCols_codigoArticulo");
 			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.codigoArticuloUnidadManejo"), "notaCreditoDetalleDTOCols_codigoArticuloUnidadManejo");
 			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.cantidad"), "notaCreditoDetalleDTOCols_cantidad");
-			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.codigoFactura"), "notaCreditoDetalleDTOCols_codigoFactura");
+			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.codigoNotaCredito"), "notaCreditoDetalleDTOCols_codigoNotaCredito");
 			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.descripcion"), "notaCreditoDetalleDTOCols_descripcion");
 			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.descuento"), "notaCreditoDetalleDTOCols_descuento");
 			projectionList.add(Projections.property("notaCreditoDetalleDTOCols.valorUnidad"), "notaCreditoDetalleDTOCols_valorUnidad");

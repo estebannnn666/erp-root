@@ -214,6 +214,13 @@ public class FacturaCabeceraDTO implements Serializable{
 	private Collection<FacturaDetalleDTO> facturaDetalleDTOCols;
 	
 	/**
+	 * Referencia a documento xml
+	 */
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "facturaCabeceraDTO")
+	@CollectionTypeInfo(name = CollectionType.LIST_COLLECTION_TYPE)
+	private Collection<FacturaDocumentoDTO> facturaDocumentoDTOCols;
+	
+	/**
 	 * Referencia a detalle de pagos
 	 */
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "facturaCabeceraDTO")
@@ -552,5 +559,13 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setCiudad(String ciudad) {
 		this.ciudad = ciudad;
+	}
+
+	public Collection<FacturaDocumentoDTO> getFacturaDocumentoDTOCols() {
+		return facturaDocumentoDTOCols;
+	}
+
+	public void setFacturaDocumentoDTOCols(Collection<FacturaDocumentoDTO> facturaDocumentoDTOCols) {
+		this.facturaDocumentoDTOCols = facturaDocumentoDTOCols;
 	}	
 }

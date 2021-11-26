@@ -27,6 +27,7 @@ import ec.com.erp.cliente.mdl.dto.NotaCreditoDocumentoDTO;
 import ec.com.erp.cliente.mdl.dto.ParametroDTO;
 import ec.com.erp.cliente.mdl.dto.TransaccionDTO;
 import ec.com.erp.cliente.mdl.dto.id.NotaCreditoID;
+import ec.com.erp.factura.gestor.IFacturaCabeceraGestor;
 import ec.com.erp.facturacion.electronica.ws.ConstruirFacturaUtil;
 import ec.com.erp.facturacion.electronica.ws.FacturaElectronicaUtil;
 import ec.com.erp.facturacion.electronica.ws.NotaCreditoElectronicaUtil;
@@ -51,6 +52,7 @@ public class NotaCreditoGestor implements INotaCreditoGestor {
 	private INotaCreditoDocumentoGestor notaCreditoDocumentoGestor;
 	private INotificacionMailGestor notificacionMailGestor;
 	private IParametroGestor parametroGestor;
+	private IFacturaCabeceraGestor facturaCabeceraGestor;
 
 	public INotaCreditoDAO getNotaCreditoDAO() {
 		return notaCreditoDAO;
@@ -114,6 +116,14 @@ public class NotaCreditoGestor implements INotaCreditoGestor {
 
 	public void setParametroGestor(IParametroGestor parametroGestor) {
 		this.parametroGestor = parametroGestor;
+	}
+
+	public IFacturaCabeceraGestor getFacturaCabeceraGestor() {
+		return facturaCabeceraGestor;
+	}
+
+	public void setFacturaCabeceraGestor(IFacturaCabeceraGestor facturaCabeceraGestor) {
+		this.facturaCabeceraGestor = facturaCabeceraGestor;
 	}
 
 	/**
@@ -198,6 +208,8 @@ public class NotaCreditoGestor implements INotaCreditoGestor {
 				// Actualizar el numero de documento
 				String numeroNotaCreditoElectronica = (String)datosFacturaElectronica.get("NROFACTURA");	
 				this.notaCreditoDAO.actualizarNotaCreditoNumeroNotaCredito(notaCreditoDTO.getId().getCodigoCompania(), notaCreditoDTO.getId().getCodigoNotaCredito(), notaCreditoDTO.getUsuarioRegistro(), numeroNotaCreditoElectronica);
+				// Inactivar factura
+				this.facturaCabeceraGestor.inactivarFacturaElectronica(notaCreditoDTO.getId().getCodigoCompania(), notaCreditoDTO.getCodigoFactura(), notaCreditoDTO.getUsuarioRegistro());
 				// Enviar correo con factura
 				try{
 					if(StringUtils.isNotBlank(notaCreditoDTO.getEmail())){
@@ -276,5 +288,49 @@ public class NotaCreditoGestor implements INotaCreditoGestor {
 		} catch (Exception e) {
 			throw new ERPException("Error", "Error al obtener nota credito electronica"+e.getMessage()) ;
 		} 
+	}
+	
+	/**
+	 * Metodo para firmar enviar y autorizar nota credito electronica
+	 * @param notaCreditoDTO
+	 */
+	@Override
+	public void enviarFirmarAutorizarNotaCredito(NotaCreditoDTO notaCreditoDTO){
+		try{
+			// Generar factura electronica
+			Map<String, Object> datosFacturaElectronica = this.generarNotaCreditoElectronica(notaCreditoDTO);
+			// Obtener datos para guardar
+			byte[] xmlDocument = (byte[])datosFacturaElectronica.get("XMLDOCUMENT");
+			NotaCreditoDocumentoDTO notaCreditoDocumentoDTO = new NotaCreditoDocumentoDTO();
+			notaCreditoDocumentoDTO.getId().setCodigoCompania(notaCreditoDTO.getId().getCodigoCompania());
+			notaCreditoDocumentoDTO.setCodigoNotaCredito(notaCreditoDTO.getId().getCodigoNotaCredito());
+			notaCreditoDocumentoDTO.setXmlNotaCredito(xmlDocument);
+			notaCreditoDocumentoDTO.setUsuarioRegistro(notaCreditoDTO.getUsuarioRegistro());
+			notaCreditoDocumentoDTO.setFechaRegistro(notaCreditoDTO.getFechaRegistro());
+			this.notaCreditoDocumentoGestor.guardarActualizarDocumentoNotaCredito(notaCreditoDocumentoDTO);
+			// Actualizar el numero de documento
+			String numeroFacElectronica = (String)datosFacturaElectronica.get("NROFACTURA");	
+			this.notaCreditoDAO.actualizarNotaCreditoNumeroNotaCredito(notaCreditoDTO.getId().getCodigoCompania(), notaCreditoDTO.getId().getCodigoNotaCredito(), notaCreditoDTO.getUsuarioRegistro(), numeroFacElectronica);
+		} catch (ERPException e) {
+			throw new ERPException("Error, {0}",e.getMessage()) ;
+		} catch (Exception e) {
+			throw new ERPException("Error, {0}",e.getCause());
+		} 
+	}
+	
+	/**
+	 * M\u00e9todo para obtener xml nota de credito
+	 * @param codigoCompania
+	 * @param codigoNotaCredito
+	 * @throws ERPException
+	 */
+	@Override
+	public byte[] obtenerXmlDocumentoNotaCredito(Integer codigoCompania, Long codigoNotaCredito) throws ERPException{
+	    NotaCreditoDocumentoDTO notaCreditoDocumentoDTO = this.notaCreditoDocumentoGestor.obtenerXmlDocumentoNotaCredito(codigoCompania, codigoNotaCredito);
+	    byte[] xmlFactura = null;
+	    if(notaCreditoDocumentoDTO != null){
+	    	xmlFactura = notaCreditoDocumentoDTO.getXmlNotaCredito();
+	    }
+		return xmlFactura;
 	}
 }

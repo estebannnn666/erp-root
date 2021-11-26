@@ -65,6 +65,22 @@ public class FacturaCabeceraServicio implements IFacturaCabeceraServicio {
 	}
 	
 	/**
+	 * M\u00e9todo para obtener lista de facturas electronicas por filtros de busqueda
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @return Collection<FacturaCabeceraDTO>
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<FacturaCabeceraDTO> findObtenerListaFacturasElectronicas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor) throws ERPException{
+		return this.facturaCabeceraGestor.obtenerListaFacturasElectronicas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor);
+	}
+	
+	/**
 	 * M\u00e9todo para obtener lista de facturas sin despachar.
 	 * @param codigoCompania
 	 * @param numeroFactura

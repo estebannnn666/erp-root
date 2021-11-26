@@ -41,6 +41,7 @@ public class ERPFactory {
 	public static final FireBaseFactory firebase = new FireBaseFactory(APP_CTX);
 	public static final ParametroFactory parametro = new ParametroFactory(APP_CTX);
 	public static final NotificacionMailFactory notificacion = new NotificacionMailFactory(APP_CTX);
+	public static final NotasCreditoFactory notascredito = new NotasCreditoFactory(APP_CTX);
 	
 	private static ApplicationContext activateFactory(){
 		try{

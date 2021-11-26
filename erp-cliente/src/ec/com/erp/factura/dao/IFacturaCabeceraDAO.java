@@ -32,6 +32,20 @@ public interface IFacturaCabeceraDAO {
 	 */
 	Collection<FacturaCabeceraDTO> obtenerListaFacturas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin, String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos, Long codigoVendedor) throws ERPException;
 	
+	
+	/**
+	 * M\u00e9todo para obtener lista de facturas electronicas por filtros de busqueda
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @return Collection<FacturaCabeceraDTO>
+	 * @throws ERPException
+	 */
+	Collection<FacturaCabeceraDTO> obtenerListaFacturasElectronicas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor) throws ERPException;
+	
 	/**
 	 * M\u00e9todo para obtener lista de facturas sin despachar.
 	 * @param codigoCompania
@@ -137,4 +151,13 @@ public interface IFacturaCabeceraDAO {
 	 * @throws ERPException
 	 */
 	Collection<ReporteVentasFacturasVO> obtenerReporteVentasFactura(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException;
+	
+	/**
+	 * Actualizar el estado de factura.
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @param userId
+	 * @throws ERPException
+	 */
+	void inactivarFacturaElectronica(Integer codigoCompania, Long codigoFactura, String userId)throws ERPException;
 }

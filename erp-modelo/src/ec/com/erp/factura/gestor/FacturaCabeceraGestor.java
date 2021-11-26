@@ -150,6 +150,22 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	public Collection<ReporteVentasVO> obtenerReporteVentas(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
 		return this.facturaDetalleGestor.obtenerReporteVentas(codigoCompania, pagada, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
 	}
+	
+	/**
+	 * M\u00e9todo para obtener lista de facturas electronicas por filtros de busqueda
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @return Collection<FacturaCabeceraDTO>
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturasElectronicas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor) throws ERPException{
+		return this.facturaCabeceraDAO.obtenerListaFacturasElectronicas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor);
+	}
 
 	/**
 	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
@@ -862,6 +878,18 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 	@Override
 	public Collection<ReporteVentasFacturasVO> obtenerReporteVentasFactura(Integer codigoCompania, Boolean pagada, Long codigoVendedor, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin) throws ERPException{
 		return this.facturaCabeceraDAO.obtenerReporteVentasFactura(codigoCompania, pagada, codigoVendedor, fechaFacturaInicio, fechaFacturaFin);
+	}
+	
+	/**
+	 * Actualizar el estado de factura.
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @param userId
+	 * @throws ERPException
+	 */
+	@Override
+	public void inactivarFacturaElectronica(Integer codigoCompania, Long codigoFactura, String userId)throws ERPException{
+		this.facturaCabeceraDAO.inactivarFacturaElectronica(codigoCompania, codigoFactura, userId);
 	}
 	
 }

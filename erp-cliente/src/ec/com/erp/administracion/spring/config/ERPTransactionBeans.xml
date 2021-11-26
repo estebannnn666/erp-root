@@ -44,6 +44,7 @@
 		<aop:pointcut  id="pointcutFireBaseServiceMethods" expression="within(ec.com.erp.firebase.servicios..*)"/>
 		<aop:pointcut  id="pointcutParametroServiceMethods" expression="within(ec.com.erp.parametro.servicios..*)"/>
 		<aop:pointcut  id="pointcutNotificacionMailServiceMethods" expression="within(ec.com.erp.notificacionmail.servicios..*)"/>
+		<aop:pointcut  id="pointcutNotaCreditoServiceMethods" expression="within(ec.com.erp.notacredito.servicios..*)"/>
 		
 		<!-- negocios vinculantes -->
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutUsuariosServiceMethods"/>
@@ -67,5 +68,6 @@
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutFireBaseServiceMethods"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutParametroServiceMethods"/>
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutNotificacionMailServiceMethods"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pointcutNotaCreditoServiceMethods"/>
 	</aop:config>
 </beans>

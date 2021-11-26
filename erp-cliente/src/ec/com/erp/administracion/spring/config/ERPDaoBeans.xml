@@ -202,4 +202,22 @@
     <bean id="erpParametroDAO" class="ec.com.erp.parametro.dao.ParametroDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+    
+    <!-- Inyeccion bean  NotaCreditoDAO -->
+    <bean id="erpNotaCreditoDAO" class="ec.com.erp.notacredito.dao.NotaCreditoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  NotaCreditoDetalleDAO -->
+    <bean id="erpNotaCreditoDetalleDAO" class="ec.com.erp.notacredito.dao.NotaCreditoDetalleDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
+    
+    <!-- Inyeccion bean  NotaCreditoDocumentoDAO -->
+    <bean id="erpNotaCreditoDocumentoDAO" class="ec.com.erp.notacredito.dao.NotaCreditoDocumentoDAO">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="secuenciaDAO" ref="erpSecuenciaDAO"/>
+    </bean>
 </beans>	

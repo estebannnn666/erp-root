@@ -153,4 +153,9 @@ http://www.springframework.org/schema/batch http://www.springframework.org/schem
 	<bean id="erpNotificacionMailServicio" class="ec.com.erp.notificacionmail.servicios.NotificacionMailServicio">
 		<property name="notificacionMailGestor"><ref bean="erpNotificacionMailGestor"/></property>
 	</bean>
+	
+	<!-- Servicio nota credito -->
+	<bean id="erpNotaCreditoServicio" class="ec.com.erp.notacredito.servicios.NotaCreditoServicio">
+		<property name="notaCreditoGestor"><ref bean="erpNotaCreditoGestor"/></property>
+	</bean>
 </beans>

@@ -53,5 +53,23 @@ public class NotaCreditoServicio implements INotaCreditoServicio {
 		this.notaCreditoGestor.guardarActualizarNotaCredito(crearNotaCreditoElectronica, notaCreditoDTO);
 	}
 	
+	/**
+	 * M\u00e9todo para obtener xml nota de credito
+	 * @param codigoCompania
+	 * @param codigoFactura
+	 * @throws ERPException
+	 */
+	public byte[] findObtenerXmlDocumentoNotaCredito(Integer codigoCompania, Long codigoFactura) throws ERPException{
+		return this.notaCreditoGestor.obtenerXmlDocumentoNotaCredito(codigoCompania, codigoFactura);
+	}
+	
+	/**
+	 * Metodo para firmar enviar y autorizar nota credito electronica
+	 * @param notaCreditoDTO
+	 */
+	@Override
+	public void transEnviarFirmarAutorizarNotaCredito(NotaCreditoDTO notaCreditoDTO){
+		this.notaCreditoGestor.enviarFirmarAutorizarNotaCredito(notaCreditoDTO);
+	}
 
 }
