@@ -892,4 +892,23 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		this.facturaCabeceraDAO.inactivarFacturaElectronica(codigoCompania, codigoFactura, userId);
 	}
 	
+	/**
+	 * M\u00e9todo para obtener lista de facturas por filtros de busqueda
+	 * @param codigoCompania
+	 * @param numeroFactura
+	 * @param fechaFacturaInicio
+	 * @param fechaFacturaFin
+	 * @param docClienteProveedor
+	 * @param nombClienteProveedor
+	 * @param pagado
+	 * @param tipoDocumento
+	 * @param codigoVendedor
+	 * @return Collection<FacturaCabeceraDTO>
+	 * @throws ERPException
+	 */
+	@Override
+	public Collection<FacturaCabeceraDTO> obtenerListaFacturasCanceladas(Integer codigoCompania, String numeroFactura, Timestamp fechaFacturaInicio, Timestamp fechaFacturaFin,  String docClienteProveedor, String nombClienteProveedor, Boolean pagado, Collection<String> tiposDocumentos, Long codigoVendedor) throws ERPException{
+		return this.facturaCabeceraDAO.obtenerListaFacturasCanceladas(codigoCompania, numeroFactura, fechaFacturaInicio, fechaFacturaFin, docClienteProveedor, nombClienteProveedor, pagado, tiposDocumentos, codigoVendedor);
+	}
+	
 }

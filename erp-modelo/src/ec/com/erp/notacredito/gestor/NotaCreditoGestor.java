@@ -161,7 +161,7 @@ public class NotaCreditoGestor implements INotaCreditoGestor {
 				notaCreditoDTO.setNumeroDocumento(numeroFactura);
 			}
 			if(notaCreditoDTO.getTipoRuc().equals(ERPConstantes.TIPO_RUC_DOS)) {	
-				Integer secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(NotaCreditoID.NTC_ELECTRONICA_RUC_UNO);
+				Integer secuenciaFactura = this.secuenciaDAO.obtenerSecuencialTabla(NotaCreditoID.NTC_ELECTRONICA_RUC_DOS);
 				String numeroFactura = ConstruirFacturaUtil.numeroFactura(secuenciaFactura.toString());
 				// Asignar numero de secuencia a la factura
 				notaCreditoDTO.setNumeroDocumento(numeroFactura);
