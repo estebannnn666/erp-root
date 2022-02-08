@@ -187,9 +187,26 @@ public class FacturaCabeceraGestor implements IFacturaCabeceraGestor {
 		listaFacturas.stream().forEach(factura ->{
 			if(CollectionUtils.isEmpty(factura.getPagosFacturaDTOCols())){
 				factura.setTotalPagos(BigDecimal.ZERO);
+				factura.setRetencion30(BigDecimal.ZERO);
+				factura.setRetencion70(BigDecimal.ZERO);
+				factura.setRenta1(BigDecimal.ZERO);
 			}else {
-				Double totalPago = factura.getPagosFacturaDTOCols().stream().filter(pago -> pago.getValorPago() != null).mapToDouble(pago-> pago.getValorPago().doubleValue()).sum();
+				Double totalPago = factura.getPagosFacturaDTOCols().stream()
+						.filter(pago -> pago.getValorPago() != null && pago.getCodigoValorPago() != null && pago.getCodigoValorPago().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_PAGO_EFECTIVO))
+						.mapToDouble(pago-> pago.getValorPago().doubleValue()).sum();
 				factura.setTotalPagos(BigDecimal.valueOf(totalPago));
+				
+				Double totalRetencion30 = factura.getPagosFacturaDTOCols().stream().filter(pago -> pago.getValorPago() != null && pago.getCodigoValorPago() != null && pago.getCodigoValorPago().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_PAGO_RETENCION_30))
+						.mapToDouble(pago-> pago.getValorPago().doubleValue()).sum();
+				factura.setRetencion30(BigDecimal.valueOf(totalRetencion30));
+				
+				Double totalRetencion70 = factura.getPagosFacturaDTOCols().stream().filter(pago -> pago.getValorPago() != null && pago.getCodigoValorPago() != null && pago.getCodigoValorPago().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_PAGO_RETENCION_70))
+						.mapToDouble(pago-> pago.getValorPago().doubleValue()).sum();
+				factura.setRetencion70(BigDecimal.valueOf(totalRetencion70));
+				
+				Double totalRentaUno = factura.getPagosFacturaDTOCols().stream().filter(pago -> pago.getValorPago() != null && pago.getCodigoValorPago() != null &&  pago.getCodigoValorPago().equals(ERPConstantes.CODIGO_CATALOGO_VALOR_RENTA_UNO))
+						.mapToDouble(pago-> pago.getValorPago().doubleValue()).sum();
+				factura.setRenta1(BigDecimal.valueOf(totalRentaUno));
 			}
 		});
 		return listaFacturas;

@@ -53,6 +53,19 @@ public class PagosFacturaDTO implements Serializable{
 	private Date fechaPago;
 	
 	/**
+	 * Especifica el codigo valor del tipo pago
+	 */
+	@Column(name = "CODIGOVALORPAGO")
+	private String codigoValorPago ;
+	
+	/**
+	 * Especifica el codigo tipo de pago
+	 */
+	@Column(name = "CODIGOTIPOPAGO")
+	private Integer codigoTipoPago ;
+	
+	
+	/**
 	 * Estado del registro usuario
 	 */
 	@Column(name="ESTADO")
@@ -79,6 +92,16 @@ public class PagosFacturaDTO implements Serializable{
 		@JoinColumn(name = "CODIGOFACTURA", referencedColumnName = "CODIGOFACTURA", insertable = false, updatable = false)
 	})
 	private FacturaCabeceraDTO facturaCabeceraDTO;
+	
+	/**
+	 * Referencia CatalogoValorDTO tipo de pago
+	 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "CODIGOVALORPAGO", referencedColumnName = "CODIGOCATALOGOVALOR", insertable = false, updatable = false),
+		@JoinColumn(name = "CODIGOTIPOPAGO", referencedColumnName = "CODIGOCATALOGOTIPO", insertable = false, updatable = false)
+	})
+	private CatalogoValorDTO tipoPagoCatalogoValorDTO;
 	
 	public PagosFacturaID getId() {
 		return id;
@@ -168,4 +191,27 @@ public class PagosFacturaDTO implements Serializable{
 		this.facturaCabeceraDTO = facturaCabeceraDTO;
 	}
 
+	public String getCodigoValorPago() {
+		return codigoValorPago;
+	}
+
+	public void setCodigoValorPago(String codigoValorPago) {
+		this.codigoValorPago = codigoValorPago;
+	}
+
+	public Integer getCodigoTipoPago() {
+		return codigoTipoPago;
+	}
+
+	public void setCodigoTipoPago(Integer codigoTipoPago) {
+		this.codigoTipoPago = codigoTipoPago;
+	}
+
+	public CatalogoValorDTO getTipoPagoCatalogoValorDTO() {
+		return tipoPagoCatalogoValorDTO;
+	}
+
+	public void setTipoPagoCatalogoValorDTO(CatalogoValorDTO tipoPagoCatalogoValorDTO) {
+		this.tipoPagoCatalogoValorDTO = tipoPagoCatalogoValorDTO;
+	}
 }

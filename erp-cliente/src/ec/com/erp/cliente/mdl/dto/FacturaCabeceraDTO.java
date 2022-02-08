@@ -146,6 +146,15 @@ public class FacturaCabeceraDTO implements Serializable{
 	@Transient
 	private BigDecimal totalPagos ;
 	
+	@Transient
+	private BigDecimal retencion30 ;
+	
+	@Transient
+	private BigDecimal retencion70 ;
+	
+	@Transient
+	private BigDecimal renta1 ;
+	
 	/**
 	 * Especifica el tipo de documento venta y compra
 	 */
@@ -567,5 +576,29 @@ public class FacturaCabeceraDTO implements Serializable{
 
 	public void setFacturaDocumentoDTOCols(Collection<FacturaDocumentoDTO> facturaDocumentoDTOCols) {
 		this.facturaDocumentoDTOCols = facturaDocumentoDTOCols;
-	}	
+	}
+
+	public BigDecimal getRetencion30() {
+		return retencion30;
+	}
+
+	public void setRetencion30(BigDecimal retencion30) {
+		this.retencion30 = retencion30;
+	}
+
+	public BigDecimal getRetencion70() {
+		return retencion70;
+	}
+
+	public void setRetencion70(BigDecimal retencion70) {
+		this.retencion70 = retencion70;
+	}
+
+	public BigDecimal getRenta1() {
+		return renta1;
+	}
+
+	public void setRenta1(BigDecimal renta1) {
+		this.renta1 = renta1;
+	}
 }

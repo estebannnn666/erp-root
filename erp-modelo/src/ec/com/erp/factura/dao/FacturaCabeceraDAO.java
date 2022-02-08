@@ -95,6 +95,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			criteria.createAlias("vendedorDTO.personaDTO", "personaDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.facturaDetalleDTOCols", "facturaDetalleDTOCols", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("root.pagosFacturaDTOCols", "pagosFacturaDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("pagosFacturaDTOCols.tipoPagoCatalogoValorDTO", "tipoPagoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("root.tipoDocumentoCatalogoValorDTO", "tipoDocumentoCatalogoValorDTO", CriteriaSpecification.INNER_JOIN);
 			criteria.createAlias("facturaDetalleDTOCols.articuloDTO", "articuloDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("articuloDTO.articuloImpuestoDTOCols", "articuloImpuestoDTOCols", CriteriaSpecification.LEFT_JOIN);
@@ -194,11 +195,15 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("pagosFacturaDTOCols.id.codigoPago"), "pagosFacturaDTOCols_id_codigoPago");
 			projectionList.add(Projections.property("pagosFacturaDTOCols.codigoFactura"), "pagosFacturaDTOCols_codigoFactura");
 			projectionList.add(Projections.property("pagosFacturaDTOCols.valorPago"), "pagosFacturaDTOCols_valorPago");
+			projectionList.add(Projections.property("pagosFacturaDTOCols.codigoValorPago"), "pagosFacturaDTOCols_codigoValorPago");
+			projectionList.add(Projections.property("pagosFacturaDTOCols.codigoTipoPago"), "pagosFacturaDTOCols_codigoTipoPago");
 			projectionList.add(Projections.property("pagosFacturaDTOCols.descripcion"), "pagosFacturaDTOCols_descripcion");
 			projectionList.add(Projections.property("pagosFacturaDTOCols.fechaPago"), "pagosFacturaDTOCols_fechaPago");
 			projectionList.add(Projections.property("pagosFacturaDTOCols.estado"), "pagosFacturaDTOCols_estado");
 			projectionList.add(Projections.property("pagosFacturaDTOCols.usuarioRegistro"), "pagosFacturaDTOCols_usuarioRegistro");
 			projectionList.add(Projections.property("pagosFacturaDTOCols.fechaRegistro"), "pagosFacturaDTOCols_fechaRegistro");
+			
+			projectionList.add(Projections.property("tipoPagoCatalogoValorDTO.nombreCatalogoValor"), "pagosFacturaDTOCols_tipoPagoCatalogoValorDTO_nombreCatalogoValor");
 			
 			projectionList.add(Projections.property("articuloDTO.id.codigoCompania"), "facturaDetalleDTOCols_articuloDTO_id_codigoCompania");
 			projectionList.add(Projections.property("articuloDTO.id.codigoArticulo"), "facturaDetalleDTOCols_articuloDTO_id_codigoArticulo");
@@ -462,6 +467,7 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			criteria.createAlias("articuloDTO.articuloUnidadManejoDTOCols", "articuloUnidadManejoDTOCols", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("articuloUnidadManejoDTOCols.tipoUnidadManejoCatalogoValorDTO", "tipUniManCatValDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("articuloDTO.articuloImpuestoDTOCols", "articuloImpuestoDTOCols", CriteriaSpecification.LEFT_JOIN);
+			criteria.createAlias("articuloImpuestoDTOCols.impuestoDTO", "impuestoDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("facturaDetalleDTOCols.articuloUnidadManejoDTO", "articuloUnidadManejoDTO", CriteriaSpecification.LEFT_JOIN);
 			criteria.createAlias("articuloUnidadManejoDTO.tipoUnidadManejoCatalogoValorDTO", "tipoUnidadManejoCatalogoValorDTO", CriteriaSpecification.LEFT_JOIN);
 			
@@ -474,7 +480,9 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 				criteria.add(Restrictions.eq("root.numeroDocumento", numeroFactura));
 			}
 			if(fechaFacturaInicio != null && fechaFacturaFin != null){
-				criteria.add(Restrictions.between("root.fechaDocumento", fechaFacturaInicio, fechaFacturaFin));
+				criteria.add(Restrictions.ge("root.fechaDocumento", fechaFacturaInicio));
+				criteria.add(Restrictions.le("root.fechaDocumento", fechaFacturaFin));
+				
 			}
 			if(docClienteProveedor != null && docClienteProveedor !=""){
 				criteria.add(Restrictions.like("root.rucDocumento", docClienteProveedor, MatchMode.ANYWHERE));
@@ -570,6 +578,8 @@ public class FacturaCabeceraDAO implements IFacturaCabeceraDAO {
 			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoImpuesto"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_id_codigoImpuesto");
 			projectionList.add(Projections.property("articuloImpuestoDTOCols.id.codigoArticulo"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_id_codigoArticulo");
 			projectionList.add(Projections.property("articuloImpuestoDTOCols.estado"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_estado");
+			// Proyecciones entidad impuestos
+			projectionList.add(Projections.property("impuestoDTO.valorImpuesto"), "facturaDetalleDTOCols_articuloDTO_articuloImpuestoDTOCols_impuestoDTO_valorImpuesto");
 			
 			// Proyecciones unidades de manejo
 			projectionList.add(Projections.property("articuloUnidadManejoDTOCols.id.codigoCompania"), "facturaDetalleDTOCols_articuloDTO_articuloUnidadManejoDTOCols_id_codigoCompania");
